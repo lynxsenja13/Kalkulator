@@ -537,3 +537,47 @@ tabel-gizi td {
     margin-bottom: 20px;
   }
 }
+
+@media print {
+
+  /* ❌ SEMUA CARD DARK DISIMPAN, KECUALI HASIL */
+  .card.dark {
+    display: none !important;
+  }
+
+  /* ❌ HEADER HILANG */
+  .header {
+    display: none !important;
+  }
+
+  /* ❌ INPUT & BUTTON */
+  .input-row,
+  .action-row,
+  #listBahan {
+    display: none !important;
+  }
+
+  /* ✅ HASIL DITAMPILKAN */
+  #hasil-wrapper {
+    display: block !important;
+  }
+
+  /* ✅ CATATAN DITAMPILKAN */
+  #note {
+    display: block !important;
+    border: none;
+  }
+
+  /* 🔥 BACKGROUND JADI PUTIH */
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .kategori-card {
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+  }
+
+}
