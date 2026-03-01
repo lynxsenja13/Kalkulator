@@ -527,21 +527,31 @@ function exportPDF() {
   const bulan = now.toLocaleDateString("id-ID", { month: "long" });
   const tahun = now.getFullYear();
 
-  // Judul
-  document.getElementById("printTitle").innerText =
+  // 🔥 ambil isi hasil
+  const hasilHTML = document.getElementById("hasil").innerHTML;
+
+  // 🔥 masukkan ke versi PDF
+  document.getElementById("hasilPDF").innerHTML = hasilHTML;
+
+  // 🔥 judul PDF
+  document.getElementById("printTitlePDF").innerText =
     `Laporan Gizi - ${hari} ${bulan} ${tahun}`;
 
-  // Ambil catatan
+  // 🔥 catatan
   const note = document.getElementById("note").value;
   document.getElementById("printNote").innerText = note || "-";
 
   const element = document.getElementById("laporanPDF");
+
+  element.style.display = "block"; // tampilkan sementara
 
   html2pdf(element, {
     margin: 10,
     filename: `Laporan Gizi ${hari} ${bulan} ${tahun}.pdf`,
     html2canvas: { scale: 2 },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+  }).then(() => {
+    element.style.display = "none"; // sembunyikan lagi
   });
 }
 
