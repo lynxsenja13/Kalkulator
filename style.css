@@ -461,3 +461,52 @@ tabel-gizi td {
   background: #ef4444 !important; /* merah */
   color: #ffffff;
 }
+
+@media print {
+
+  /* ❌ SEMBUNYIKAN YANG TIDAK PERLU */
+  .header,
+  .input-row,
+  #namaBahan,
+  #beratBahan,
+  .btn-primary,
+  .btn-success,
+  .btn-secondary,
+  #listBahan {
+    display: none !important;
+  }
+
+  /* ❌ sembunyikan card input pertama */
+  .card.dark:first-of-type {
+    display: none !important;
+  }
+
+  /* ✅ TAMPILKAN HASIL */
+  #hasil-wrapper {
+    display: block !important;
+  }
+
+  /* ✅ CATATAN TETAP MUNCUL */
+  textarea {
+    border: none;
+    resize: none;
+  }
+
+  /* 🔥 BUANG BACKGROUND GELAP */
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .kategori-card {
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+  }
+
+  /* tabel biar clean */
+  .tabel-gizi {
+    box-shadow: none !important;
+  }
+
+}
