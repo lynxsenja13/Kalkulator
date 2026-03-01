@@ -77,29 +77,15 @@ async function loadDatabase() {
     databaseLoaded = true;
 
     console.log("Database loaded:", database.length);
+
     initKategori();
+    initAutocomplete(); // ✅ di sini
+    saveCache();        // ✅ di sini
+
   } catch (err) {
     console.error("Gagal load database:", err);
     alert("Database gagal dimuat. Cek Apps Script.");
   }
-}
-
-initAutocomplete();
-saveCache();
-
-loadDatabase();
-
-
-// ================= AUTO COMPLETE =================
-function initAutocomplete() {
-  const dl = document.getElementById("bahanListAuto");
-  dl.innerHTML = "";
-
-  database.forEach(d => {
-    const opt = document.createElement("option");
-    opt.value = d["nama bahan"];
-    dl.appendChild(opt);
-  });
 }
 
 // ================= INIT KATEGORI =================
@@ -212,12 +198,7 @@ function generateLaporan() {
 
         <hr>
 
-        ${renderAKG("Energi", total, kat)}
-        ${renderAKG("Protein", total, kat)}
-        ${renderAKG("Lemak", total, kat)}
-        ${renderAKG("Karbohidrat", total, kat)}
-        ${renderAKG("Kalsium", total, kat)}
-        ${renderAKG("Serat", total, kat)}
+        ${renderTabelGizi(total, kat)}
       </div>
     `;
   });
@@ -265,8 +246,10 @@ function toggleLibur(cb) {
   const card = cb.closest(".kategori");
 
   if (cb.checked) {
-    card.querySelectorAll("p").forEach(p => {
-      p.innerHTML = p.innerHTML.split(":")[0] + ": 0";
+    card.querySelectorAll(".table-gizi tbody tr").forEach(tr => {
+      tr.children[1].textContent = "0";
+      tr.children[2].textContent = "0%";
+      tr.children[2].className = "status-low";
     });
   } else {
     generateLaporan();
@@ -318,4 +301,52 @@ function initAutocomplete() {
       dropdown.style.display = "none";
     }
   });
+}
+
+// ================= STARTUP =================
+loadCache();
+loadDatabase();
+
+// ================= TABEL GIZI =================
+function renderTabelGizi(total, kategori) {
+  const nutrienList = [
+    "Energi",
+    "Protein",
+    "Lemak",
+    "Karbohidrat",
+    "Kalsium",
+    "Serat"
+  ];
+
+  const rows = nutrienList.map(nutrien => {
+    const nilai = total[nutrien] || 0;
+    const target = AKG[kategori][nutrien] || 1;
+    const persen = (nilai / target) * 100;
+    const statusClass = persen >= 100 ? "status-ok" : "status-low";
+
+    return `
+      <tr>
+        <td>${nutrien}</td>
+        <td>${nilai.toFixed(1)}</td>
+        <td class="${statusClass}">
+          ${persen.toFixed(1)}%
+        </td>
+      </tr>
+    `;
+  }).join("");
+
+  return `
+    <table class="table-gizi">
+      <thead>
+        <tr>
+          <th>Nutrien</th>
+          <th>Jumlah</th>
+          <th>% AKG</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${rows}
+      </tbody>
+    </table>
+  `;
 }
