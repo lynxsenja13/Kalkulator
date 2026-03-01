@@ -588,3 +588,20 @@ tabel-gizi td {
     margin-bottom: 20px;
   }
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #laporanPDF, #laporanPDF * {
+    visibility: visible;
+  }
+
+  #laporanPDF {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
