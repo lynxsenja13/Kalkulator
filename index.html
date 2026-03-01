@@ -12,31 +12,42 @@
 
 <h1>🥗 Kalkulator Gizi</h1>
 
-<!-- INPUT BAHAN -->
+<!-- ================= INPUT BAHAN ================= -->
 <div class="card">
   <h2>Input Bahan</h2>
 
-  <input id="namaBahan" list="bahanListAuto" placeholder="Nama bahan" />
-  <datalist id="bahanListAuto"></datalist>
+  <!-- AUTOCOMPLETE MODERN -->
+  <div class="autocomplete">
+    <input
+      id="namaBahan"
+      placeholder="Cari nama bahan..."
+      autocomplete="off"
+    />
+    <div id="dropdownBahan" class="dropdown"></div>
+  </div>
+
   <input id="beratBahan" type="number" placeholder="Berat (gram)" />
-  <button onclick="tambahBahan()">Tambah</button>
+
+  <div class="toolbar">
+    <button onclick="tambahBahan()">Tambah</button>
+    <button class="generate" onclick="generateLaporan()">
+      Generate Laporan
+    </button>
+    <button class="export" onclick="window.print()">
+      Export PDF
+    </button>
+  </div>
 
   <ul id="listBahan"></ul>
-
-  <button class="generate" onclick="generateLaporan()">
-    Generate Laporan
-  </button>
 </div>
 
-<button onclick="window.print()">Export PDF</button>
-
-<!-- HASIL -->
+<!-- ================= HASIL ================= -->
 <div id="hasil"></div>
 
-<!-- NOTE -->
+<!-- ================= NOTE ================= -->
 <div class="card">
   <h2>Catatan Hari Ini</h2>
-  <textarea id="note"></textarea>
+  <textarea id="note" placeholder="Tulis catatan distribusi hari ini..."></textarea>
 </div>
 
 </div>
