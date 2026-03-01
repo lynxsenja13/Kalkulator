@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Kalkulator Gizi</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="container">
+
+<h1>🥗 Kalkulator Gizi</h1>
+
+<!-- INPUT BAHAN -->
+<div class="card">
+  <h2>Input Bahan</h2>
+
+  <input id="namaBahan" placeholder="Nama bahan" />
+  <input id="beratBahan" type="number" placeholder="Berat (gram)" />
+  <button onclick="tambahBahan()">Tambah</button>
+
+  <ul id="listBahan"></ul>
+
+  <button class="generate" onclick="generateLaporan()">
+    Generate Laporan
+  </button>
+</div>
+
+<!-- HASIL -->
+<div id="hasil"></div>
+
+<!-- NOTE -->
+<div class="card">
+  <h2>Catatan Hari Ini</h2>
+  <textarea id="note"></textarea>
+</div>
+
+</div>
+
+<script src="config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
