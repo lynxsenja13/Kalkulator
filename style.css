@@ -1,15 +1,13 @@
 /* ===== GLOBAL ===== */
 html, body {
-  background: #f3f4f6; /* putih keabu soft */
   margin: 0;
   padding: 0;
+  background: #ffffff; /* putih full */
 }
 
 body {
-  body {
   font-family: 'Nunito', 'Poppins', sans-serif;
-  background: #ffffff; /* putih */
-  color: #0f172a; /* teks jadi gelap biar kebaca */
+  color: #0f172a;
 }
 
 .app {
@@ -383,4 +381,8 @@ button {
 #namaBahan {
   width: 100%;
   box-sizing: border-box;
+}
+
+  .main-wrapper {
+  background: #ffffff;
 }
