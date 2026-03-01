@@ -12,6 +12,63 @@ const kategoriList = [
   "SMA"
 ];
 
+// ================= AKG TARGET =================
+const AKG = {
+  "Balita": {
+    Energi: 343.75,
+    Protein: 5.75,
+    Lemak: 12,
+    Karbohidrat: 54.5,
+    Kalsium: 206.25,
+    Serat: 5
+  },
+
+  "Bumil & Busui": {
+    Energi: 712.5,
+    Protein: 21,
+    Lemak: 23.4,
+    Karbohidrat: 105,
+    Kalsium: 360,
+    Serat: 9.9
+  },
+
+  "SD 1-3": {
+    Energi: 412.5,
+    Protein: 10,
+    Lemak: 13.75,
+    Karbohidrat: 62.5,
+    Kalsium: 250,
+    Serat: 5.75
+  },
+
+  "SD 4-6": {
+    Energi: 585,
+    Protein: 15.9,
+    Lemak: 19.5,
+    Karbohidrat: 87,
+    Kalsium: 360,
+    Serat: 8.1
+  },
+
+  "SMP": {
+    Energi: 667.5,
+    Protein: 20.4,
+    Lemak: 22.5,
+    Karbohidrat: 97.5,
+    Kalsium: 360,
+    Serat: 9.6
+  },
+
+  "SMA": {
+    Energi: 712.5,
+    Protein: 21,
+    Lemak: 23.4,
+    Karbohidrat: 105,
+    Kalsium: 360,
+    Serat: 9.9
+  }
+};
+
 // ================= LOAD DATABASE =================
 async function loadDatabase() {
   try {
