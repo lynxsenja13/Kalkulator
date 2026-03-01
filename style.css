@@ -402,3 +402,15 @@ button {
 tabel-gizi td {
   background: #ffffff;
 }
+
+.kategori-card .tabel-gizi td {
+  color: #000 !important;
+}
+
+.kategori-card .tabel-gizi {
+  color: #000 !important;
+}
+
+.kategori-card .tabel-gizi td {
+  background: #ffffff !important;
+}
