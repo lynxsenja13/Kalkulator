@@ -199,20 +199,22 @@ function generateLaporan() {
 
     // ================= LIBUR =================
     if (isLibur) {
-      hasilDiv.innerHTML += `
-        <div class="kategori-card kategori-libur">
-          <h3>${kat} Libur</h3>
+  hasilDiv.innerHTML += `
+    <div class="kategori-card kategori-libur">
+      <h3>${kat} Libur</h3>
 
-          <label class="switch">
-            <input type="checkbox"
-                   checked
-                   onchange="toggleLibur('${kat}', this.checked)">
-            <span class="slider"></span>
-          </label>
-        </div>
-      `;
-      return;
-    }
+      <div class="libur-toggle">
+        <label>
+          <input type="checkbox"
+                 checked
+                 onchange="toggleLibur('${kat}', this.checked)">
+          Libur
+        </label>
+      </div>
+    </div>
+  `;
+  return;
+}
 
     // ================= HITUNG =================
     const total = hitungTotal(kategoriData[kat]);
@@ -230,15 +232,17 @@ function generateLaporan() {
       <div class="kategori-card">
 
         <div class="kategori-header">
-          <h3>${kat}</h3>
+  <h3>${kat}</h3>
 
-          <label class="switch">
-            <input type="checkbox"
-                   ${kategoriLibur[kat] ? "checked" : ""}
-                   onchange="toggleLibur('${kat}', this.checked)">
-            <span class="slider"></span>
-          </label>
-        </div>
+  <div class="libur-toggle">
+    <label>
+      <input type="checkbox"
+             ${kategoriLibur[kat] ? "checked" : ""}
+             onchange="toggleLibur('${kat}', this.checked)">
+      Libur
+    </label>
+  </div>
+</div>
 
         ${renderEditableList(kat)}
 
