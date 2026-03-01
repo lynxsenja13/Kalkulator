@@ -522,32 +522,33 @@ function formatTanggalIndonesia() {
 
 function exportPDF() {
 
-  // 🔥 COPY hasil laporan ke PDF
   const hasilHTML = document.getElementById("hasil").innerHTML;
   document.getElementById("hasilPDF").innerHTML = hasilHTML;
 
-  // 🔥 CATATAN
   const note = document.getElementById("note").value;
   document.getElementById("printNote").innerText = note || "-";
 
-  // 🔥 TANGGAL
   const tanggal = getTanggalLengkap();
   document.getElementById("tanggalLaporan").innerText = tanggal;
 
   const element = document.getElementById("laporanPDF");
-
   element.style.display = "block";
 
-  const opt = {
-    margin: 10,
-    filename: `Laporan Gizi ${formatTanggalFile()}.pdf`,
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-  };
+  setTimeout(() => { // 🔥 kasih waktu render
 
-  html2pdf().set(opt).from(element).save().then(() => {
-    element.style.display = "none";
-  });
+    const opt = {
+      margin: [5, 5, 5, 5],
+      filename: `Laporan Gizi ${formatTanggalFile()}.pdf`,
+      pagebreak: { mode: ['avoid-all', 'css', 'legacy'] },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    };
+
+    html2pdf().set(opt).from(element).save().then(() => {
+      element.style.display = "none";
+    });
+
+  }, 300); // 🔥 delay 300ms
 }
 
 function getTanggalLengkap() {
