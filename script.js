@@ -273,3 +273,49 @@ function toggleLibur(cb) {
   }
 }
 
+// ================= AUTOCOMPLETE DROPDOWN =================
+function initAutocomplete() {
+  const input = document.getElementById("namaBahan");
+  const dropdown = document.getElementById("dropdownBahan");
+
+  input.addEventListener("input", () => {
+    const val = input.value.toLowerCase();
+    dropdown.innerHTML = "";
+
+    if (!val) {
+      dropdown.style.display = "none";
+      return;
+    }
+
+    const hasil = database
+      .map(d => d["nama bahan"])
+      .filter(n => n && n.toLowerCase().includes(val))
+      .slice(0, 8);
+
+    if (!hasil.length) {
+      dropdown.style.display = "none";
+      return;
+    }
+
+    dropdown.style.display = "block";
+
+    hasil.forEach(nama => {
+      const div = document.createElement("div");
+      div.className = "dropdown-item";
+      div.textContent = nama;
+
+      div.onclick = () => {
+        input.value = nama;
+        dropdown.style.display = "none";
+      };
+
+      dropdown.appendChild(div);
+    });
+  });
+
+  document.addEventListener("click", e => {
+    if (!e.target.closest(".autocomplete")) {
+      dropdown.style.display = "none";
+    }
+  });
+}
