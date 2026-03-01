@@ -405,13 +405,12 @@ function initAutocomplete() {
     }
 
     const hasil = database
-      .map(d => d["NAMA BAHAN"] || d["nama bahan"])
+      .map(d => d["nama bahan"] || d["NAMA BAHAN"])
       .filter(n => n && n.toLowerCase().includes(keyword))
       .slice(0, 10);
 
     hasil.forEach(nama => {
       const div = document.createElement("div");
-      div.className = "dropdown-item";
       div.textContent = nama;
 
       div.onclick = () => {
@@ -425,7 +424,6 @@ function initAutocomplete() {
     dropdown.style.display = hasil.length ? "block" : "none";
   });
 
-  // ✅ klik luar
   document.addEventListener("click", e => {
     if (!e.target.closest(".autocomplete-wrapper")) {
       dropdown.style.display = "none";
