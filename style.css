@@ -386,3 +386,19 @@ button {
   .main-wrapper {
   background: #ffffff;
 }
+
+.tabel-gizi {
+  color: #000000; /* paksa hitam */
+}
+
+.tabel-gizi td {
+  color: #000000;
+}
+
+.tabel-gizi th {
+  color: #ffffff; /* header tetap putih */
+}
+
+tabel-gizi td {
+  background: #ffffff;
+}
