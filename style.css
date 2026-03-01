@@ -632,8 +632,16 @@ button {
 }
 
 .kategori-card {
-  page-break-inside: avoid;
-  break-inside: avoid;
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+}
+
+#laporanPDF table {
+  page-break-inside: avoid !important;
+}
+
+#laporanPDF tr {
+  page-break-inside: avoid !important;
 }
 
 /* ===== PDF STYLE ===== */
