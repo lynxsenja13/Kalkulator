@@ -1,7 +1,19 @@
 let bahanMaster = [];
+let kategoriLibur = {};
 let kategoriData = {};
 let database = [];
 let databaseLoaded = false;
+
+// ================= TOGGLE LIBUR =================
+function toggleLibur(kat, checked) {
+  kategoriLibur[kat] = checked;
+  generateLaporan();
+}
+
+// ✅ TAMBAHKAN DI SINI
+function statusClass(persen) {
+  return persen >= 100 ? "ok" : "bad";
+}
 
 const kategoriList = [
   "Balita",
@@ -184,23 +196,51 @@ function generateLaporan() {
   hasilDiv.innerHTML = "";
 
   kategoriList.forEach(kat => {
-    const total = hitungTotal(kategoriData[kat]);
 
+  const namaKategori = kat;
+
+  // ✅ ambil status libur (contoh dari checkbox/state kamu)
+  const isLibur = kategoriLibur?.[kat] || false;
+
+  // ✅ TARUH BLOK KAMU DI SINI
+  if (isLibur) {
     hasilDiv.innerHTML += `
-      <div class="card kategori">
-        <h3>${kat}</h3>
-        <label>
-          <input type="checkbox" onchange="toggleLibur(this)">
-          Libur
-        </label>
-
-        ${renderEditableList(kat)}
-
-        <hr>
-
-        ${renderTabelGizi(total, kat)}
+      <div class="kategori-card kategori-libur">
+        <h3>${namaKategori} Libur</h3>
       </div>
     `;
+    return; // ⛔ penting: stop render kategori ini
+  }
+
+  // ================================
+  // lanjut normal kalau tidak libur
+  // ================================
+
+  const total = hitungTotal(kategoriData[kat]);
+
+  // ... lanjut hitung persen dan tabel
+});
+
+    html += `
+<table class="tabel-gizi">
+  <tr>
+    <th>Energi</th>
+    <th>Protein</th>
+    <th>Lemak</th>
+    <th>Karbo</th>
+    <th>Kalsium</th>
+    <th>Serat</th>
+  </tr>
+  <tr>
+    <td class="${statusClass(p.energi)}">${p.energi.toFixed(1)}%</td>
+    <td class="${statusClass(p.protein)}">${p.protein.toFixed(1)}%</td>
+    <td class="${statusClass(p.lemak)}">${p.lemak.toFixed(1)}%</td>
+    <td class="${statusClass(p.karbo)}">${p.karbo.toFixed(1)}%</td>
+    <td class="${statusClass(p.kalsium)}">${p.kalsium.toFixed(1)}%</td>
+    <td class="${statusClass(p.serat)}">${p.serat.toFixed(1)}%</td>
+  </tr>
+</table>
+`;
   });
 }
 
