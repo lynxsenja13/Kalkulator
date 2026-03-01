@@ -269,57 +269,76 @@ function generateLaporan() {
 
     // ================= LIBUR =================
     if (isLibur) {
-  hasilDiv.innerHTML += `
-    <div class="kategori-card kategori-libur">
-      <h3>${kat} Libur</h3>
+      hasilDiv.innerHTML += `
+        <div class="kategori-card kategori-libur">
+          <h3>${kat} Libur</h3>
 
-      <div class="libur-toggle">
-        <label>
-          <input type="checkbox"
-                 checked
-                 onchange="toggleLibur('${kat}', this.checked)">
-          Libur
-        </label>
-      </div>
-    </div>
-  `;
-  return;
-}
+          <div class="libur-toggle">
+            <label>
+              <input type="checkbox"
+                     checked
+                     onchange="toggleLibur('${kat}', this.checked)">
+              Libur
+            </label>
+          </div>
+        </div>
+      `;
+      return;
+    }
 
     // ================= HITUNG =================
     const total = hitungTotal(kategoriData[kat]);
 
-// 🔥 hitung detail per bahan
-const detailBahan = kategoriData[kat].map(item => {
-  const db = database.find(d =>
-    String(d["nama bahan"]).toLowerCase().trim() ===
-    item.nama.toLowerCase().trim()
-  );
+    // 🔥 DETAIL PER BAHAN
+    const detailBahan = kategoriData[kat].map(item => {
+      const db = database.find(d =>
+        String(d["nama bahan"]).toLowerCase().trim() ===
+        item.nama.toLowerCase().trim()
+      );
 
-  if (!db) {
-    return {
-      nama: item.nama,
-      berat: item.berat,
-      energi: 0,
-      protein: 0,
-      lemak: 0,
-      karbo: 0,
-      kalsium: 0,
-      serat: 0
-    };
-  }
+      if (!db) {
+        return {
+          nama: item.nama,
+          berat: item.berat,
+          energi: 0,
+          protein: 0,
+          lemak: 0,
+          karbo: 0,
+          kalsium: 0,
+          serat: 0
+        };
+      }
 
-  return {
-    nama: item.nama,
-    berat: item.berat,
-    energi: (item.berat / 100) * Number(db["ENERGI"] ?? db["energi"] ?? 0),
-    protein: (item.berat / 100) * Number(db["PROTEIN"] ?? db["protein"] ?? 0),
-    lemak: (item.berat / 100) * Number(db["LEMAK"] ?? db["lemak"] ?? 0),
-    karbo: (item.berat / 100) * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0),
-    kalsium: (item.berat / 100) * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0),
-    serat: (item.berat / 100) * Number(db["SERAT"] ?? db["serat"] ?? 0)
-  };
-});  
+      return {
+        nama: item.nama,
+        berat: item.berat,
+        energi: (item.berat / 100) * Number(db["ENERGI"] ?? db["energi"] ?? 0),
+        protein: (item.berat / 100) * Number(db["PROTEIN"] ?? db["protein"] ?? 0),
+        lemak: (item.berat / 100) * Number(db["LEMAK"] ?? db["lemak"] ?? 0),
+        karbo: (item.berat / 100) * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0),
+        kalsium: (item.berat / 100) * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0),
+        serat: (item.berat / 100) * Number(db["SERAT"] ?? db["serat"] ?? 0)
+      };
+    });
+
+    // ✅⬅️ TAMBAHKAN DI SINI (SETELAH MAP)
+    hasilDiv.innerHTML += `
+      <div class="kategori-card">
+        <h3>${kat}</h3>
+
+        ${renderEditableList(kat)}
+
+        ${renderTabelKategori(kat, detailBahan, {
+          energi: AKG[kat].Energi,
+          protein: AKG[kat].Protein,
+          lemak: AKG[kat].Lemak,
+          karbo: AKG[kat].Karbohidrat,
+          kalsium: AKG[kat].Kalsium,
+          serat: AKG[kat].Serat
+        })}
+      </div>
+    `;
+  });
 }
 
 function renderAKG(nutrien, total, kategori) {
@@ -364,26 +383,21 @@ function initAutocomplete() {
   const input = document.getElementById("namaBahan");
   const dropdown = document.getElementById("dropdownBahan");
 
-  input.addEventListener("input", () => {
-    const val = input.value.toLowerCase();
+  if (!input || !dropdown) return;
+
+  input.addEventListener("input", function () {
+    const keyword = this.value.toLowerCase();
     dropdown.innerHTML = "";
 
-    if (!val) {
+    if (!keyword) {
       dropdown.style.display = "none";
       return;
     }
 
     const hasil = database
       .map(d => d["NAMA BAHAN"] || d["nama bahan"])
-      .filter(n => n && n.toLowerCase().includes(val))
-      .slice(0, 8);
-
-    if (!hasil.length) {
-      dropdown.style.display = "none";
-      return;
-    }
-
-    dropdown.style.display = "block";
+      .filter(n => n && n.toLowerCase().includes(keyword))
+      .slice(0, 10);
 
     hasil.forEach(nama => {
       const div = document.createElement("div");
@@ -397,15 +411,17 @@ function initAutocomplete() {
 
       dropdown.appendChild(div);
     });
+
+    dropdown.style.display = hasil.length ? "block" : "none";
   });
 
+  // ✅ klik luar
   document.addEventListener("click", e => {
     if (!e.target.closest(".autocomplete")) {
       dropdown.style.display = "none";
     }
   });
 }
-
 // ================= STARTUP =================
 loadCache();
 loadDatabase();
