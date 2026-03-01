@@ -522,23 +522,24 @@ function formatTanggalIndonesia() {
 }
 
 function exportPDF() {
-  const element = document.getElementById("laporanPDF");
-
-  if (!element) {
-    alert("Elemen laporanPDF tidak ditemukan!");
-    return;
-  }
-
   const now = new Date();
   const hari = now.getDate();
   const bulan = now.toLocaleDateString("id-ID", { month: "long" });
   const tahun = now.getFullYear();
 
-  const filename = `Laporan Gizi ${hari} ${bulan} ${tahun}.pdf`;
+  // Judul
+  document.getElementById("printTitle").innerText =
+    `Laporan Gizi - ${hari} ${bulan} ${tahun}`;
+
+  // Ambil catatan
+  const note = document.getElementById("note").value;
+  document.getElementById("printNote").innerText = note || "-";
+
+  const element = document.getElementById("laporanPDF");
 
   html2pdf(element, {
     margin: 10,
-    filename: filename,
+    filename: `Laporan Gizi ${hari} ${bulan} ${tahun}.pdf`,
     html2canvas: { scale: 2 },
     jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
   });
