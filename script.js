@@ -174,18 +174,17 @@ function hitungTotal(list) {
       return;
     }
 
-    total.Energi += (item.berat / 100) * Number(db["energi"] || 0);
-    total.Protein += (item.berat / 100) * Number(db["protein"] || 0);
-    total.Lemak += (item.berat / 100) * Number(db["lemak"] || 0);
-    total.Karbohidrat += (item.berat / 100) * Number(db["karbohidrat"] || 0);
-    total.Kalsium += (item.berat / 100) * Number(db["kalsium"] || 0);
-    total.Serat += (item.berat / 100) * Number(db["serat"] || 0);
+    total.Energi += (item.berat / 100) * Number(db["ENERGI"] ?? db["energi"] ?? 0);
+    total.Protein += (item.berat / 100) * Number(db["PROTEIN"] ?? db["protein"] ?? 0);
+    total.Lemak += (item.berat / 100) * Number(db["LEMAK"] ?? db["lemak"] ?? 0);
+    total.Karbohidrat += (item.berat / 100) * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0);
+    total.Kalsium += (item.berat / 100) * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0);
+    total.Serat += (item.berat / 100) * Number(db["SERAT"] ?? db["serat"] ?? 0);
   });
 
   return total;
 }
 
-// ================= GENERATE =================
 function generateLaporan() {
   if (!databaseLoaded) {
     alert("Database masih loading...");
@@ -196,64 +195,74 @@ function generateLaporan() {
   hasilDiv.innerHTML = "";
 
   kategoriList.forEach(kat => {
+    const isLibur = kategoriLibur[kat] || false;
 
-  const namaKategori = kat;
+    // ================= LIBUR =================
+    if (isLibur) {
+      hasilDiv.innerHTML += `
+        <div class="kategori-card kategori-libur">
+          <h3>${kat} Libur</h3>
 
-  // ✅ ambil status libur (contoh dari checkbox/state kamu)
-  const isLibur = kategoriLibur?.[kat] || false;
+          <label class="switch">
+            <input type="checkbox"
+                   checked
+                   onchange="toggleLibur('${kat}', this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
+      `;
+      return;
+    }
 
-  // ✅ TARUH BLOK KAMU DI SINI
-  if (isLibur) {
+    // ================= HITUNG =================
+    const total = hitungTotal(kategoriData[kat]);
+
+    const p = {
+      energi: (total.Energi / AKG[kat].Energi) * 100,
+      protein: (total.Protein / AKG[kat].Protein) * 100,
+      lemak: (total.Lemak / AKG[kat].Lemak) * 100,
+      karbo: (total.Karbohidrat / AKG[kat].Karbohidrat) * 100,
+      kalsium: (total.Kalsium / AKG[kat].Kalsium) * 100,
+      serat: (total.Serat / AKG[kat].Serat) * 100
+    };
+
     hasilDiv.innerHTML += `
-  <div class="kategori-card">
+      <div class="kategori-card">
 
-    <div class="kategori-header">
-      <h3>${kat}</h3>
+        <div class="kategori-header">
+          <h3>${kat}</h3>
 
-      <label class="switch">
-        <input type="checkbox"
-               ${kategoriLibur[kat] ? "checked" : ""}
-               onchange="toggleLibur('${kat}', this.checked)">
-        <span class="slider"></span>
-      </label>
-    </div>
+          <label class="switch">
+            <input type="checkbox"
+                   ${kategoriLibur[kat] ? "checked" : ""}
+                   onchange="toggleLibur('${kat}', this.checked)">
+            <span class="slider"></span>
+          </label>
+        </div>
 
-    ${renderEditableList(kat)}
+        ${renderEditableList(kat)}
 
-    <!-- tabel gizi di bawah -->
-`;
-    return; // ⛔ penting: stop render kategori ini
-  }
+        <table class="tabel-gizi">
+          <tr>
+            <th>Energi</th>
+            <th>Protein</th>
+            <th>Lemak</th>
+            <th>Karbo</th>
+            <th>Kalsium</th>
+            <th>Serat</th>
+          </tr>
+          <tr>
+            <td class="${statusClass(p.energi)}">${p.energi.toFixed(1)}%</td>
+            <td class="${statusClass(p.protein)}">${p.protein.toFixed(1)}%</td>
+            <td class="${statusClass(p.lemak)}">${p.lemak.toFixed(1)}%</td>
+            <td class="${statusClass(p.karbo)}">${p.karbo.toFixed(1)}%</td>
+            <td class="${statusClass(p.kalsium)}">${p.kalsium.toFixed(1)}%</td>
+            <td class="${statusClass(p.serat)}">${p.serat.toFixed(1)}%</td>
+          </tr>
+        </table>
 
-  // ================================
-  // lanjut normal kalau tidak libur
-  // ================================
-
-  const total = hitungTotal(kategoriData[kat]);
-
-  // ... lanjut hitung persen dan tabel
-});
-
-    html += `
-<table class="tabel-gizi">
-  <tr>
-    <th>Energi</th>
-    <th>Protein</th>
-    <th>Lemak</th>
-    <th>Karbo</th>
-    <th>Kalsium</th>
-    <th>Serat</th>
-  </tr>
-  <tr>
-    <td class="${statusClass(p.energi)}">${p.energi.toFixed(1)}%</td>
-    <td class="${statusClass(p.protein)}">${p.protein.toFixed(1)}%</td>
-    <td class="${statusClass(p.lemak)}">${p.lemak.toFixed(1)}%</td>
-    <td class="${statusClass(p.karbo)}">${p.karbo.toFixed(1)}%</td>
-    <td class="${statusClass(p.kalsium)}">${p.kalsium.toFixed(1)}%</td>
-    <td class="${statusClass(p.serat)}">${p.serat.toFixed(1)}%</td>
-  </tr>
-</table>
-`;
+      </div>
+    `;
   });
 }
 
@@ -294,21 +303,6 @@ function editBerat(kat, index, value) {
   generateLaporan();
 }
 
-// ================= LIBUR =================
-function toggleLibur(cb) {
-  const card = cb.closest(".kategori");
-
-  if (cb.checked) {
-    card.querySelectorAll(".table-gizi tbody tr").forEach(tr => {
-      tr.children[1].textContent = "0";
-      tr.children[2].textContent = "0%";
-      tr.children[2].className = "status-low";
-    });
-  } else {
-    generateLaporan();
-  }
-}
-
 // ================= AUTOCOMPLETE DROPDOWN =================
 function initAutocomplete() {
   const input = document.getElementById("namaBahan");
@@ -324,7 +318,7 @@ function initAutocomplete() {
     }
 
     const hasil = database
-      .map(d => d["nama bahan"])
+      .map(d => d["NAMA BAHAN"] || d["nama bahan"])
       .filter(n => n && n.toLowerCase().includes(val))
       .slice(0, 8);
 
