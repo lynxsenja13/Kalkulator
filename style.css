@@ -433,6 +433,30 @@ tabel-gizi td {
   color: #ffffff;
 }
 
+/* HEADER → BIRU TERANG */
+.kategori-card .tabel-gizi thead th {
+  background: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+/* TOTAL ROW DEFAULT */
+.kategori-card .tabel-gizi .total-row {
+  background: #3b82f6 !important;
+  color: #ffffff !important;
+}
+
+/* CELL HIJAU */
+.kategori-card .tabel-gizi td.total-ok {
+  background: #22c55e !important;
+  color: #ffffff !important;
+}
+
+/* CELL MERAH */
+.kategori-card .tabel-gizi td.total-bad {
+  background: #ef4444 !important;
+  color: #ffffff !important;
+}
+
 .total-bad {
   background: #ef4444 !important; /* merah */
   color: #ffffff;
