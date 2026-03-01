@@ -581,3 +581,10 @@ tabel-gizi td {
   }
 
 }
+
+@media print {
+  .kategori-card {
+    page-break-inside: avoid;
+    margin-bottom: 20px;
+  }
+}
