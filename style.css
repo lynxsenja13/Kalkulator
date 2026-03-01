@@ -1,107 +1,177 @@
+/* ===== GLOBAL ===== */
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #f4f6fb;
   margin: 0;
-  padding: 20px;
-  color: #1f2937;
+  font-family: Inter, system-ui, sans-serif;
+  background: #eef2f7;
+  color: #111;
 }
 
-.container {
+.app {
   max-width: 1100px;
   margin: auto;
+  padding: 24px;
 }
 
-h1 {
+/* ===== HEADER ===== */
+.header {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 24px;
 }
 
-.card {
-  background: #ffffff;
+.logo {
+  width: 90px;
+  margin-bottom: 10px;
+}
+
+.credit {
+  opacity: 0.7;
+  font-size: 14px;
+}
+
+/* ===== CARD DARK ===== */
+.card.dark {
+  background: #0f1b2d;
+  color: white;
   padding: 22px;
-  margin-bottom: 20px;
-  border-radius: 16px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  border-radius: 18px;
+  margin-bottom: 22px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.card.dark h2 {
+  margin-top: 0;
 }
 
 /* ===== INPUT ===== */
+.input-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
 
 input, textarea {
-  width: 100%;
-  padding: 11px;
-  border-radius: 10px;
-  border: 1px solid #e5e7eb;
-  margin: 6px 0;
-  font-size: 14px;
-}
-
-button {
-  padding: 11px 18px;
-  border: none;
-  border-radius: 10px;
-  background: #2563eb;
-  color: white;
-  cursor: pointer;
-  font-weight: 600;
-}
-
-button:hover {
-  background: #1e4fd8;
-}
-
-/* ===== AUTOCOMPLETE ===== */
-
-.autocomplete {
-  position: relative;
-}
-
-.dropdown {
-  position: absolute;
-  width: 100%;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  max-height: 220px;
-  overflow-y: auto;
-  display: none;
-  z-index: 99;
-}
-
-.dropdown-item {
   padding: 10px;
+  border-radius: 10px;
+  border: none;
+  flex: 1;
+}
+
+textarea {
+  width: 100%;
+  min-height: 80px;
+}
+
+/* ===== BUTTON ===== */
+button {
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-weight: 600;
   cursor: pointer;
 }
 
-.dropdown-item:hover {
-  background: #f1f5f9;
+.btn-primary {
+  background: #3b82f6;
+  color: white;
 }
 
-/* ===== TABEL GIZI ===== */
+.btn-success {
+  background: #22c55e;
+  color: white;
+}
 
-.table-gizi {
+.btn-secondary {
+  background: #64748b;
+  color: white;
+}
+
+.action-row {
+  margin-top: 14px;
+  display: flex;
+  gap: 10px;
+}
+
+/* ===== KATEGORI CARD ===== */
+.kategori-card {
+  background: white;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+.kategori-libur {
+  background: #fecaca;
+}
+
+/* ===== TOGGLE LIBUR ===== */
+.libur-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.toggle {
+  width: 44px;
+  height: 24px;
+  background: #ccc;
+  border-radius: 20px;
+  position: relative;
+  cursor: pointer;
+}
+
+.toggle::after {
+  content: "";
+  width: 18px;
+  height: 18px;
+  background: white;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.toggle.active {
+  background: #ef4444;
+}
+
+.toggle.active::after {
+  left: 23px;
+}
+
+/* ===== TABEL NUTRIEN ===== */
+.tabel-gizi {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: 12px;
 }
 
-.table-gizi th {
-  background: #f1f5f9;
+.tabel-gizi th {
+  background: #1e293b;
+  color: white;
   padding: 8px;
-  text-align: left;
+  font-size: 13px;
 }
 
-.table-gizi td {
+.tabel-gizi td {
+  text-align: center;
   padding: 8px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.status-ok {
-  color: #16a34a;
   font-weight: 600;
 }
 
-.status-low {
-  color: #dc2626;
-  font-weight: 600;
+/* status */
+.ok {
+  background: #bbf7d0;
+}
+
+.bad {
+  background: #fecaca;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+  .input-row {
+    flex-direction: column;
+  }
 }
