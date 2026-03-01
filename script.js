@@ -323,21 +323,31 @@ function generateLaporan() {
 
     // ✅⬅️ TAMBAHKAN DI SINI (SETELAH MAP)
     hasilDiv.innerHTML += `
-      <div class="kategori-card">
-        <h3>${kat}</h3>
+  <div class="kategori-card">
+    
+    <div class="kategori-header">
+      <h3>${kat}</h3>
 
-        ${renderEditableList(kat)}
+      <label class="libur-switch">
+        <input type="checkbox"
+          ${kategoriLibur[kat] ? "checked" : ""}
+          onchange="toggleLibur('${kat}', this.checked)">
+        <span>Libur</span>
+      </label>
+    </div>
 
-        ${renderTabelKategori(kat, detailBahan, {
-          energi: AKG[kat].Energi,
-          protein: AKG[kat].Protein,
-          lemak: AKG[kat].Lemak,
-          karbo: AKG[kat].Karbohidrat,
-          kalsium: AKG[kat].Kalsium,
-          serat: AKG[kat].Serat
-        })}
-      </div>
-    `;
+    ${renderEditableList(kat)}
+
+    ${renderTabelKategori(kat, detailBahan, {
+      energi: AKG[kat].Energi,
+      protein: AKG[kat].Protein,
+      lemak: AKG[kat].Lemak,
+      karbo: AKG[kat].Karbohidrat,
+      kalsium: AKG[kat].Kalsium,
+      serat: AKG[kat].Serat
+    })}
+  </div>
+`;
   });
 }
 
