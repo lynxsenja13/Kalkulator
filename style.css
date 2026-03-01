@@ -6,9 +6,10 @@ html, body {
 }
 
 body {
+  body {
   font-family: 'Nunito', 'Poppins', sans-serif;
-  background: #0b1a33; /* opsional biar konsisten */
-  color: #ffffff;
+  background: #ffffff; /* putih */
+  color: #0f172a; /* teks jadi gelap biar kebaca */
 }
 
 .app {
