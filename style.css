@@ -630,3 +630,8 @@ tabel-gizi td {
   padding: 8px;
   text-align: center;
 }
+
+.kategori-card {
+  page-break-inside: avoid;
+  break-inside: avoid;
+}
