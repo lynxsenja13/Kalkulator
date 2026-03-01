@@ -414,3 +414,26 @@ tabel-gizi td {
 .kategori-card .tabel-gizi td {
   background: #ffffff !important;
 }
+
+/* HEADER TABEL → BIRU TERANG */
+.tabel-gizi thead th {
+  background: #3b82f6 !important;
+  color: #ffffff;
+}
+
+/* BARIS TOTAL DEFAULT → BIRU TERANG */
+.total-row {
+  background: #3b82f6 !important;
+  color: #ffffff;
+}
+
+/* OVERRIDE PER CELL */
+.total-ok {
+  background: #22c55e !important; /* hijau */
+  color: #ffffff;
+}
+
+.total-bad {
+  background: #ef4444 !important; /* merah */
+  color: #ffffff;
+}
