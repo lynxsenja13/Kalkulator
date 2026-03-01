@@ -10,11 +10,6 @@ function toggleLibur(kat, checked) {
   generateLaporan();
 }
 
-// ✅ TAMBAHKAN DI SINI
-function statusClass(persen) {
-  return persen >= 100 ? "ok" : "bad";
-}
-
 const kategoriList = [
   "Balita",
   "Bumil & Busui",
@@ -185,6 +180,81 @@ function hitungTotal(list) {
   return total;
 }
 
+function renderTabelKategori(namaKategori, dataBahan, standar) {
+  let total = {
+    energi: 0,
+    protein: 0,
+    lemak: 0,
+    karbo: 0,
+    kalsium: 0,
+    serat: 0
+  };
+
+  let html = `
+    <table class="tabel-gizi">
+      <thead>
+        <tr>
+          <th>Nama Bahan</th>
+          <th>Berat (g)</th>
+          <th>Energi</th>
+          <th>Protein</th>
+          <th>Lemak</th>
+          <th>Karbo</th>
+          <th>Kalsium</th>
+          <th>Serat</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  dataBahan.forEach(item => {
+    total.energi += item.energi;
+    total.protein += item.protein;
+    total.lemak += item.lemak;
+    total.karbo += item.karbo;
+    total.kalsium += item.kalsium;
+    total.serat += item.serat;
+
+    html += `
+      <tr>
+        <td>${item.nama}</td>
+        <td>${item.berat}</td>
+        <td>${item.energi.toFixed(1)}</td>
+        <td>${item.protein.toFixed(1)}</td>
+        <td>${item.lemak.toFixed(1)}</td>
+        <td>${item.karbo.toFixed(1)}</td>
+        <td>${item.kalsium.toFixed(1)}</td>
+        <td>${item.serat.toFixed(1)}</td>
+      </tr>
+    `;
+  });
+
+  // cek kecukupan
+  const cukup =
+    total.energi >= standar.energi &&
+    total.protein >= standar.protein &&
+    total.lemak >= standar.lemak &&
+    total.karbo >= standar.karbo &&
+    total.kalsium >= standar.kalsium &&
+    total.serat >= standar.serat;
+
+  html += `
+      <tr class="total-row ${cukup ? 'cukup' : 'kurang'}">
+        <td colspan="2"><b>TOTAL</b></td>
+        <td><b>${total.energi.toFixed(1)}</b></td>
+        <td><b>${total.protein.toFixed(1)}</b></td>
+        <td><b>${total.lemak.toFixed(1)}</b></td>
+        <td><b>${total.karbo.toFixed(1)}</b></td>
+        <td><b>${total.kalsium.toFixed(1)}</b></td>
+        <td><b>${total.serat.toFixed(1)}</b></td>
+      </tr>
+    </tbody>
+  </table>
+  `;
+
+  return html;
+}
+
 function generateLaporan() {
   if (!databaseLoaded) {
     alert("Database masih loading...");
@@ -219,55 +289,37 @@ function generateLaporan() {
     // ================= HITUNG =================
     const total = hitungTotal(kategoriData[kat]);
 
-    const p = {
-      energi: (total.Energi / AKG[kat].Energi) * 100,
-      protein: (total.Protein / AKG[kat].Protein) * 100,
-      lemak: (total.Lemak / AKG[kat].Lemak) * 100,
-      karbo: (total.Karbohidrat / AKG[kat].Karbohidrat) * 100,
-      kalsium: (total.Kalsium / AKG[kat].Kalsium) * 100,
-      serat: (total.Serat / AKG[kat].Serat) * 100
+// 🔥 hitung detail per bahan
+const detailBahan = kategoriData[kat].map(item => {
+  const db = database.find(d =>
+    String(d["nama bahan"]).toLowerCase().trim() ===
+    item.nama.toLowerCase().trim()
+  );
+
+  if (!db) {
+    return {
+      nama: item.nama,
+      berat: item.berat,
+      energi: 0,
+      protein: 0,
+      lemak: 0,
+      karbo: 0,
+      kalsium: 0,
+      serat: 0
     };
+  }
 
-    hasilDiv.innerHTML += `
-      <div class="kategori-card">
-
-        <div class="kategori-header">
-  <h3>${kat}</h3>
-
-  <div class="libur-toggle">
-    <label>
-      <input type="checkbox"
-             ${kategoriLibur[kat] ? "checked" : ""}
-             onchange="toggleLibur('${kat}', this.checked)">
-      Libur
-    </label>
-  </div>
-</div>
-
-        ${renderEditableList(kat)}
-
-        <table class="tabel-gizi">
-          <tr>
-            <th>Energi</th>
-            <th>Protein</th>
-            <th>Lemak</th>
-            <th>Karbo</th>
-            <th>Kalsium</th>
-            <th>Serat</th>
-          </tr>
-          <tr>
-            <td class="${statusClass(p.energi)}">${p.energi.toFixed(1)}%</td>
-            <td class="${statusClass(p.protein)}">${p.protein.toFixed(1)}%</td>
-            <td class="${statusClass(p.lemak)}">${p.lemak.toFixed(1)}%</td>
-            <td class="${statusClass(p.karbo)}">${p.karbo.toFixed(1)}%</td>
-            <td class="${statusClass(p.kalsium)}">${p.kalsium.toFixed(1)}%</td>
-            <td class="${statusClass(p.serat)}">${p.serat.toFixed(1)}%</td>
-          </tr>
-        </table>
-
-      </div>
-    `;
-  });
+  return {
+    nama: item.nama,
+    berat: item.berat,
+    energi: (item.berat / 100) * Number(db["ENERGI"] ?? db["energi"] ?? 0),
+    protein: (item.berat / 100) * Number(db["PROTEIN"] ?? db["protein"] ?? 0),
+    lemak: (item.berat / 100) * Number(db["LEMAK"] ?? db["lemak"] ?? 0),
+    karbo: (item.berat / 100) * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0),
+    kalsium: (item.berat / 100) * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0),
+    serat: (item.berat / 100) * Number(db["SERAT"] ?? db["serat"] ?? 0)
+  };
+});  
 }
 
 function renderAKG(nutrien, total, kategori) {
