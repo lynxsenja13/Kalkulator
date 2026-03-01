@@ -239,18 +239,34 @@ function renderTabelKategori(namaKategori, dataBahan, standar) {
     total.serat >= standar.serat;
 
   html += `
-      <tr class="total-row ${cukup ? 'cukup' : 'kurang'}">
-        <td colspan="2"><b>TOTAL</b></td>
-        <td><b>${total.energi.toFixed(1)}</b></td>
-        <td><b>${total.protein.toFixed(1)}</b></td>
-        <td><b>${total.lemak.toFixed(1)}</b></td>
-        <td><b>${total.karbo.toFixed(1)}</b></td>
-        <td><b>${total.kalsium.toFixed(1)}</b></td>
-        <td><b>${total.serat.toFixed(1)}</b></td>
-      </tr>
-    </tbody>
-  </table>
-  `;
+<tr class="total-row">
+  <td colspan="2"><b>TOTAL</b></td>
+
+  <td class="${total.energi >= standar.energi ? 'total-ok' : 'total-bad'}">
+    <b>${total.energi.toFixed(1)}</b>
+  </td>
+
+  <td class="${total.protein >= standar.protein ? 'total-ok' : 'total-bad'}">
+    <b>${total.protein.toFixed(1)}</b>
+  </td>
+
+  <td class="${total.lemak >= standar.lemak ? 'total-ok' : 'total-bad'}">
+    <b>${total.lemak.toFixed(1)}</b>
+  </td>
+
+  <td class="${total.karbo >= standar.karbo ? 'total-ok' : 'total-bad'}">
+    <b>${total.karbo.toFixed(1)}</b>
+  </td>
+
+  <td class="${total.kalsium >= standar.kalsium ? 'total-ok' : 'total-bad'}">
+    <b>${total.kalsium.toFixed(1)}</b>
+  </td>
+
+  <td class="${total.serat >= standar.serat ? 'total-ok' : 'total-bad'}">
+    <b>${total.serat.toFixed(1)}</b>
+  </td>
+</tr>
+`;
 
   return html;
 }
