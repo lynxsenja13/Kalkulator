@@ -73,21 +73,33 @@
 
 </div>
 
- <div id="laporanPDF" style="display:none;">
+<div id="laporanPDF" style="display:none;">
 
-  <!-- LOGO -->
-  <div style="text-align:center; margin-bottom:10px;">
-    <img src="logo.png" width="80">
+  <!-- KOP SURAT -->
+  <div class="kop">
+    <img src="logo.png" class="kop-logo">
+
+    <div class="kop-text">
+      <h1>SPPG CICADAS 01</h1>
+      <h2>Program Makan Bergizi Gratis</h2>
+      <p>Jl. Brigjen Katamso, Cihaur Geulis, Kec. Cibeunying Kidul, Kota Bandung</p>
+    </div>
   </div>
 
-  <!-- JUDUL -->
-  <h2 id="printTitlePDF" style="text-align:center;"></h2>
+  <hr class="garis-kop">
 
-  <!-- HASIL LAPORAN -->
+  <!-- JUDUL -->
+  <h2 class="judul-laporan">
+    LAPORAN HASIL PERHITUNGAN GIZI
+  </h2>
+
+  <p id="tanggalLaporan" class="tanggal"></p>
+
+  <!-- HASIL -->
   <div id="hasilPDF"></div>
 
   <!-- CATATAN -->
-  <div style="margin-top:20px;">
+  <div class="catatan-box">
     <h3>Catatan</h3>
     <p id="printNote"></p>
   </div>
