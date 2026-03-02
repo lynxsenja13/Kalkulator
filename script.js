@@ -12,6 +12,11 @@ let pendingNama = null;
 let pendingBerat = null;
 let modeKategori = "SEMUA";
 
+function setModeMenu(menu) {
+  modeMenu = menu;
+  renderList();
+}
+
 function getNamaBahan(obj) {
   const key = Object.keys(obj).find(k =>
     k.toLowerCase().replace(/\s/g, "") === "namabahan"
@@ -103,6 +108,7 @@ function simpanGizi() {
 bahanMaster.push({ nama: namaBaru, berat: beratBaru });
 
 if (modeKategori === "SEMUA") {
+  const listAktif = bahanMaster[modeMenu];
   kategoriList.forEach(k => {
     kategoriData[k].push({ nama: namaBaru, berat: beratBaru });
   });
@@ -276,7 +282,7 @@ function tambahBahan() {
 }
 
   // ✅ MASUKKAN DATA
-  bahanMaster.push({ nama, berat });
+  bahanMaster[modeMenu].push({ nama, berat });
 
   if (modeKategori === "SEMUA") {
   kategoriList.forEach(k => {
@@ -296,7 +302,7 @@ function renderList() {
   const ul = document.getElementById("listBahan");
   ul.innerHTML = "";
 
-  bahanMaster.forEach(b => {
+  bahanMaster[modeMenu].forEach(b => {
     ul.innerHTML += `<li>${b.nama} - ${b.berat} g</li>`;
   });
 }
@@ -460,7 +466,11 @@ function generateLaporan() {
     }
 
     // ================= HITUNG =================
-    const total = hitungTotal(kategoriData[kat]);
+    const total = hitungTotal(
+  kategoriData[kat].filter(item =>
+    listAktif.some(b => b.nama === item.nama)
+  )
+);
 
     // 🔥 DETAIL PER BAHAN
     const detailBahan = kategoriData[kat].map(item => {
