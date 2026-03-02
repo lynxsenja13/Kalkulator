@@ -43,14 +43,14 @@ function simpanGizi() {
   btn.innerText = "Menyimpan...";
   btn.disabled = true;
   const newItem = {
-    "nama bahan": pendingNama.toLowerCase().trim(),
-    "ENERGI": Number(mEnergi.value),
-    "PROTEIN": Number(mProtein.value),
-    "LEMAK": Number(mLemak.value),
-    "KARBOHIDRAT": Number(mKarbo.value),
-    "KALSIUM": Number(mKalsium.value),
-    "SERAT": Number(mSerat.value)
-  };
+  "nama bahan": pendingNama.toLowerCase().trim(),
+  "ENERGI": Number(mEnergi.value) || 0,
+  "PROTEIN": Number(mProtein.value) || 0,
+  "LEMAK": Number(mLemak.value) || 0,
+  "KARBOHIDRAT": Number(mKarbo.value) || 0,
+  "KALSIUM": Number(mKalsium.value) || 0,
+  "SERAT": Number(mSerat.value) || 0
+};
 
   const namaBaru = pendingNama;
   const beratBaru = pendingBerat;
@@ -63,9 +63,6 @@ function simpanGizi() {
   // ✅ TAMBAHKAN KE SPREADSHEET (INI TEMPATNYA)
   fetch(API_URL, {
   method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
   body: JSON.stringify({
     nama: newItem["nama bahan"],
     ENERGI: newItem.ENERGI,
