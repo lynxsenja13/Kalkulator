@@ -98,7 +98,9 @@ async function loadDatabase() {
 // ================= INIT KATEGORI =================
 function initKategori() {
   kategoriList.forEach(k => {
-    kategoriData[k] = [];
+    if (!kategoriData[k]) {
+      kategoriData[k] = [];
+    }
   });
 }
 
@@ -115,11 +117,18 @@ function loadCache() {
     initKategori();
     initAutocomplete();
     console.log("Database dari cache");
+    return true; // 🔥 penting
   }
+  return false;
 }
 
 // ================= TAMBAH BAHAN =================
 function tambahBahan() {
+  if (!databaseLoaded) {
+  alert("Tunggu database selesai load dulu");
+  return;
+  }
+  
   const nama = document.getElementById("namaBahan").value.trim();
   const berat = parseFloat(document.getElementById("beratBahan").value);
 
@@ -132,6 +141,10 @@ function tambahBahan() {
   });
 
   renderList();
+  document.getElementById("namaBahan").value = "";
+  document.getElementById("beratBahan").value = "";
+  console.log("Tambah bahan:", nama, berat);
+  console.log("Isi kategoriData:", kategoriData);
 }
 
 // ================= RENDER LIST =================
@@ -446,8 +459,9 @@ function initAutocomplete() {
   });
 }
 // ================= STARTUP =================
-loadCache();
-loadDatabase();
+if (!loadCache()) {
+  loadDatabase();
+}
 
 // ================= TABEL GIZI =================
 function renderTabelGizi(total, kategori) {
