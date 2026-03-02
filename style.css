@@ -846,3 +846,12 @@ button {
   background: #16a34a;
   color: white;
 }
+
+#jenisMenuLaporan {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
