@@ -61,7 +61,7 @@ function simpanGizi() {
   saveCache();
 
   // ✅ TAMBAHKAN KE SPREADSHEET (INI TEMPATNYA)
-  fetch("https://script.google.com/macros/s/AKfycbzLPsPLG5U9DCKSO181QDVslljmyz-4p_KU-YsNsi_Ama8S4Tovd2tI99iCKFftebSL/exec", {
+  fetch(API_URL, {
   method: "POST",
   headers: {
     "Content-Type": "application/json"
