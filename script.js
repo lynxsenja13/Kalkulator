@@ -7,6 +7,13 @@ let pendingNama = null;
 let pendingBerat = null;
 let modeKategori = "SEMUA";
 
+function getNamaBahan(obj) {
+  const key = Object.keys(obj).find(k =>
+    k.toLowerCase().replace(/\s/g, "") === "namabahan"
+  );
+  return key ? String(obj[key]).toLowerCase().trim() : "";
+}
+
 function setModeKategori(value) {
   modeKategori = value;
 }
