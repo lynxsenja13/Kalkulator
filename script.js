@@ -119,15 +119,14 @@ function simpanGizi() {
 .catch(err => console.error("Sync gagal:", err));
 
 // ✅ lanjut logic biasa
-bahanMaster.push({ nama: namaBaru, berat: beratBaru });
+bahanMaster[modeMenu].push({ nama: namaBaru, berat: beratBaru });
 
 if (modeKategori === "SEMUA") {
-  const listAktif = bahanMaster[modeMenu];
-  kategoriList.forEach(k => {
-    kategoriData[k].push({ nama: namaBaru, berat: beratBaru });
+  getKategoriAktif().forEach(k => {
+    kategoriData[modeMenu][k].push({ nama: namaBaru, berat: beratBaru });
   });
 } else {
-  kategoriData[modeKategori].push({ nama: namaBaru, berat: beratBaru });
+  kategoriData[modeMenu][modeKategori].push({ nama: namaBaru, berat: beratBaru });
 }
 
 tutupModal();
@@ -318,11 +317,11 @@ function tambahBahan() {
   bahanMaster[modeMenu].push({ nama, berat });
 
   if (modeKategori === "SEMUA") {
-  kategoriList.forEach(k => {
-    kategoriData[k].push({ nama, berat });
+  getKategoriAktif().forEach(k => {
+    kategoriData[modeMenu][k].push({ nama, berat });
   });
 } else {
-  kategoriData[modeKategori].push({ nama, berat });
+  kategoriData[modeMenu][modeKategori].push({ nama, berat });
 }
 
   renderList();
@@ -479,8 +478,6 @@ function generateLaporan() {
   const listAktif = bahanMaster[modeMenu];
 
   getKategoriAktif().forEach(kat => {
-
-  const listAktif = bahanMaster[modeMenu]; // ✅ TAMBAH DI SINI
 
   const isLibur = kategoriLibur[kat] || false;
 
