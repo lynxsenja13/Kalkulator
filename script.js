@@ -11,12 +11,15 @@ let pendingBerat = null;
 // =====================
 function showModal(nama) {
   pendingNama = nama;
-  document.getElementById("modalTitle").innerText = "Tambah Gizi: " + nama;
+
+  document.getElementById("modalTitle").innerText =
+    "Tambah Gizi: " + nama;
+
   document.getElementById("modalGizi").style.display = "flex";
-  
+
   setTimeout(() => {
-  document.getElementById("mEnergi").focus();
-}, 100);
+    document.getElementById("mEnergi").focus();
+  }, 100);
 }
 
 function tutupModal() {
