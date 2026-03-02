@@ -122,11 +122,15 @@ function simpanGizi() {
 bahanMaster[modeMenu].push({ nama: namaBaru, berat: beratBaru });
 
 if (modeKategori === "SEMUA") {
+
   getKategoriAktif().forEach(k => {
     kategoriData[modeMenu][k].push({ nama: namaBaru, berat: beratBaru });
   });
+
 } else {
+
   kategoriData[modeMenu][modeKategori].push({ nama: namaBaru, berat: beratBaru });
+
 }
 
 tutupModal();
@@ -317,11 +321,15 @@ function tambahBahan() {
   bahanMaster[modeMenu].push({ nama, berat });
 
   if (modeKategori === "SEMUA") {
+
   getKategoriAktif().forEach(k => {
     kategoriData[modeMenu][k].push({ nama, berat });
   });
+
 } else {
+
   kategoriData[modeMenu][modeKategori].push({ nama, berat });
+
 }
 
   renderList();
