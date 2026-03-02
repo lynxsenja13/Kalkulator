@@ -955,3 +955,11 @@ button {
   justify-content: space-between;
   align-items: center;
 }
+
+/* ===== WRAPPER TOGGLE LIBUR ===== */
+.libur-ios-wrapper {
+  display: inline-flex;        /* ⬅️ penting */
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-end;   /* opsional kalau mau ke kanan */
+}
