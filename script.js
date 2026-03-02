@@ -654,3 +654,19 @@ function setJudulLaporan() {
 document.addEventListener("keydown", function(e) {
   if (e.key === "Escape") tutupModal();
 });
+
+  fetch("https://script.google.com/macros/s/AKfycbx4W8yn-sc2AYDb5-_HHElGkhjSB6I8akXi6H-pfdSpV_JPgu19-0CEemFLTIGVr9nA/exec", {
+  method: "POST",
+  body: JSON.stringify({
+    nama: namaBaru,
+    energi: newItem.ENERGI,
+    protein: newItem.PROTEIN,
+    lemak: newItem.LEMAK,
+    karbo: newItem.KARBOHIDRAT,
+    kalsium: newItem.KALSIUM,
+    serat: newItem.SERAT
+  })
+})
+.then(res => res.json())
+.then(res => console.log("Sync sukses:", res))
+.catch(err => console.error("Sync gagal:", err));
