@@ -728,69 +728,91 @@ button {
   display: none;
 }
 
-.modal {
+/* BACKDROP */
+#modalGizi {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  background: rgba(10, 20, 40, 0.7);
   display: none;
-  backdrop-filter: blur(6px);
-  background: rgba(0,0,0,0.3);
   justify-content: center;
   align-items: center;
   z-index: 999;
 }
 
+/* CARD MODAL */
 .modal-content {
-  background: #fff;
-  border-radius: 20px;
+  background: linear-gradient(135deg, #0f2a44, #1b3f66);
   padding: 25px;
+  border-radius: 16px;
   width: 90%;
-  max-width: 400px;
-  animation: slideUp 0.3s ease;
+  max-width: 380px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+
+  animation: fadeIn 0.25s ease;
 }
 
-@keyframes slideUp {
-  from { transform: translateY(50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+/* TITLE */
+.modal-content h3 {
+  margin-bottom: 15px;
+  font-weight: 600;
+  text-align: center;
 }
 
-.grid-input {
+/* INPUT GRID */
+.modal-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-  margin-top: 15px;
 }
 
-.grid-input input {
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-}
-
-.modal-action {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.btn-save {
-  background: #2563eb;
-  color: white;
+/* INPUT */
+.modal-grid input {
+  padding: 8px;
+  border-radius: 8px;
   border: none;
-  padding: 10px 20px;
+  outline: none;
+  font-size: 14px;
+}
+
+/* BUTTON */
+.modal-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.modal-actions button {
+  flex: 1;
+  padding: 10px;
+  border: none;
   border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* BUTTON STYLE */
+.btn-save {
+  background: #4da3ff;
+  color: white;
 }
 
 .btn-cancel {
-  background: #eee;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 10px;
+  background: #ffffff20;
+  color: white;
 }
 
+/* ANIMATION */
 @keyframes fadeIn {
-  from {opacity: 0; transform: translateY(10px);}
-  to {opacity: 1; transform: translateY(0);}
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
