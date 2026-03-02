@@ -388,33 +388,33 @@ function hitungTotal(list) {
   };
 
   list.forEach(item => {
-    const db = database.find(d => {
-  const key = Object.keys(d).find(k =>
-    k.toLowerCase().replace(/\s/g, "") === "namabahan"
-  );
-  if (!key) return false;
-  return String(d[key]).toLowerCase().trim() === item.nama.toLowerCase().trim();
-});
 
-    if (!db) {
-  console.warn("Belum ada gizi:", item.nama);
-  return;
-}
+    const db = database.find(d => {
+      const key = Object.keys(d).find(k =>
+        k.toLowerCase().replace(/\s/g, "") === "namabahan"
+      );
+      if (!key) return false;
+      return String(d[key]).toLowerCase().trim() === item.nama.toLowerCase().trim();
+    });
+
+    if (!db) return;
 
     let faktor = 0;
 
-if (item.satuan === "GRAM") {
-  faktor = item.berat / 100;
-} else {
-  faktor = item.berat; // PCS langsung dikali
-}
+    if (item.satuan === "GRAM") {
+      faktor = item.berat / 100;
+    } else {
+      faktor = item.berat;
+    }
 
-total.Energi += faktor * Number(db["ENERGI"] ?? db["energi"] ?? 0);
-total.Protein += faktor * Number(db["PROTEIN"] ?? db["protein"] ?? 0);
-total.Lemak += faktor * Number(db["LEMAK"] ?? db["lemak"] ?? 0);
-total.Karbohidrat += faktor * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0);
-total.Kalsium += faktor * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0);
-total.Serat += faktor * Number(db["SERAT"] ?? db["serat"] ?? 0);
+    total.Energi += faktor * Number(db["ENERGI"] ?? db["energi"] ?? 0);
+    total.Protein += faktor * Number(db["PROTEIN"] ?? db["protein"] ?? 0);
+    total.Lemak += faktor * Number(db["LEMAK"] ?? db["lemak"] ?? 0);
+    total.Karbohidrat += faktor * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0);
+    total.Kalsium += faktor * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0);
+    total.Serat += faktor * Number(db["SERAT"] ?? db["serat"] ?? 0);
+
+  });
 
   return total;
 }
