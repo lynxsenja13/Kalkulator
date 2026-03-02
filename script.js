@@ -44,9 +44,14 @@ function tutupModal() {
   }, 200);
 }
 
-document.getElementById("modalGizi").addEventListener("click", function(e) {
-  if (e.target === this) {
-    tutupModal();
+window.addEventListener("DOMContentLoaded", function() {
+  const modal = document.getElementById("modalGizi");
+  if (modal) {
+    modal.addEventListener("click", function(e) {
+      if (e.target === this) {
+        tutupModal();
+      }
+    });
   }
 });
 
