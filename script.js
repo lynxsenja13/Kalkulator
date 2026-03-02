@@ -325,13 +325,11 @@ function tambahBahan() {
   const namaFix = nama.toLowerCase().trim();
 
   // cek database
-  let db = database.find(d => {
-  const key = Object.keys(d).find(k =>
-    k.toLowerCase().replace(/\s/g, "") === "namabahan"
-  );
-  if (!key) return false;
-  return String(d[key]).toLowerCase().trim() === namaFix;
-});
+  let db = database.find(d =>
+  String(d["nama bahan"] ?? "")
+    .toLowerCase()
+    .trim() === namaFix
+);
 
 
   // ❗ JIKA BELUM ADA → MUNCUL MODAL
@@ -389,13 +387,11 @@ function hitungTotal(list) {
 
   list.forEach(item => {
 
-    const db = database.find(d => {
-      const key = Object.keys(d).find(k =>
-        k.toLowerCase().replace(/\s/g, "") === "namabahan"
-      );
-      if (!key) return false;
-      return String(d[key]).toLowerCase().trim() === item.nama.toLowerCase().trim();
-    });
+    const db = database.find(d =>
+  String(d["nama bahan"] ?? "")
+    .toLowerCase()
+    .trim() === item.nama.toLowerCase().trim()
+);
 
     if (!db) return;
 
@@ -555,10 +551,10 @@ function generateLaporan() {
     const detailBahan = kategoriData[modeMenu][kat].map(item => {
 
   const db = database.find(d =>
-    String(d["nama bahan"] || d["NAMA BAHAN"])
-      .toLowerCase()
-      .trim() === item.nama.toLowerCase().trim()
-  );
+  String(d["nama bahan"] ?? "")
+    .toLowerCase()
+    .trim() === item.nama.toLowerCase().trim()
+);
 
   if (!db) {
     return {
@@ -596,6 +592,16 @@ function generateLaporan() {
 
 });
 
+    // ✅ TAMBAHKAN DI SINI
+const standar = AKG[kat] || {
+  Energi: 0,
+  Protein: 0,
+  Lemak: 0,
+  Karbohidrat: 0,
+  Kalsium: 0,
+  Serat: 0
+};
+
     // ✅⬅️ TAMBAHKAN DI SINI (SETELAH MAP)
     hasilDiv.innerHTML += `
   <div class="kategori-card">
@@ -614,12 +620,12 @@ function generateLaporan() {
     ${renderEditableList(kat)}
 
     ${renderTabelKategori(kat, detailBahan, {
-      energi: AKG[kat].Energi,
-      protein: AKG[kat].Protein,
-      lemak: AKG[kat].Lemak,
-      karbo: AKG[kat].Karbohidrat,
-      kalsium: AKG[kat].Kalsium,
-      serat: AKG[kat].Serat
+      energi: standar.Energi,
+      protein: standar.Protein,
+      lemak: standar.Lemak,
+      karbo: standar.Karbohidrat,
+      kalsium: standar.Kalsium,
+      serat: standar.Serat
     })}
   </div>
 `;
@@ -648,8 +654,9 @@ function renderEditableList(kat) {
     <div style="display:flex; gap:6px; margin:4px 0; align-items:center;">
       <span style="flex:1">${b.nama}</span>
 
-      <input type="number"
-        value="${b.berat}"
+      <span style="width:40px;text-align:center">
+      ${b.satuan === "GRAM" ? "g" : "pcs"}
+      </span>
         style="width:80px"
         onchange="editBerat('${kat}', ${i}, this.value)">
 
@@ -688,9 +695,7 @@ function initAutocomplete() {
     }
 
     const hasil = database
-  .map(d => {
-  return d["NAMA BAHAN"] ?? d["nama bahan"] ?? null;
-})
+  .map(d => d["nama bahan"])
   .filter(n => n && n.toLowerCase().includes(keyword))
   .slice(0, 10);
 
