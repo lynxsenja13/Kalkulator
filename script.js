@@ -318,6 +318,7 @@ function tambahBahan() {
 
   const nama = document.getElementById("namaBahan").value.trim();
   const berat = parseFloat(document.getElementById("beratBahan").value);
+  const satuan = document.getElementById("satuanBahan").value;
 
   if (!nama || !berat) return;
 
@@ -332,6 +333,7 @@ function tambahBahan() {
   return String(d[key]).toLowerCase().trim() === namaFix;
 });
 
+
   // ❗ JIKA BELUM ADA → MUNCUL MODAL
   if (!db) {
   pendingNama = namaFix;
@@ -344,18 +346,18 @@ function tambahBahan() {
   bahanMaster[modeMenu].push({ 
   nama, 
   berat,
-  satuan: "GRAM"
+  satuan
 });
 
   if (modeKategori === "SEMUA") {
 
   getKategoriAktif().forEach(k => {
-    kategoriData[modeMenu][k].push({ nama, berat });
+    kategoriData[modeMenu][k].push({ nama, berat, satuan });
   });
 
 } else {
 
-  kategoriData[modeMenu][modeKategori].push({ nama, berat });
+  kategoriData[modeMenu][modeKategori].push({ nama, berat, satuan });
 
 }
 
@@ -370,7 +372,7 @@ function renderList() {
   ul.innerHTML = "";
 
   bahanMaster[modeMenu].forEach(b => {
-    ul.innerHTML += `<li>${b.nama} - ${b.berat} g</li>`;
+    ul.innerHTML += `<li>${b.nama} - ${b.berat} ${b.satuan === "GRAM" ? "g" : "pcs"}</li>`;
   });
 }
 
@@ -399,13 +401,20 @@ function hitungTotal(list) {
   return;
 }
 
-    total.Energi += (item.berat / 100) * Number(db["ENERGI"] ?? db["energi"] ?? 0);
-    total.Protein += (item.berat / 100) * Number(db["PROTEIN"] ?? db["protein"] ?? 0);
-    total.Lemak += (item.berat / 100) * Number(db["LEMAK"] ?? db["lemak"] ?? 0);
-    total.Karbohidrat += (item.berat / 100) * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0);
-    total.Kalsium += (item.berat / 100) * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0);
-    total.Serat += (item.berat / 100) * Number(db["SERAT"] ?? db["serat"] ?? 0);
-  });
+    let faktor = 0;
+
+if (item.satuan === "GRAM") {
+  faktor = item.berat / 100;
+} else {
+  faktor = item.berat; // PCS langsung dikali
+}
+
+total.Energi += faktor * Number(db["ENERGI"] ?? db["energi"] ?? 0);
+total.Protein += faktor * Number(db["PROTEIN"] ?? db["protein"] ?? 0);
+total.Lemak += faktor * Number(db["LEMAK"] ?? db["lemak"] ?? 0);
+total.Karbohidrat += faktor * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0);
+total.Kalsium += faktor * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0);
+total.Serat += faktor * Number(db["SERAT"] ?? db["serat"] ?? 0);
 
   return total;
 }
@@ -566,14 +575,25 @@ function generateLaporan() {
       return {
         nama: item.nama,
         berat: item.berat,
-        energi: (item.berat / 100) * Number(db["ENERGI"] ?? db["energi"] ?? 0),
-        protein: (item.berat / 100) * Number(db["PROTEIN"] ?? db["protein"] ?? 0),
-        lemak: (item.berat / 100) * Number(db["LEMAK"] ?? db["lemak"] ?? 0),
-        karbo: (item.berat / 100) * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0),
-        kalsium: (item.berat / 100) * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0),
-        serat: (item.berat / 100) * Number(db["SERAT"] ?? db["serat"] ?? 0)
-      };
-    });
+       let faktor = 0;
+
+if (item.satuan === "GRAM") {
+  faktor = item.berat / 100;
+} else {
+  faktor = item.berat;
+}
+
+return {
+  nama: item.nama,
+  berat: item.berat,
+  satuan: item.satuan,
+  energi: faktor * Number(db["ENERGI"] ?? db["energi"] ?? 0),
+  protein: faktor * Number(db["PROTEIN"] ?? db["protein"] ?? 0),
+  lemak: faktor * Number(db["LEMAK"] ?? db["lemak"] ?? 0),
+  karbo: faktor * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0),
+  kalsium: faktor * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0),
+  serat: faktor * Number(db["SERAT"] ?? db["serat"] ?? 0)
+};
 
     // ✅⬅️ TAMBAHKAN DI SINI (SETELAH MAP)
     hasilDiv.innerHTML += `
