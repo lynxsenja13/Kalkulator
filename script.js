@@ -242,11 +242,13 @@ function tambahBahan() {
   const namaFix = nama.toLowerCase().trim();
 
   // cek database
-  let db = database.find(d =>
-    String(d["nama bahan"] || d["NAMA BAHAN"])
-      .toLowerCase()
-      .trim() === namaFix
+  let db = database.find(d => {
+  const key = Object.keys(d).find(k =>
+    k.toLowerCase().replace(/\s/g, "") === "namabahan"
   );
+  if (!key) return false;
+  return String(d[key]).toLowerCase().trim() === namaFix;
+});
 
   // ❗ JIKA BELUM ADA → MUNCUL MODAL
   if (!db) {
@@ -294,11 +296,13 @@ function hitungTotal(list) {
   };
 
   list.forEach(item => {
-    const db = database.find(d =>
-  String(d["nama bahan"] || d["NAMA BAHAN"])
-    .toLowerCase()
-    .trim() === item.nama.toLowerCase().trim()
-);
+    const db = database.find(d => {
+  const key = Object.keys(d).find(k =>
+    k.toLowerCase().replace(/\s/g, "") === "namabahan"
+  );
+  if (!key) return false;
+  return String(d[key]).toLowerCase().trim() === item.nama.toLowerCase().trim();
+});
 
     if (!db) {
   console.warn("Belum ada gizi:", item.nama);
@@ -566,9 +570,14 @@ function initAutocomplete() {
     }
 
     const hasil = database
-      .map(d => d["nama bahan"] || d["NAMA BAHAN"])
-      .filter(n => n && n.toLowerCase().includes(keyword))
-      .slice(0, 10);
+  .map(d => {
+    const key = Object.keys(d).find(k =>
+      k.toLowerCase().replace(/\s/g, "") === "namabahan"
+    );
+    return key ? d[key] : null;
+  })
+  .filter(n => n && n.toLowerCase().includes(keyword))
+  .slice(0, 10);
 
     hasil.forEach(nama => {
       const div = document.createElement("div");
