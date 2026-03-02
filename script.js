@@ -776,6 +776,9 @@ function exportPDF() {
   const tanggal = getTanggalLengkap();
   document.getElementById("tanggalLaporan").innerText = tanggal;
 
+  document.getElementById("jenisMenuLaporan").innerText =
+  "Menu : " + (modeMenu === "OMPRENGAN" ? "OMPRENGAN" : "SNACK");
+
   const element = document.getElementById("laporanPDF");
   element.style.display = "block";
 
