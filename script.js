@@ -446,7 +446,10 @@ function generateLaporan() {
   const listAktif = bahanMaster[modeMenu];
 
   kategoriList.forEach(kat => {
-    const isLibur = kategoriLibur[kat] || false;
+
+  const listAktif = bahanMaster[modeMenu]; // ✅ TAMBAH DI SINI
+
+  const isLibur = kategoriLibur[kat] || false;
 
     // ================= LIBUR =================
     if (isLibur) {
