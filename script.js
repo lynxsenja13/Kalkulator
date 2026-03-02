@@ -1,4 +1,9 @@
-let bahanMaster = [];
+let bahanMaster = {
+  OMPRENGAN: [],
+  SNACK: []
+};
+
+let modeMenu = "OMPRENGAN";
 let kategoriLibur = {};
 let kategoriData = {};
 let database = [];
