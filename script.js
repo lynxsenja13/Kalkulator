@@ -443,6 +443,8 @@ function generateLaporan() {
   const hasilDiv = document.getElementById("hasil");
   hasilDiv.innerHTML = "";
 
+  const listAktif = bahanMaster[modeMenu];
+
   kategoriList.forEach(kat => {
     const isLibur = kategoriLibur[kat] || false;
 
