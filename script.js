@@ -44,12 +44,12 @@ function simpanGizi() {
   btn.disabled = true;
   const newItem = {
   "nama bahan": pendingNama.toLowerCase().trim(),
-  "ENERGI": Number(mEnergi.value) || 0,
-  "PROTEIN": Number(mProtein.value) || 0,
-  "LEMAK": Number(mLemak.value) || 0,
-  "KARBOHIDRAT": Number(mKarbo.value) || 0,
-  "KALSIUM": Number(mKalsium.value) || 0,
-  "SERAT": Number(mSerat.value) || 0
+  ENERGI: Number(document.getElementById("mEnergi").value) || 0,
+  PROTEIN: Number(document.getElementById("mProtein").value) || 0,
+  LEMAK: Number(document.getElementById("mLemak").value) || 0,
+  KARBOHIDRAT: Number(document.getElementById("mKarbo").value) || 0,
+  KALSIUM: Number(document.getElementById("mKalsium").value) || 0,
+  SERAT: Number(document.getElementById("mSerat").value) || 0
 };
 
   const namaBaru = pendingNama;
