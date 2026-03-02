@@ -4,6 +4,31 @@ let kategoriData = {};
 let database = [];
 let databaseLoaded = false;
 
+// =====================
+// MODAL FUNCTION
+// =====================
+function showModal(nama) {
+  pendingNama = nama;
+  document.getElementById("modalGizi").style.display = "flex";
+}
+
+function simpanGizi() {
+  const newItem = {
+    "nama bahan": pendingNama,
+    "ENERGI": Number(document.getElementById("mEnergi").value),
+    "PROTEIN": Number(document.getElementById("mProtein").value),
+    "LEMAK": Number(document.getElementById("mLemak").value),
+    "KARBOHIDRAT": Number(document.getElementById("mKarbo").value),
+    "KALSIUM": Number(document.getElementById("mKalsium").value),
+    "SERAT": Number(document.getElementById("mSerat").value)
+  };
+
+  database.push(newItem);
+  saveCache();
+
+  document.getElementById("modalGizi").style.display = "none";
+}
+
 // ================= TOGGLE LIBUR =================
 function toggleLibur(kat, checked) {
   kategoriLibur[kat] = checked;
