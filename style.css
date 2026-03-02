@@ -797,19 +797,21 @@ button {
 }
 
 .btn-save {
-  background: #4da3ff;
+  background: #4CAF50; /* hijau */
+  color: black;
 }
 
 .btn-save:hover {
-  background: #2b7cff;
+  background: #43a047;
 }
 
 .btn-cancel {
-  background: #ffffff20;
+  background: #ff4d4d; /* merah */
+  color: black;
 }
 
 .btn-cancel:hover {
-  background: #ffffff35;
+  background: #e53935;
 }
 
 @keyframes slideUp {
