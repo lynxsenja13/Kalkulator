@@ -1128,3 +1128,14 @@ function bukaModalLibur() {
 function tutupModalLibur() {
   document.getElementById("modalLibur").style.display = "none";
 }
+
+function setSubTab(tab) {
+  document.getElementById("btnLapHarian").classList.remove("active-subtab");
+  document.getElementById("btnLapGizi").classList.remove("active-subtab");
+
+  if (tab === "harian") {
+    document.getElementById("btnLapHarian").classList.add("active-subtab");
+  } else {
+    document.getElementById("btnLapGizi").classList.add("active-subtab");
+  }
+}
