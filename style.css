@@ -1254,3 +1254,7 @@ button {
   cursor: pointer;
   font-size: 13px;
 }
+
+.card-create-laporan {
+  overflow: hidden; /* 🔥 mencegah bocor */
+}
