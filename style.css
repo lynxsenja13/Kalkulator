@@ -1166,3 +1166,52 @@ button {
 .btn-copy-wa:active {
   transform: scale(0.97);
 }
+
+/* ================= CARD HASIL ================= */
+.card-hasil {
+  width: 100%;
+  max-width: 900px;
+  margin: 18px auto;
+  padding: 18px;
+  border-radius: 20px;
+  background: linear-gradient(180deg, #0f172a, #111827);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* header */
+.card-hasil-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.card-hasil-header h3 {
+  color: #e5e7eb;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+/* textarea */
+#captionOutput {
+  width: 100%;
+  min-height: 320px; /* 🔥 tidak kepotong */
+  resize: vertical;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #020617;
+  color: #e5e7eb;
+  padding: 14px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  box-sizing: border-box;
+}
+
+/* focus effect */
+#captionOutput:focus {
+  outline: none;
+  border-color: #22c55e;
+  box-shadow: 0 0 0 2px rgba(34,197,94,0.25);
+}
