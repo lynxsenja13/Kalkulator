@@ -1673,3 +1673,27 @@ function tambahMenuBaris() {
 function editMenuHarian(index, value) {
   menuHarian[index] = value;
 }
+
+let isDataChanged = false;
+
+// tandai kalau ada perubahan
+document.addEventListener("input", () => {
+  isDataChanged = true;
+});
+
+// sebelum reload / close
+window.addEventListener("beforeunload", function (e) {
+  if (!isDataChanged) return;
+
+  e.preventDefault();
+  e.returnValue = ''; // wajib untuk trigger popup
+});
+
+function konfirmasiAksi(pesan, callback) {
+  const yakin = confirm(pesan);
+  if (yakin) callback();
+}
+
+konfirmasiAksi("Data akan hilang, lanjut?", () => {
+  location.reload();
+});
