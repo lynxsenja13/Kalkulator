@@ -46,13 +46,6 @@ body {
   margin-top: 0;
 }
 
-.input-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr auto;
-  gap: 10px;
-  align-items: stretch;
-}
-
 .autocomplete,
 #beratBahan {
   width: 100%;
@@ -147,7 +140,8 @@ textarea {
 /* ===== BUTTON ===== */
 button {
   border: none;
-  padding: 10px 16px;
+  min-height: 44px;
+  font-size: 14px;
   border-radius: 10px;
   font-weight: 600;
   cursor: pointer;
@@ -253,10 +247,68 @@ button {
 }
 
 /* ===== MOBILE ===== */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
+
+  .app {
+    padding: 12px;
+  }
+
+  .card {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  /* input full */
   .input-row {
     flex-direction: column;
   }
+
+  input, textarea {
+    width: 100%;
+    font-size: 14px;
+  }
+
+  /* tombol full */
+  .action-row {
+    flex-direction: column;
+  }
+
+  .action-row button {
+    width: 100%;
+  }
+
+  /* tombol grid jadi 1 kolom */
+  .btn-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* tab biar enak */
+  .tab-row {
+    flex-direction: column;
+  }
+
+  /* header */
+  .logo {
+    height: 70px;
+  }
+
+  /* tabel biar gak overflow */
+  .tabel-gizi {
+    font-size: 12px;
+  }
+
+  /* modal */
+  .modal-content {
+    width: 95%;
+    padding: 16px;
+  }
+
+  /* caption */
+  #captionOutput {
+    min-height: 220px;
+    font-size: 13px;
+  }
+
 }
 
 .tabel-gizi {
@@ -858,7 +910,8 @@ button {
 
 .input-jumlah,
 .input-satuan {
-  width: 120px;
+  width: 100%;
+  max-width: 120px;
   padding: 10px;
   border-radius: 12px;
   border: 1px solid #374151;
@@ -988,9 +1041,8 @@ button {
 }
 
 .card {
-  max-width: 1100px;
-  margin: 20px auto;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .app {
