@@ -1674,6 +1674,8 @@ function editMenuHarian(index, value) {
   menuHarian[index] = value;
 }
 
+// ❌ HAPUS semua beforeunload lama dulu
+
 let isDataChanged = false;
 
 // tandai perubahan
@@ -1681,11 +1683,12 @@ document.addEventListener("input", () => {
   isDataChanged = true;
 });
 
-// sebelum keluar
+// ✅ pakai ini saja (JANGAN addEventListener)
+window.onbeforeunload = null; // reset semua
+
 window.onbeforeunload = function () {
   if (!isDataChanged) return;
-
-  return "Data akan hilang, yakin mau keluar?";
+  return "Data akan hilang!";
 };
 
 function konfirmasiAksi(pesan, callback) {
