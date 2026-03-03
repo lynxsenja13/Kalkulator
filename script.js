@@ -857,9 +857,7 @@ document.addEventListener("keydown", function(e) {
 
 window.onload = function () {
   if (!loadCache()) {
-    loadDatabase(); // ambil dari spreadsheet kalau cache kosong
-  } else {
-    loadDatabase(); // tetap refresh background 🔥
+    loadDatabase(); // hanya kalau tidak ada cache
   }
 };
 
@@ -1683,13 +1681,17 @@ document.addEventListener("input", () => {
   isDataChanged = true;
 });
 
-// ✅ pakai ini saja (JANGAN addEventListener)
-window.onbeforeunload = null; // reset semua
+// RESET semua handler lama (penting!)
+window.onbeforeunload = null;
 
 window.onbeforeunload = function () {
   if (!isDataChanged) return;
   return "Data akan hilang!";
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  isDataChanged = false;
+});
 
 function konfirmasiAksi(pesan, callback) {
   const yakin = confirm(pesan);
