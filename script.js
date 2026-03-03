@@ -774,50 +774,6 @@ function initAutocomplete() {
   });
 }
 
-// ================= TABEL GIZI =================
-function renderTabelGizi(total, kategori) {
-  const nutrienList = [
-    "Energi",
-    "Protein",
-    "Lemak",
-    "Karbohidrat",
-    "Kalsium",
-    "Serat"
-  ];
-
-  const rows = nutrienList.map(nutrien => {
-    const nilai = total[nutrien] || 0;
-    const target = AKG[kategori][nutrien] || 1;
-    const persen = (nilai / target) * 100;
-    const statusClass = persen >= 100 ? "status-ok" : "status-low";
-
-    return `
-      <tr>
-        <td>${nutrien}</td>
-        <td>${nilai.toFixed(1)}</td>
-        <td class="${statusClass}">
-          ${persen.toFixed(1)}%
-        </td>
-      </tr>
-    `;
-  }).join("");
-
-  return `
-    <table class="table-gizi">
-      <thead>
-        <tr>
-          <th>Nutrien</th>
-          <th>Jumlah</th>
-          <th>% AKG</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows}
-      </tbody>
-    </table>
-  `;
-}
-
 function formatTanggalFile() {
   const bulan = [
     "Januari","Februari","Maret","April","Mei","Juni",
