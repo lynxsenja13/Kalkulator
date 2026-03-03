@@ -1101,3 +1101,22 @@ function copyCaptionWA() {
   navigator.clipboard.writeText(text);
   alert("Caption berhasil disalin 👍");
 }
+
+function tambahMenuBaris() {
+  menuHarian.push("");
+
+  const container = document.getElementById("menuContainer");
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.className = "input-menu";
+  input.placeholder = `Nama menu ${menuHarian.length}`;
+
+  input.oninput = (e) => {
+    menuHarian[menuHarian.length - 1] = e.target.value;
+  };
+
+  // masukkan sebelum tombol
+  const btn = container.querySelector(".btn-secondary");
+  container.insertBefore(input, btn);
+}
