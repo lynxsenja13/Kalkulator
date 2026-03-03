@@ -1091,13 +1091,13 @@ function prosesLaporanHarian() {
 
   const jumlahMakan = totalPenerima;
 
-  buatCaptionHarian(data, totalPenerima, jumlahMakan);
+  generateCaptionHarian();
 
   tutupModalLibur();
 }
 
 function copyCaptionWA() {
-  const text = document.getElementById("hasilCaption").innerText;
+  const text = document.getElementById("captionOutput").value;
   navigator.clipboard.writeText(text);
   alert("Caption berhasil disalin 👍");
 }
@@ -1119,25 +1119,6 @@ function tambahMenuBaris() {
   // masukkan sebelum tombol
   const btn = container.querySelector(".btn-secondary");
   container.insertBefore(input, btn);
-}
-
-function bukaModalLibur() {
-  document.getElementById("modalLibur").style.display = "flex";
-}
-
-function tutupModalLibur() {
-  document.getElementById("modalLibur").style.display = "none";
-}
-
-function setSubTab(tab) {
-  document.getElementById("btnLapHarian").classList.remove("active-subtab");
-  document.getElementById("btnLapGizi").classList.remove("active-subtab");
-
-  if (tab === "harian") {
-    document.getElementById("btnLapHarian").classList.add("active-subtab");
-  } else {
-    document.getElementById("btnLapGizi").classList.add("active-subtab");
-  }
 }
 
 function prosesLaporan() {
