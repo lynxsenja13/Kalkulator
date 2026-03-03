@@ -1554,7 +1554,7 @@ function generateCaptionOmprengan() {
   });
 
   // libur dari sistemmu
-  const libur = window.kategoriLibur || {};
+  const kategoriLibur = window.kategoriLibur || {};
   
   const libur = {
   balita: kategoriLibur["Balita"] || false,
