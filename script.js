@@ -1732,3 +1732,160 @@ function kirimKeSpreadsheet() {
     alert("Gagal kirim!");
   });
 }
+
+function kirimLaporan(data) {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const namaSheet = data.tanggal;
+
+  let sheet = ss.getSheetByName(namaSheet);
+  if (!sheet) sheet = ss.insertSheet(namaSheet);
+
+  sheet.clear();
+
+  // =======================
+  // 🟦 JUDUL
+  // =======================
+  sheet.getRange("A1").setValue("LAPORAN MAKAN BERGIZI GRATIS");
+  sheet.getRange("A2").setValue("Tanggal: " + data.tanggal);
+
+  sheet.getRange("A1").setFontSize(14).setFontWeight("bold");
+  sheet.getRange("A2").setFontSize(11);
+
+  // =======================
+  // 🍽️ MENU
+  // =======================
+  let row = 4;
+
+  sheet.getRange(row, 1).setValue("MENU HARI INI");
+  sheet.getRange(row, 1).setFontWeight("bold");
+
+  row++;
+
+  data.menu.forEach((m, i) => {
+    sheet.getRange(row, 1).setValue(`Menu ${i + 1}`);
+    sheet.getRange(row, 2).setValue(m);
+    row++;
+  });
+
+  row += 1;
+
+  // =======================
+  // 🧪 HEADER
+  // =======================
+  const header = [
+    "Kategori",
+    "Energi",
+    "Protein",
+    "Lemak",
+    "Karbo",
+    "Serat"
+  ];
+
+  sheet.getRange(row, 1, 1, header.length).setValues([header]);
+
+  sheet.getRange(row, 1, 1, header.length)
+    .setFontWeight("bold")
+    .setBackground("#2b7cff")
+    .setFontColor("#ffffff")
+    .setHorizontalAlignment("center");
+
+  row++;
+
+  // =======================
+  // 🎨 WARNA PER KATEGORI
+  // =======================
+  const warnaKategori = {
+    BALITA: "#d1fae5",
+    "BUMIL & BUSUI": "#fef3c7",
+    "SD 1-3": "#dbeafe",
+    "SD 4-6": "#e9d5ff",
+    SMP: "#fee2e2",
+    SMA: "#fce7f3"
+  };
+
+  // =======================
+  // 🧪 DATA + TOTAL
+  // =======================
+  let total = {
+    energi: 0,
+    protein: 0,
+    lemak: 0,
+    karbo: 0,
+    serat: 0
+  };
+
+  const dataRows = [];
+
+  Object.keys(data.gizi).forEach(k => {
+    const g = data.gizi[k];
+
+    total.energi += g.energi;
+    total.protein += g.protein;
+    total.lemak += g.lemak;
+    total.karbo += g.karbo;
+    total.serat += g.serat;
+
+    dataRows.push([
+      k.toUpperCase(),
+      g.energi,
+      g.protein,
+      g.lemak,
+      g.karbo,
+      g.serat
+    ]);
+  });
+
+  // isi data
+  sheet.getRange(row, 1, dataRows.length, header.length)
+    .setValues(dataRows);
+
+  // =======================
+  // 🎨 APPLY WARNA BARIS
+  // =======================
+  dataRows.forEach((r, i) => {
+    const kat = r[0];
+    const warna = warnaKategori[kat] || "#ffffff";
+
+    sheet.getRange(row + i, 1, 1, header.length)
+      .setBackground(warna);
+  });
+
+  row += dataRows.length;
+
+  // =======================
+  // 🔥 TOTAL ROW
+  // =======================
+  sheet.getRange(row, 1).setValue("TOTAL");
+
+  sheet.getRange(row, 2).setValue(total.energi);
+  sheet.getRange(row, 3).setValue(total.protein);
+  sheet.getRange(row, 4).setValue(total.lemak);
+  sheet.getRange(row, 5).setValue(total.karbo);
+  sheet.getRange(row, 6).setValue(total.serat);
+
+  sheet.getRange(row, 1, 1, header.length)
+    .setFontWeight("bold")
+    .setBackground("#111827")
+    .setFontColor("#ffffff");
+
+  // =======================
+  // 📏 FORMAT ANGKA
+  // =======================
+  sheet.getRange(6, 2, row, 5)
+    .setNumberFormat("0.00");
+
+  // =======================
+  // 📦 BORDER
+  // =======================
+  sheet.getRange(5, 1, row - 4, header.length)
+    .setBorder(true, true, true, true, true, true);
+
+  // =======================
+  // 📏 AUTO WIDTH
+  // =======================
+  sheet.autoResizeColumns(1, 6);
+
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: "ok" }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
