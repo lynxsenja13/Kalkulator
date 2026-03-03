@@ -1675,22 +1675,18 @@ function editMenuHarian(index, value) {
 }
 
 let isDataChanged = false;
-let isReloading = false;
 
 // tandai perubahan
 document.addEventListener("input", () => {
   isDataChanged = true;
 });
 
-// handle sebelum keluar
-window.addEventListener("beforeunload", function (e) {
-  if (!isDataChanged || isReloading) return;
+// sebelum keluar
+window.onbeforeunload = function () {
+  if (!isDataChanged) return;
 
-  isReloading = true; // 🔥 penting!
-  
-  e.preventDefault();
-  e.returnValue = '';
-});
+  return "Data akan hilang, yakin mau keluar?";
+};
 
 function konfirmasiAksi(pesan, callback) {
   const yakin = confirm(pesan);
