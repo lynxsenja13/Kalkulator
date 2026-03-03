@@ -912,7 +912,17 @@ function hitungPenerimaFinal() {
 }
 
 function generateCaptionHarian() {
-  const { data, total } = hitungPenerimaFinal();
+  const { data } = hitungPenerimaFinal();
+
+// 🔥 TOTAL KHUSUS POIN D (HANYA D3–D6)
+const totalD =
+  (data["SD YAS"] || 0) +
+  (data["SMP YAS"] || 0) +
+  (data["SMA YAS"] || 0) +
+  (data["SDN Awi Gombong"] || 0);
+
+// 🔥 TOTAL MAKAN (SEMUA)
+const totalSemua = Object.values(data).reduce((a,b)=>a+b,0);
   const tanggal = formatTanggalIndonesia();
 
   const menuList = menuHarian
@@ -935,7 +945,7 @@ C. Personel :
 3. Akuntan/No tlp : Febrianto/082121312500
 4. Jml Karyawan : 44
 
-D. Jumlah penerima sebanyak ${total} orang.
+D. Jumlah penerima sebanyak ${totalD} orang.
 1. BALITA = ${data["BALITA"]}
 2. BUMIL & BUSUI = ${data["BUMIL & BUSUI"]}
 3. SD YAS = ${data["SD YAS"]}
@@ -948,7 +958,7 @@ D. Jumlah penerima sebanyak ${total} orang.
 10. Guru & Tendik SD Awi Gombong = ${data["Guru & Tendik SD Awi Gombong"]}
 11. PIC POSYANDU = ${data["PIC POSYANDU"]}
 
-Jumlah makan : ${total} porsi.
+Jumlah makan : ${totalSemua} porsi.
 
 E. Menu Makan hari ini ${tanggal}
 ${menuList}
@@ -1081,12 +1091,6 @@ function prosesLaporanHarian() {
     guru_awig: document.getElementById("libur_awig").checked ? 0 : 62,
     pic: document.getElementById("libur_balita").checked ? 0 : 5,
   };
-
-  const jumlahPenerima =
-  (Number(d3) || 0) +
-  (Number(d4) || 0) +
-  (Number(d5) || 0) +
-  (Number(d6) || 0);
 
   const totalPenerima =
     data.balita +
