@@ -1337,34 +1337,47 @@ function tutupModalLibur() {
 
 // ================= PROSES LAPORAN HARIAN =================
 function prosesLaporanHarian() {
-
-  // ambil status libur dari toggle
-  liburLaporan = {
-    "Balita": document.getElementById("libur_balita")?.checked || false,
-    "Bumil & Busui": document.getElementById("libur_bumil")?.checked || false,
-    "SD YAS": document.getElementById("libur_sdyas")?.checked || false,
-    "SMP YAS": document.getElementById("libur_smpyas")?.checked || false,
-    "SMA YAS": document.getElementById("libur_smayas")?.checked || false,
-    "SD Awi Gombong": document.getElementById("libur_awig")?.checked || false
-  };
-
-  // ambil menu harian dari input
-  const inputs = document.querySelectorAll(".input-menu");
-  menuHarian = [];
-
-  inputs.forEach(inp => {
-    menuHarian.push(inp.value.trim());
-  });
-
-  // tutup modal
   tutupModalLibur();
 
-  // 🔥 generate caption otomatis
-  generateCaptionHarian();
+  // ✅ cek subtab aktif
+  if (subTabAktif === "gizi") {
+    generateLaporanGizi();
+  } else {
+    generateCaptionHarian();
+  }
 
-  // optional: scroll ke hasil
-  document.getElementById("cardCreateLaporan")
-    ?.scrollIntoView({ behavior: "smooth" });
+  const data = {
+    balita: document.getElementById("libur_balita").checked ? 0 : 211,
+    bumil: document.getElementById("libur_bumil").checked ? 0 : 125,
+    sdyas: document.getElementById("libur_sdyas").checked ? 0 : 186,
+    smpyas: document.getElementById("libur_smpyas").checked ? 0 : 630,
+    smayas: document.getElementById("libur_smayas").checked ? 0 : 534,
+    awig: document.getElementById("libur_awig").checked ? 0 : 1015,
+    guru_sd: document.getElementById("libur_sdyas").checked ? 0 : 17,
+    guru_smp: document.getElementById("libur_smpyas").checked ? 0 : 35,
+    guru_sma: document.getElementById("libur_smayas").checked ? 0 : 37,
+    guru_awig: document.getElementById("libur_awig").checked ? 0 : 62,
+    pic: document.getElementById("libur_balita").checked ? 0 : 5,
+  };
+
+  const totalPenerima =
+    data.balita +
+    data.bumil +
+    data.sdyas +
+    data.smpyas +
+    data.smayas +
+    data.awig +
+    data.guru_sd +
+    data.guru_smp +
+    data.guru_sma +
+    data.guru_awig +
+    data.pic;
+
+  const jumlahMakan = totalPenerima;
+
+  // 🔥 kalau nanti mau dipakai, simpan global
+  window.totalPenerima = totalPenerima;
+  window.jumlahMakan = jumlahMakan;
 }
 
 function autoResizeTextarea(el) {
