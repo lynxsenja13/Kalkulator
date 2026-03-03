@@ -1106,11 +1106,12 @@ function tutupModalLibur() {
 function prosesLaporanHarian() {
   tutupModalLibur();
 
-  if (currentSubTab === "gizi") {
+  if (subTabAktif === "gizi") {
     generateLaporanGizi();
   } else {
-    generateCaptionHarian(); // yang lama
+    generateCaptionHarian();
   }
+}
 
   const data = {
     balita: document.getElementById("libur_balita").checked ? 0 : 211,
