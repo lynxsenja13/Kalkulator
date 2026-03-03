@@ -1139,3 +1139,137 @@ function setSubTab(tab) {
     document.getElementById("btnLapGizi").classList.add("active-subtab");
   }
 }
+
+function prosesLaporan() {
+  // =========================
+  // AMBIL STATUS LIBUR
+  // =========================
+  const liburBalita = document.getElementById("liburBalita").checked;
+  const liburSDAwi = document.getElementById("liburSDAwi").checked;
+  const liburSDYas = document.getElementById("liburSDYas").checked;
+  const liburSMPYas = document.getElementById("liburSMPYas").checked;
+  const liburSMAYas = document.getElementById("liburSMAYas").checked;
+
+  // =========================
+  // ANGKA DEFAULT (UBAH JIKA PERLU)
+  // =========================
+  let D1 = liburBalita ? 0 : 211;
+  let D2 = liburBalita ? 0 : 125;
+  let D3 = liburSDYas ? 0 : 186;
+  let D4 = liburSMPYas ? 0 : 630;
+  let D5 = liburSMAYas ? 0 : 534;
+  let D6 = liburSDAwi ? 0 : 1015;
+
+  let D7 = liburSDYas ? 0 : 17;
+  let D8 = liburSMPYas ? 0 : 35;
+  let D9 = liburSMAYas ? 0 : 37;
+  let D10 = liburSDAwi ? 0 : 62;
+  let D11 = liburBalita ? 0 : 5;
+
+  // =========================
+  // TOTAL PENERIMA (POIN D)
+  // =========================
+  const totalPenerima =
+    D1 + D2 + D3 + D4 + D5 + D6 + D7 + D8 + D9 + D10 + D11;
+
+  const jumlahMakan = totalPenerima;
+
+  // =========================
+  // AMBIL MENU
+  // =========================
+  const menuList = ambilDaftarMenu();
+
+  // =========================
+  // FORMAT TANGGAL
+  // =========================
+  const today = new Date();
+  const tanggalStr = today.toLocaleDateString("id-ID", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  });
+
+  // =========================
+  // BUAT TEKS LAPORAN
+  // =========================
+  const laporanText = `
+Yth. Dandim 0618/Kota Bandung
+Cc. Pasiter Kodim 0618/Kota Bandung
+
+Selamat Pagi Komandan,
+Izin melaporkan, pada hari ${tanggalStr} telah dilaksanakan kegiatan Pembagian Makan Bergizi Gratis operasional Unit SPPG Khusus/Hybrid.
+
+A. SPPG : Yayasan Pangan Mandiri Barokah Dapur Cicadas 01
+B. Lokasi : Jalan Brigjen Katamso RT. 10 RW. 13 Kel. Cicadas Kec. Cibeunying Kidul Kota Bandung.
+C. Personel :
+1. Kepala SPPG/No tlp : Tata Dhea Wimala/087892330960
+2. Ahli Gizi/No tlp : Aliyah Khairunnisa Syafitri/089664825252
+3. Akuntan/No tlp : Febrianto/082121312500
+4. Jml Karyawan : 44
+
+D. Jumlah penerima sebanyak ${totalPenerima} orang.
+1. BALITA = ${D1}
+2. BUMIL & BUSUI = ${D2}
+3. SD YAS = ${D3}
+4. SMP YAS = ${D4}
+5. SMA YAS = ${D5}
+6. SDN Awi Gombong = ${D6}
+7. Guru & Tendik SD YAS = ${D7}
+8. Guru & Tendik SMP YAS = ${D8}
+9. Guru & Tendik SMA YAS = ${D9}
+10. Guru & Tendik SD Awi Gombong = ${D10}
+11. PIC POSYANDU = ${D11}
+
+Jumlah makan : ${jumlahMakan} porsi.
+
+E. Menu Makan hari ini ${tanggalStr}
+${menuList}
+
+Demikian kami laporkan.
+Dokumentasi terlampir.
+`.trim();
+
+  // tampilkan ke box
+  document.getElementById("hasilLaporan").value = laporanText;
+
+  // simpan global untuk copy WA
+  window.lastLaporanText = laporanText;
+
+  // tutup modal
+  tutupModalLibur();
+}
+
+function ambilDaftarMenu() {
+  const items = document.querySelectorAll(".menu-item-input");
+  let teks = "";
+
+  items.forEach((el, i) => {
+    if (el.value.trim()) {
+      teks += `${i + 1}. ${el.value.trim()}\n`;
+    }
+  });
+
+  return teks || "-";
+}
+
+function copyLaporanWA() {
+  if (!window.lastLaporanText) {
+    alert("Generate laporan dulu");
+    return;
+  }
+
+  navigator.clipboard.writeText(window.lastLaporanText);
+  alert("Berhasil disalin untuk WhatsApp ✅");
+}
+
+function tambahMenuInput() {
+  const container = document.getElementById("menuContainer");
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "Nama menu";
+  input.className = "menu-item-input";
+
+  container.appendChild(input);
+}
