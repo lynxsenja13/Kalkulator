@@ -158,60 +158,13 @@
 </div>
 
   <div class="card dark">
-  <h2>📝 Caption Laporan Harian</h2>
-
-  <div id="menuHarianWrap"></div>
-
-  <button class="btn-primary" onclick="tambahMenuHarian()">
-    ➕ Tambah Menu
-  </button>
-
-  <hr style="margin:14px 0; opacity:.3">
-
-  <h3>Libur</h3>
-
-  <label class="switch-ios">
-    Balita
-    <input type="checkbox" onchange="toggleLiburLaporan('Balita', this.checked)">
-    <span class="slider-ios"></span>
-  </label>
-
-  <label class="switch-ios">
-    SD YAS
-    <input type="checkbox" onchange="toggleLiburLaporan('SD YAS', this.checked)">
-    <span class="slider-ios"></span>
-  </label>
-
-  <br><br>
-
-  <button class="btn-success" onclick="generateCaptionHarian()">
-    🚀 Generate Caption
-  </button>
-
-  <textarea id="captionOutput" placeholder="Caption muncul di sini..."></textarea>
-</div>
-
-  <div class="container-main">
-
-  <!-- Input Menu -->
-  <div class="card">...</div>
-
-  <!-- Kandungan Gizi -->
-  <div class="card">...</div>
-
-  <!-- Caption -->
-  <div class="card">...</div>
-
-</div>
-
-  <div class="card">
-  <h3>Laporan & Caption</h3>
+  <h2>📊 Laporan & Caption</h2>
 
   <div class="btn-grid">
 
     <button class="btn-primary"
       onclick="generateReport('laporan','omprengan')">
-      📊 Laporan Harian
+      📊 Laporan Omprengan
     </button>
 
     <button class="btn-primary"
@@ -221,7 +174,7 @@
 
     <button class="btn-secondary"
       onclick="generateReport('caption','omprengan')">
-      📝 Caption
+      📝 Caption Omprengan
     </button>
 
     <button class="btn-secondary"
@@ -231,7 +184,6 @@
 
   </div>
 </div>
-
 <script src="config.js"></script>
 <script src="script.js"></script>
 
