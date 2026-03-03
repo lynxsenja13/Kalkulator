@@ -993,3 +993,31 @@ function renderMenuHarian() {
 window.addEventListener("DOMContentLoaded", () => {
   renderMenuHarian();
 });
+
+function generateReport(jenis, kategori) {
+  // simpan state
+  window.generateJenis = jenis;
+  window.generateKategori = kategori;
+
+  // buka popup libur dulu
+  document.getElementById("modalLibur").style.display = "flex";
+}
+
+function prosesGenerate() {
+  const libur = {
+    balita: document.getElementById("liburBalita").checked,
+    bumil: document.getElementById("liburBumil").checked,
+    sd: document.getElementById("liburSD").checked,
+    smp: document.getElementById("liburSMP").checked,
+    sma: document.getElementById("liburSMA").checked,
+  };
+
+  document.getElementById("modalLibur").style.display = "none";
+
+  // 🔥 engine utama
+  buatLaporan(
+    window.generateJenis,
+    window.generateKategori,
+    libur
+  );
+}
