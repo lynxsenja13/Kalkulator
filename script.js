@@ -1716,12 +1716,12 @@ function kirimKeSpreadsheet() {
   };
 
   fetch(API_URL2, {
-    method: "POST",
-    body: JSON.stringify({
-      action: "kirimLaporan",
-      data: data
-    })
-  })
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(data)
+})
   .then(res => res.json())
   .then(res => {
     alert("Berhasil kirim ke spreadsheet!");
@@ -1891,28 +1891,28 @@ function kirimLaporan(data) {
 }
 
 function kirimLaporanKeSpreadsheet() {
-  if (!window.hasilGiziPerKategori) {
-    alert("Generate laporan dulu!");
-    return;
-  }
-
   const data = {
-    tanggal: getTanggalLengkap(), // nama sheet
+    tanggal: getTanggalLengkap(),
     menu: menuHarian.filter(m => m.trim()),
     gizi: window.hasilGiziPerKategori
   };
 
+  console.log("DATA DIKIRIM:", data); // 🔥 DEBUG
+
   fetch(API_URL2, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
     body: JSON.stringify(data)
   })
   .then(res => res.text())
   .then(res => {
-    console.log("Sukses kirim:", res);
-    alert("✅ Laporan berhasil dikirim ke spreadsheet!");
+    console.log("RESP:", res);
+    alert("Berhasil kirim");
   })
   .catch(err => {
     console.error(err);
-    alert("❌ Gagal kirim laporan");
+    alert("Gagal kirim");
   });
 }
