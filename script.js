@@ -958,6 +958,12 @@ Dokumentasi terlampir.
 `;
 
   document.getElementById("captionOutput").value = caption.trim();
+
+  const output = document.getElementById("captionOutput");
+  if (output) {
+    output.value = caption.trim();
+    autoResizeTextarea(output);
+  }
 }
 
 function toggleLiburLaporan(nama, checked) {
@@ -1298,4 +1304,10 @@ function prosesLaporanHarian() {
   // optional: scroll ke hasil
   document.getElementById("cardCreateLaporan")
     ?.scrollIntoView({ behavior: "smooth" });
+}
+
+function autoResizeTextarea(el) {
+  if (!el) return;
+  el.style.height = "auto";
+  el.style.height = (el.scrollHeight) + "px";
 }
