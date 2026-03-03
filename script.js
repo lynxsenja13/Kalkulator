@@ -1678,3 +1678,38 @@ Karbohidrat : ${data.karbo ?? 0} g
 Serat : ${data.serat ?? 0} g
 `;
 }
+
+function updateMenuAwal(value) {
+  if (!menuHarian || menuHarian.length === 0) {
+    menuHarian = [""];
+  }
+
+  menuHarian[0] = value;
+}
+
+let menuHarian = [""];
+
+function renderMenuHarian() {
+  const container = document.getElementById("menuContainer");
+
+  container.innerHTML = menuHarian.map((menu, i) => `
+    <input type="text"
+           class="input-menu"
+           placeholder="Nama menu ${i+1}"
+           value="${menu}"
+           oninput="editMenuHarian(${i}, this.value)">
+  `).join("") + `
+    <button class="btn-secondary" onclick="tambahMenuBaris()">
+      + Tambah Menu
+    </button>
+  `;
+}
+
+function tambahMenuBaris() {
+  menuHarian.push("");
+  renderMenuHarian();
+}
+
+function editMenuHarian(index, value) {
+  menuHarian[index] = value;
+}
