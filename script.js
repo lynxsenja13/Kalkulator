@@ -1676,25 +1676,16 @@ function editMenuHarian(index, value) {
 
 let isDataChanged = false;
 
-// tandai perubahan (lebih spesifik biar gak brutal)
-document.querySelectorAll("input, textarea, select").forEach(el => {
-  el.addEventListener("change", () => {
-    isDataChanged = true;
-  });
+document.addEventListener("input", () => {
+  isDataChanged = true;
 });
 
-// 🔥 FIX FINAL
-window.onbeforeunload = function (e) {
+window.addEventListener("beforeunload", function (e) {
   if (!isDataChanged) return;
 
-  // 🔥 disable setelah sekali jalan
-  const confirmMsg = "Data belum disimpan, yakin mau keluar?";
-  
   e.preventDefault();
-  e.returnValue = confirmMsg;
-
-  return confirmMsg;
-};
+  e.returnValue = '';
+});
 
 window.addEventListener("load", () => {
   isDataChanged = false;
