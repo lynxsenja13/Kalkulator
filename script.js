@@ -1675,18 +1675,21 @@ function editMenuHarian(index, value) {
 }
 
 let isDataChanged = false;
+let isReloading = false;
 
-// tandai kalau ada perubahan
+// tandai perubahan
 document.addEventListener("input", () => {
   isDataChanged = true;
 });
 
-// sebelum reload / close
+// handle sebelum keluar
 window.addEventListener("beforeunload", function (e) {
-  if (!isDataChanged) return;
+  if (!isDataChanged || isReloading) return;
 
+  isReloading = true; // 🔥 penting!
+  
   e.preventDefault();
-  e.returnValue = ''; // wajib untuk trigger popup
+  e.returnValue = '';
 });
 
 function konfirmasiAksi(pesan, callback) {
