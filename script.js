@@ -529,8 +529,9 @@ function generateLaporan() {
 
   const listAktif = bahanMaster[modeMenu];
 
+  window.hasilGiziPerKategori = {};
   getKategoriAktif().forEach(kat => {
-
+    
   const isLibur = kategoriLibur[kat] || false;
 
     // ================= LIBUR =================
@@ -558,6 +559,28 @@ function generateLaporan() {
     listAktif.some(b => b.nama === item.nama)
   )
 );
+    // ================= SIMPAN TOTAL UNTUK LAPORAN GIZI =================
+const keyMap = {
+  "Balita": "balita",
+  "Bumil & Busui": "bumil",
+  "SD 1-3": "sd1_3",
+  "SD 4-6": "sd4_6",
+  "SMP": "smp",
+  "SMA": "sma"
+};
+
+const key = keyMap[kat];
+
+if (key) {
+  window.hasilGiziPerKategori[key] = {
+    energi: Number(total.Energi.toFixed(2)),
+    protein: Number(total.Protein.toFixed(2)),
+    lemak: Number(total.Lemak.toFixed(2)),
+    karbo: Number(total.Karbohidrat.toFixed(2)),
+    besi: 0, // kalau belum ada Fe di database
+    serat: Number(total.Serat.toFixed(2))
+  };
+}
 
     // 🔥 DETAIL PER BAHAN
     const detailBahan = kategoriData[modeMenu][kat].map(item => {
@@ -1373,12 +1396,12 @@ function generateLaporanGizi() {
   // 🔴 STATUS LIBUR
   // ===============================
   const libur = {
-    balita: document.getElementById("libur_balita")?.checked,
-    bumil: document.getElementById("libur_bumil")?.checked,
-    sdyas: document.getElementById("libur_sdyas")?.checked,
-    smpyas: document.getElementById("libur_smpyas")?.checked,
-    smayas: document.getElementById("libur_smayas")?.checked
-  };
+  balita: kategoriLibur["Balita"] || false,
+  bumil: kategoriLibur["Bumil & Busui"] || false,
+  sdyas: kategoriLibur["SD 1-3"] || false,
+  smpyas: kategoriLibur["SMP"] || false,
+  smayas: kategoriLibur["SMA"] || false
+};
 
   // ===============================
   // 🧮 AMBIL DATA GIZI (DARI SISTEMMU)
