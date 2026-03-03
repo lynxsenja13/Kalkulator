@@ -1889,3 +1889,30 @@ function kirimLaporan(data) {
     .createTextOutput(JSON.stringify({ status: "ok" }))
     .setMimeType(ContentService.MimeType.JSON);
 }
+
+function kirimLaporanKeSpreadsheet() {
+  if (!window.hasilGiziPerKategori) {
+    alert("Generate laporan dulu!");
+    return;
+  }
+
+  const data = {
+    tanggal: getTanggalLengkap(), // nama sheet
+    menu: menuHarian.filter(m => m.trim()),
+    gizi: window.hasilGiziPerKategori
+  };
+
+  fetch(API_URL2, {
+    method: "POST",
+    body: JSON.stringify(data)
+  })
+  .then(res => res.text())
+  .then(res => {
+    console.log("Sukses kirim:", res);
+    alert("✅ Laporan berhasil dikirim ke spreadsheet!");
+  })
+  .catch(err => {
+    console.error(err);
+    alert("❌ Gagal kirim laporan");
+  });
+}
