@@ -963,3 +963,16 @@ button {
   gap: 8px;
   justify-content: flex-end;   /* opsional kalau mau ke kanan */
 }
+
+/* WRAPPER UTAMA SEMUA CARD */
+.container-main {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* SEMUA CARD WAJIB IKUT INI */
+.card {
+  width: 100%;
+  box-sizing: border-box;
+}
