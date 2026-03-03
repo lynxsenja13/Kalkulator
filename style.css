@@ -1103,3 +1103,13 @@ button {
   justify-content: center;
   z-index: 9999;
 }
+
+.active-subtab {
+  background: #16a34a !important;
+  color: white !important;
+}
+
+.btn-primary:not(.active-subtab) {
+  background: #374151;
+  color: #e5e7eb;
+}
