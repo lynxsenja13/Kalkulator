@@ -157,32 +157,60 @@
   </div>
 </div>
 
-  <div class="card dark">
-  <h2>📊 Laporan & Caption</h2>
+  <div class="card dark" id="cardCreateLaporan">
 
-  <div class="btn-grid">
+  <h2>📊 Create Laporan</h2>
 
-    <button class="btn-primary"
-      onclick="generateReport('laporan','omprengan')">
-      📊 Laporan Omprengan
+  <!-- TAB LEVEL 1 -->
+  <div class="tab-row">
+    <button id="tabLaporan"
+            class="btn-secondary active-tab"
+            onclick="setMainTab('laporan')">
+      📊 Laporan
     </button>
 
-    <button class="btn-primary"
-      onclick="generateReport('laporan','snack')">
-      📊 Laporan Snack
+    <button id="tabCaption"
+            class="btn-secondary"
+            onclick="setMainTab('caption')">
+      📝 Caption
+    </button>
+  </div>
+
+  <!-- TAB LEVEL 2 (LAPORAN) -->
+  <div id="subTabLaporan" class="tab-row">
+
+    <button id="btnLapHarian"
+            class="btn-primary active-subtab"
+            onclick="setSubTab('harian')">
+      Laporan Harian
     </button>
 
-    <button class="btn-secondary"
-      onclick="generateReport('caption','omprengan')">
-      📝 Caption Omprengan
-    </button>
-
-    <button class="btn-secondary"
-      onclick="generateReport('caption','snack')">
-      📝 Caption Snack
+    <button id="btnLapGizi"
+            class="btn-primary"
+            onclick="setSubTab('gizi')">
+      Laporan Gizi
     </button>
 
   </div>
+
+  <!-- INPUT MENU -->
+  <div id="menuContainer">
+    <input type="text"
+           class="input-menu"
+           placeholder="Nama menu">
+
+    <button class="btn-secondary"
+            onclick="tambahMenuBaris()">
+      + Tambah Menu
+    </button>
+  </div>
+
+  <!-- GENERATE -->
+  <button class="btn-success"
+          onclick="generateLaporanHarian()">
+    🚀 Generate
+  </button>
+
 </div>
 <script src="config.js"></script>
 <script src="script.js"></script>
