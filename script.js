@@ -1676,23 +1676,24 @@ function editMenuHarian(index, value) {
 
 let isDataChanged = false;
 
-// tandai perubahan
-document.addEventListener("input", () => {
-  isDataChanged = true;
+// tandai perubahan (lebih spesifik biar gak brutal)
+document.querySelectorAll("input, textarea, select").forEach(el => {
+  el.addEventListener("change", () => {
+    isDataChanged = true;
+  });
 });
 
-// ✅ PAKAI INI SAJA (jangan addEventListener lagi)
+// 🔥 FIX FINAL
 window.onbeforeunload = function (e) {
   if (!isDataChanged) return;
 
-  // 🔥 MATIKAN HANDLER SEBELUM LANJUT
-  window.onbeforeunload = null;
-
-  // standar browser
+  // 🔥 disable setelah sekali jalan
+  const confirmMsg = "Data belum disimpan, yakin mau keluar?";
+  
   e.preventDefault();
-  e.returnValue = '';
+  e.returnValue = confirmMsg;
 
-  return '';
+  return confirmMsg;
 };
 
 window.addEventListener("load", () => {
@@ -1707,6 +1708,3 @@ function konfirmasiAksi(pesan, callback) {
   const yakin = confirm(pesan);
   if (yakin) callback();
 }
-
-konfirmasiAksi("Data akan hilang, lanjut?", () => {
-});
