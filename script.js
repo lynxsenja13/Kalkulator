@@ -1516,14 +1516,22 @@ function prosesGenerateLaporan() {
   }
 }
 
-function setSubTabCaption(tab) {
-  subTabCaptionAktif = tab;
+function setSubTabCaption(mode) {
+  subTabCaptionAktif = mode;
 
-  document.getElementById("btnCapOmprengan")
-    ?.classList.toggle("active-subtab-caption", tab === "omprengan");
+  const btnOm = document.getElementById("btnCapOmprengan");
+  const btnSn = document.getElementById("btnCapSnack");
 
-  document.getElementById("btnCapSnack")
-    ?.classList.toggle("active-subtab-caption", tab === "snack");
+  // reset semua
+  btnOm?.classList.remove("active-subtab");
+  btnSn?.classList.remove("active-subtab");
+
+  // aktifkan yang dipilih
+  if (mode === "omprengan") {
+    btnOm?.classList.add("active-subtab");
+  } else {
+    btnSn?.classList.add("active-subtab");
+  }
 }
 
 function generateCaptionOmprengan() {
