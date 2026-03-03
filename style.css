@@ -1411,3 +1411,13 @@ th, td {
     justify-content: space-between;
   }
 }
+
+.kategori-card {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+#hasil {
+  max-width: 500px;
+  margin: 0 auto;
+}
