@@ -1051,3 +1051,11 @@ function setSubTab(tab) {
     document.getElementById("btnLapGizi").classList.add("active-subtab");
   }
 }
+
+function bukaModalLibur() {
+  document.getElementById("modalLibur").style.display = "flex";
+}
+
+function tutupModalLibur() {
+  document.getElementById("modalLibur").style.display = "none";
+}
