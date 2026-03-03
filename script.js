@@ -1048,7 +1048,7 @@ function generateReport(jenis, kategori) {
 }
 
 function prosesGenerate() {
-  const libur = {
+  const dataLibur = {
     balita: document.getElementById("liburBalita").checked,
     bumil: document.getElementById("liburBumil").checked,
     sd: document.getElementById("liburSD").checked,
@@ -1058,11 +1058,10 @@ function prosesGenerate() {
 
   document.getElementById("modalLibur").style.display = "none";
 
-  // 🔥 engine utama
   buatLaporan(
     window.generateJenis,
     window.generateKategori,
-    libur
+    dataLibur // 🔥 ikut diganti
   );
 }
 
