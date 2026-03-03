@@ -1555,6 +1555,16 @@ function generateCaptionOmprengan() {
 
   // libur dari sistemmu
   const libur = window.kategoriLibur || {};
+  
+  const libur = {
+  balita: kategoriLibur["Balita"] || false,
+  bumil: kategoriLibur["Bumil & Busui"] || false,
+  sd13: kategoriLibur["SD 1-3"] || false,
+  sd46: kategoriLibur["SD 4-6"] || false,
+  smp: kategoriLibur["SMP"] || false,
+  sma: kategoriLibur["SMA"] || false
+};
+  
   const gizi = window.hasilGiziPerKategori || {};
 
   function blok(judul, data) {
@@ -1579,22 +1589,22 @@ ${menuText}
 `;
 
   if (!libur.balita)
-  caption += blokGizi("Analisis Nilai Gizi Balita", gizi.balita);
+  caption += blok("Analisis Nilai Gizi Balita", gizi.balita);
 
 if (!libur.bumil)
-  caption += blokGizi("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
+  caption += blok("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
 
-if (!libur.sdyas)
-  caption += blokGizi("Analisis Nilai Gizi SD 1-3", gizi.sd1_3);
+if (!libur.sd13)
+  caption += blok("Analisis Nilai Gizi SD 1-3", gizi.sd1_3);
 
-if (!libur.sdyas)
-  caption += blokGizi("Analisis Nilai Gizi SD 4-6", gizi.sd4_6);
+if (!libur.sd46)
+  caption += blok("Analisis Nilai Gizi SD 4-6", gizi.sd4_6);
 
-if (!libur.smpyas)
-  caption += blokGizi("Analisis Nilai Gizi SMP", gizi.smp);
+if (!libur.smp)
+  caption += blok("Analisis Nilai Gizi SMP", gizi.smp);
 
-if (!libur.smayas)
-  caption += blokGizi("Analisis Nilai Gizi SMA", gizi.sma);
+if (!libur.sma)
+  caption += blok("Analisis Nilai Gizi SMA", gizi.sma);
 
   caption += `
 🌿 “Makan bergizi, tubuh berenergi!”
