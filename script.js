@@ -17,6 +17,7 @@ let modeKategori = "SEMUA";
 let menuHarian = [""]; // mulai 1 baris
 let liburLaporan = {};
 let subTabAktif = "harian"; // default
+let mainTabAktif = "laporan";
 let subTabCaptionAktif = "omprengan";
 
 // ================= DATA PENERIMA =================
