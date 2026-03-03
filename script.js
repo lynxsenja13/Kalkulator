@@ -1067,15 +1067,25 @@ function prosesGenerate() {
    TAB LEVEL 1
 =================================*/
 function setMainTab(tab) {
-  document.getElementById("tabLaporan").classList.remove("active-tab");
-  document.getElementById("tabCaption").classList.remove("active-tab");
+  mainTabAktif = tab;
 
-  if (tab === "laporan") {
-    document.getElementById("tabLaporan").classList.add("active-tab");
-    document.getElementById("subTabLaporan").style.display = "flex";
+  // toggle tombol utama
+  document.getElementById("tabLaporan")
+    ?.classList.toggle("active-tab", tab === "laporan");
+
+  document.getElementById("tabCaption")
+    ?.classList.toggle("active-tab", tab === "caption");
+
+  // 🔥 INI YANG PALING PENTING
+  const subLap = document.getElementById("subTabLaporan");
+  const subCap = document.getElementById("subTabCaption");
+
+  if (tab === "caption") {
+    if (subLap) subLap.style.display = "none";
+    if (subCap) subCap.style.display = "flex";
   } else {
-    document.getElementById("tabCaption").classList.add("active-tab");
-    document.getElementById("subTabLaporan").style.display = "none";
+    if (subLap) subLap.style.display = "flex";
+    if (subCap) subCap.style.display = "none";
   }
 }
 
