@@ -1113,3 +1113,32 @@ button {
   background: #374151;
   color: #e5e7eb;
 }
+
+/* ===== CARD HASIL LAPORAN ===== */
+.card-hasil-laporan {
+  width: 100%;
+  max-width: 100%;
+  margin-top: 18px;
+}
+
+/* textarea hasil */
+#captionOutput {
+  width: 100%;
+  min-height: 260px;        /* tidak kependekan */
+  height: auto;
+  resize: vertical;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 14px 16px;
+  font-size: 14px;
+  line-height: 1.6;
+  background: #f9fafb;
+  color: #111827;
+  box-sizing: border-box;
+  white-space: pre-wrap;
+}
+
+/* auto grow biar tidak kepotong */
+#captionOutput.auto-grow {
+  overflow: hidden;
+}
