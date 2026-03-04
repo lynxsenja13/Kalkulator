@@ -107,8 +107,6 @@ if (btn) {
   btn.innerText = "Menyimpan...";
   btn.disabled = true;
 }
-  btn.innerText = "Menyimpan...";
-  btn.disabled = true;
   const newItem = {
   "nama bahan": pendingNama.toLowerCase().trim(),
   ENERGI: Number(document.getElementById("mEnergi").value) || 0,
