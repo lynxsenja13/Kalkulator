@@ -1744,6 +1744,7 @@ function kirimKeSpreadsheet() {
   console.error("Fetch error:", err);
   alert("Gagal kirim");
 });
+} 
 function kirimLaporan(data) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const namaSheet = data.tanggal;
