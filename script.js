@@ -1728,14 +1728,13 @@ function kirimKeSpreadsheet() {
     gizi: window.hasilGiziPerKategori
   };
 
+  const formData = new FormData();
+  formData.append("data", JSON.stringify(data));
+
   fetch(API_URL2, {
   method: "POST",
-  mode: "no-cors", // 🔥 WAJIB TAMBAH INI
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify(data)
-})
+  body: formData
+});
 .then(() => {
   alert("Data berhasil dikirim");
 })
