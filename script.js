@@ -1735,14 +1735,15 @@ function kirimKeSpreadsheet() {
   method: "POST",
   body: formData
 })
-.then(() => {
+.then(res => res.text())
+.then(text => {
+  console.log("Response:", text);
   alert("Data berhasil dikirim");
 })
 .catch(err => {
-  console.error(err);
+  console.error("Fetch error:", err);
   alert("Gagal kirim");
 });
-}
 function kirimLaporan(data) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const namaSheet = data.tanggal;
