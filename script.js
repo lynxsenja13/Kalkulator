@@ -2,7 +2,7 @@ let bahanMaster = {
   OMPRENGAN: [],
   SNACK: []
 };
-
+let autocompleteInitialized = false;
 let modeMenu = "OMPRENGAN";
 let kategoriLibur = {};
 let kategoriData = {
@@ -103,6 +103,10 @@ window.addEventListener("DOMContentLoaded", function() {
 
 function simpanGizi() {
   const btn = document.querySelector(".btn-save");
+if (btn) {
+  btn.innerText = "Menyimpan...";
+  btn.disabled = true;
+}
   btn.innerText = "Menyimpan...";
   btn.disabled = true;
   const newItem = {
@@ -141,12 +145,20 @@ function simpanGizi() {
 .catch(err => console.error("Sync gagal:", err));
 
 // ✅ lanjut logic biasa
-bahanMaster[modeMenu].push({ nama: namaBaru, berat: beratBaru });
+bahanMaster[modeMenu].push({ 
+  nama: namaBaru, 
+  berat: beratBaru,
+  satuan: document.getElementById("satuanBahan")?.value || "GRAM"
+});
 
 if (modeKategori === "SEMUA") {
 
   getKategoriAktif().forEach(k => {
-    kategoriData[modeMenu][k].push({ nama: namaBaru, berat: beratBaru });
+    kategoriData[modeMenu][k].push({ 
+  nama: namaBaru, 
+  berat: beratBaru,
+  satuan: document.getElementById("satuanBahan")?.value || "GRAM"
+});
   });
 
 } else {
@@ -733,6 +745,9 @@ function hapusBahan(kat, index) {
 
 // ================= AUTOCOMPLETE DROPDOWN =================
 function initAutocomplete() {
+  if (autocompleteInitialized) return;
+  autocompleteInitialized = true;
+
   const input = document.getElementById("namaBahan");
   const dropdown = document.getElementById("autocomplete-list");
 
@@ -748,9 +763,9 @@ function initAutocomplete() {
     }
 
     const hasil = database
-  .map(d => getNamaBahan(d))
-  .filter(n => n && n.toLowerCase().includes(keyword))
-  .slice(0, 10);
+      .map(d => getNamaBahan(d))
+      .filter(n => n && n.includes(keyword))
+      .slice(0, 10);
 
     hasil.forEach(nama => {
       const div = document.createElement("div");
@@ -1911,4 +1926,12 @@ function kirimLaporanKeSpreadsheet() {
     console.error(err);
     alert("Gagal kirim");
   });
+}
+
+  function debounce(fn, delay = 150) {
+  let t;
+  return (...args) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...args), delay);
+  };
 }
