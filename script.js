@@ -1927,11 +1927,3 @@ function kirimLaporanKeSpreadsheet() {
     alert("Gagal kirim");
   });
 }
-
-  function debounce(fn, delay = 150) {
-  let t;
-  return (...args) => {
-    clearTimeout(t);
-    t = setTimeout(() => fn(...args), delay);
-  };
-}
