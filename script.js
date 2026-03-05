@@ -651,23 +651,21 @@ if (key) {
 });
 
     // ================= SIMPAN DETAIL UNTUK SPREADSHEET =================
+// 🔥 SIMPAN DETAIL UNTUK SPREADSHEET
 detailBahan.forEach(b => {
 
   window.detailBahanSpreadsheet.push({
-
-  kategori: kat,
-  nama: b.nama,
-  berat: b.berat,
-  satuan: b.satuan,
-
-  energi: Number(b.energi.toFixed(2)),
-  protein: Number(b.protein.toFixed(2)),
-  lemak: Number(b.lemak.toFixed(2)),
-  karbo: Number(b.karbo.toFixed(2)),
-  kalsium: Number(b.kalsium.toFixed(2)),
-  serat: Number(b.serat.toFixed(2))
-
-});
+    kategori: kat,
+    nama: b.nama,
+    berat: b.berat,
+    satuan: b.satuan,
+    energi: Number(b.energi.toFixed(2)),
+    protein: Number(b.protein.toFixed(2)),
+    lemak: Number(b.lemak.toFixed(2)),
+    karbo: Number(b.karbo.toFixed(2)),
+    kalsium: Number(b.kalsium.toFixed(2)),
+    serat: Number(b.serat.toFixed(2))
+  });
 
 });
     
@@ -1932,7 +1930,8 @@ function kirimLaporanKeSpreadsheet() {
     gizi: window.hasilGiziPerKategori,
     detail: window.detailBahanSpreadsheet   // 🔥 INI WAJIB
   };
-
+  console.log("DATA KIRIM:", data); // 🔥 cek ini
+  
   const formData = new FormData();
   formData.append("data", JSON.stringify(data));
 
