@@ -552,16 +552,16 @@ function renderTabelKategori(namaKategori, dataBahan, standar) {
 
 function generateLaporan() {
 
-  // reset semua data spreadsheet
-window.dataSpreadsheet = {
-  OMPRENGAN: { gizi: {}, detail: [] },
-  SNACK: { gizi: {}, detail: [] }
-};
-
   if (!databaseLoaded) {
     alert("Database masih loading...");
     return;
   }
+
+  // reset hanya menu yang sedang dihitung
+  window.dataSpreadsheet[modeMenu] = {
+    gizi: {},
+    detail: []
+  };
 
   const hasilDiv = document.getElementById("hasil");
   hasilDiv.innerHTML = "";
@@ -623,7 +623,9 @@ if (key) {
 }
 
     // 🔥 DETAIL PER BAHAN
-    const detailBahan = kategoriData[modeMenu][kat].map(item => {
+    const detailBahan = kategoriData[modeMenu][kat]
+  .filter(item => listAktif.some(b => b.nama === item.nama))
+  .map(item => {
 
   const db = database.find(d =>
   String(getNamaBahan(d) ?? "")
