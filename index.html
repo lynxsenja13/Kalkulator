@@ -73,14 +73,26 @@
     <ul id="listBahan"></ul>
 
     <div class="action-row">
-      <button type="button" class="btn-success" onclick="generateLaporan()">
-        Generate Laporan
-      </button>
 
-      <button type="button" class="btn-secondary" onclick="exportPDF()">
-  Export PDF
-</button>
-    </div>
+  <button type="button"
+          class="btn-success"
+          onclick="generateLaporan()">
+    Generate Laporan
+  </button>
+
+  <button type="button"
+          class="btn-secondary"
+          onclick="exportPDF()">
+    Export PDF
+  </button>
+
+  <button type="button"
+          class="btn-secondary"
+          onclick="kirimLaporanKeSpreadsheet()">
+    Kirim Spreadsheet
+  </button>
+
+</div>
 
   </div>
 
@@ -306,10 +318,6 @@
     📋 Copy WA
   </button>
 </div>
-
-<button onclick="kirimLaporanKeSpreadsheet()">
-  Kirim ke Spreadsheet
-</button>
   
 <script src="config.js"></script>
 <script src="script.js"></script>
