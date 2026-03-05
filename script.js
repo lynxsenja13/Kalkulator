@@ -1752,36 +1752,47 @@ function konfirmasiAksi(pesan, callback) {
 
 function kirimKeSpreadsheet() {
 
-  if (!window.hasilGiziPerKategori) {
+  if (!window.dataSpreadsheet) {
     alert("Generate laporan dulu!");
     return;
   }
 
-  const tanggal = formatTanggalIndonesia(); // contoh: 1 Maret 2026
+  const tanggal = formatTanggalIndonesia();
 
   const data = {
     tanggal: tanggal,
+
+    // menu yang ditulis user
     menu: menuHarian.filter(m => m.trim()),
-    gizi: window.hasilGiziPerKategori
+
+    // DATA OMPRENGAN
+    omprengan: window.dataSpreadsheet.OMPRENGAN,
+
+    // DATA SNACK
+    snack: window.dataSpreadsheet.SNACK,
+
+    // catatan
+    catatan: document.getElementById("note")?.value || ""
   };
 
   const formData = new FormData();
   formData.append("data", JSON.stringify(data));
 
   fetch(API_URL2, {
-  method: "POST",
-  body: formData
-})
-.then(res => res.text())
-.then(text => {
-  console.log("Response:", text);
-  alert("Data berhasil dikirim");
-})
-.catch(err => {
-  console.error("Fetch error:", err);
-  alert("Gagal kirim");
-});
-} 
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.text())
+  .then(text => {
+    console.log("RESP:", text);
+    alert("Data berhasil dikirim");
+  })
+  .catch(err => {
+    console.error("Fetch error:", err);
+    alert("Gagal kirim");
+  });
+}
+
 function kirimLaporan(data) {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
   const namaSheet = data.tanggal;
