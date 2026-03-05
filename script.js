@@ -599,14 +599,14 @@ function generateLaporan() {
 );
     // ================= SIMPAN TOTAL UNTUK LAPORAN GIZI =================
 const keyMap = {
-  "Balita": "balita",
-  "Bumil & Busui": "bumil",
-  "SD 1-3": "sd1_3",
-  "SD 4-6": "sd4_6",
-  "SMP": "smp",
-  "SMA": "sma",
-  "Keringan Sekolah Kecil": "kecil",
-  "Keringan Sekolah Besar": "besar"
+  "Balita": modeMenu === "OMPRENGAN" ? "omprengan_balita" : "snack_balita",
+  "Bumil & Busui": modeMenu === "OMPRENGAN" ? "omprengan_bumil" : "snack_bumil",
+  "SD 1-3": "omprengan_sd1_3",
+  "SD 4-6": "omprengan_sd4_6",
+  "SMP": "omprengan_smp",
+  "SMA": "omprengan_sma",
+  "Keringan Sekolah Kecil": "snack_kecil",
+  "Keringan Sekolah Besar": "snack_besar"
 };
 
 const key = keyMap[kat];
@@ -674,6 +674,7 @@ if (key) {
 detailBahan.forEach(b => {
 
   window.dataSpreadsheet[modeMenu].detail.push({
+  menu: modeMenu,
     kategori: kat,
     nama: b.nama,
     berat: b.berat,
