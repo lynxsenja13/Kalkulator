@@ -2,6 +2,19 @@ let bahanMaster = {
   OMPRENGAN: [],
   SNACK: []
 };
+
+// ✅ TAMBAHKAN INI
+window.dataSpreadsheet = {
+  OMPRENGAN: {
+    gizi: {},
+    detail: []
+  },
+  SNACK: {
+    gizi: {},
+    detail: []
+  }
+};
+
 let autocompleteInitialized = false;
 let modeMenu = "OMPRENGAN";
 let kategoriLibur = {};
@@ -539,7 +552,11 @@ function renderTabelKategori(namaKategori, dataBahan, standar) {
 
 function generateLaporan() {
 
-  window.detailBahanSpreadsheet = [];
+  window.dataSpreadsheet[modeMenu] = {
+    gizi: {},
+    detail: []
+  };
+
   if (!databaseLoaded) {
     alert("Database masih loading...");
     return;
@@ -550,7 +567,6 @@ function generateLaporan() {
 
   const listAktif = bahanMaster[modeMenu];
 
-  window.hasilGiziPerKategori = {};
   getKategoriAktif().forEach(kat => {
     
   const isLibur = kategoriLibur[kat] || false;
@@ -595,7 +611,7 @@ const keyMap = {
 const key = keyMap[kat];
 
 if (key) {
-  window.hasilGiziPerKategori[key] = {
+  window.dataSpreadsheet[modeMenu].gizi[key] = {
     energi: Number(total.Energi.toFixed(2)),
     protein: Number(total.Protein.toFixed(2)),
     lemak: Number(total.Lemak.toFixed(2)),
@@ -654,7 +670,7 @@ if (key) {
 // 🔥 SIMPAN DETAIL UNTUK SPREADSHEET
 detailBahan.forEach(b => {
 
-  window.detailBahanSpreadsheet.push({
+  window.dataSpreadsheet[modeMenu].detail.push({
     kategori: kat,
     nama: b.nama,
     berat: b.berat,
