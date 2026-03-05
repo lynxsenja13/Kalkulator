@@ -1928,22 +1928,24 @@ function kirimLaporanKeSpreadsheet() {
     tanggal: getTanggalLengkap(),
     menu: menuHarian.filter(m => m.trim()),
     gizi: window.hasilGiziPerKategori,
-    detail: window.detailBahanSpreadsheet
+    detail: window.detailBahanSpreadsheet,
+    libur: kategoriLibur,
+    catatan: document.getElementById("catatan")?.value || ""
   };
 
   const formData = new FormData();
   formData.append("data", JSON.stringify(data));
 
-  fetch(API_URL2, {
-    method: "POST",
-    body: formData
+  fetch(API_URL2,{
+    method:"POST",
+    body:formData
   })
-  .then(res => res.text())
-  .then(res => {
-    console.log("RESP:", res);
+  .then(res=>res.text())
+  .then(res=>{
+    console.log("RESP:",res);
     alert("Berhasil kirim laporan");
   })
-  .catch(err => {
+  .catch(err=>{
     console.error(err);
     alert("Gagal kirim");
   });
