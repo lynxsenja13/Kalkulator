@@ -753,7 +753,7 @@ function generateLaporan() {
 
         ${renderEditableList(menu, kat)}
 
-        ${renderTabelKategori(kat, detailBahan, {
+        ${renderTabelKategori(menu, kat, detailBahan, {
 
           energi: standar.Energi,
           protein: standar.Protein,
