@@ -558,17 +558,29 @@ function generateLaporan() {
   }
 
   // reset hanya menu yang sedang dihitung
-  window.dataSpreadsheet[modeMenu] = {
+  // reset semua menu
+window.dataSpreadsheet = {
+  OMPRENGAN: {
     gizi: {},
     detail: []
-  };
+  },
+  SNACK: {
+    gizi: {},
+    detail: []
+  }
+};
 
   const hasilDiv = document.getElementById("hasil");
   hasilDiv.innerHTML = "";
 
-  const listAktif = bahanMaster[modeMenu];
+  ["OMPRENGAN","SNACK"].forEach(menu => {
 
-  getKategoriAktif().forEach(kat => {
+  const listAktif = bahanMaster[menu];
+  const kategoriList = menu === "OMPRENGAN"
+    ? kategoriOmprengan
+    : kategoriSnack;
+
+  kategoriList.forEach(kat => {
     
   const isLibur = kategoriLibur[kat] || false;
 
@@ -593,18 +605,20 @@ function generateLaporan() {
 
     // ================= HITUNG =================
     const total = hitungTotal(
-  kategoriData[modeMenu][kat].filter(item =>
+  kategoriData[menu][kat].filter(item =>
     listAktif.some(b => b.nama === item.nama)
   )
 );
     // ================= SIMPAN TOTAL UNTUK LAPORAN GIZI =================
 const keyMap = {
-  "Balita": modeMenu === "OMPRENGAN" ? "omprengan_balita" : "snack_balita",
-  "Bumil & Busui": modeMenu === "OMPRENGAN" ? "omprengan_bumil" : "snack_bumil",
+  "Balita": menu === "OMPRENGAN" ? "omprengan_balita" : "snack_balita",
+  "Bumil & Busui": menu === "OMPRENGAN" ? "omprengan_bumil" : "snack_bumil",
+
   "SD 1-3": "omprengan_sd1_3",
   "SD 4-6": "omprengan_sd4_6",
   "SMP": "omprengan_smp",
   "SMA": "omprengan_sma",
+
   "Keringan Sekolah Kecil": "snack_kecil",
   "Keringan Sekolah Besar": "snack_besar"
 };
@@ -612,7 +626,7 @@ const keyMap = {
 const key = keyMap[kat];
 
 if (key) {
-  window.dataSpreadsheet[modeMenu].gizi[key] = {
+  window.dataSpreadsheet[menu].gizi[key] = {
     energi: Number(total.Energi.toFixed(2)),
     protein: Number(total.Protein.toFixed(2)),
     lemak: Number(total.Lemak.toFixed(2)),
@@ -623,7 +637,7 @@ if (key) {
 }
 
     // 🔥 DETAIL PER BAHAN
-    const detailBahan = kategoriData[modeMenu][kat]
+    const detailBahan = kategoriData[menu][kat]
   .filter(item => listAktif.some(b => b.nama === item.nama))
   .map(item => {
 
@@ -673,8 +687,8 @@ if (key) {
 // 🔥 SIMPAN DETAIL UNTUK SPREADSHEET
 detailBahan.forEach(b => {
 
-  window.dataSpreadsheet[modeMenu].detail.push({
-  menu: modeMenu,
+  window.dataSpreadsheet[menu].detail.push({
+  menu: menu,
     kategori: kat,
     nama: b.nama,
     berat: b.berat,
@@ -731,6 +745,8 @@ const standar = AKG[kat] || {
   </div>
 `;
   });
+    });
+});
 }
 
 function renderAKG(nutrien, total, kategori) {
@@ -750,7 +766,7 @@ function renderAKG(nutrien, total, kategori) {
 
 // ================= EDITABLE BERAT =================
 function renderEditableList(kat) {
-  return kategoriData[modeMenu][kat]
+  return kategoriData[menu][kat]
     .map((b, i) => `
     <div style="display:flex; gap:6px; margin:4px 0; align-items:center;">
       <span style="flex:1">${b.nama}</span>
@@ -774,12 +790,12 @@ function renderEditableList(kat) {
   `).join("");
 }
 function editBerat(kat, index, value) {
-  kategoriData[modeMenu][kat][index].berat = parseFloat(value) || 0;
+  kategoriData[menu][kat][index].berat = parseFloat(value) || 0;
   generateLaporan();
 }
 
 function hapusBahan(kat, index) {
-  kategoriData[modeMenu][kat].splice(index, 1);
+  kategoriData[menu][kat].splice(index, 1);
   generateLaporan();
 }
 
