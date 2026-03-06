@@ -453,7 +453,12 @@ function hitungTotal(list) {
   return total;
 }
 
-function renderTabelKategori(namaKategori, dataBahan, standar) {
+function renderTabelKategori(menu, kat, dataBahan = [], standar = {}) {
+
+  if (!Array.isArray(dataBahan)) {
+    dataBahan = [];
+  }
+  
   let total = {
     energi: 0,
     protein: 0,
@@ -557,6 +562,9 @@ function generateLaporan() {
     return;
   }
 
+  const hasilDiv = document.getElementById("hasil");
+  hasilDiv.innerHTML = "";
+
   // reset data spreadsheet
   window.dataSpreadsheet = {
     OMPRENGAN: {
@@ -569,16 +577,16 @@ function generateLaporan() {
     }
   };
 
-  const hasilDiv = document.getElementById("hasil");
-  hasilDiv.innerHTML = "";
+  const semuaMenu = ["OMPRENGAN", "SNACK"];
 
-  ["OMPRENGAN","SNACK"].forEach(menu => {
+  semuaMenu.forEach(menu => {
 
-    const listAktif = bahanMaster[menu];
+    const listAktif = bahanMaster[menu] || [];
 
-    const kategoriList = menu === "OMPRENGAN"
-      ? kategoriOmprengan
-      : kategoriSnack;
+    const kategoriList =
+      menu === "OMPRENGAN"
+        ? kategoriOmprengan
+        : kategoriSnack;
 
     kategoriList.forEach(kat => {
 
@@ -588,33 +596,37 @@ function generateLaporan() {
       if (isLibur) {
 
         hasilDiv.innerHTML += `
-        <div class="kategori-card kategori-libur">
-          <h3>${kat} Libur</h3>
+          <div class="kategori-card kategori-libur">
+            <h3>${kat} Libur</h3>
 
-          <div class="libur-toggle">
-            <label>
-              <input type="checkbox"
-                     checked
-                     onchange="toggleLibur('${kat}', this.checked)">
-              Libur
-            </label>
+            <div class="libur-toggle">
+              <label>
+                <input type="checkbox"
+                  checked
+                  onchange="toggleLibur('${kat}', this.checked)">
+                Libur
+              </label>
+            </div>
           </div>
-        </div>
         `;
 
         return;
       }
 
-      // ================= HITUNG =================
-      const total = hitungTotal(
-        kategoriData[menu][kat].filter(item =>
-          listAktif.some(b => b.nama === item.nama)
-        )
+      // ================= DATA KATEGORI =================
+      const dataKategori =
+        (kategoriData[menu] && kategoriData[menu][kat])
+          ? kategoriData[menu][kat]
+          : [];
+
+      const dataAktif = dataKategori.filter(item =>
+        listAktif.some(b => b.nama === item.nama)
       );
 
-      // ================= MAP KATEGORI =================
-      const keyMap = {
+      const total = hitungTotal(dataAktif);
 
+      // ================= SIMPAN TOTAL GIZI =================
+      const keyMap = {
         "Balita": menu === "OMPRENGAN" ? "omprengan_balita" : "snack_balita",
         "Bumil & Busui": menu === "OMPRENGAN" ? "omprengan_bumil" : "snack_bumil",
 
@@ -625,146 +637,122 @@ function generateLaporan() {
 
         "Keringan Sekolah Kecil": "snack_kecil",
         "Keringan Sekolah Besar": "snack_besar"
-
       };
 
       const key = keyMap[kat];
 
       if (key) {
-
         window.dataSpreadsheet[menu].gizi[key] = {
-          energi: Number(total.Energi.toFixed(2)),
-          protein: Number(total.Protein.toFixed(2)),
-          lemak: Number(total.Lemak.toFixed(2)),
-          karbo: Number(total.Karbohidrat.toFixed(2)),
+          energi: Number((total.Energi || 0).toFixed(2)),
+          protein: Number((total.Protein || 0).toFixed(2)),
+          lemak: Number((total.Lemak || 0).toFixed(2)),
+          karbo: Number((total.Karbohidrat || 0).toFixed(2)),
           besi: 0,
-          serat: Number(total.Serat.toFixed(2))
+          serat: Number((total.Serat || 0).toFixed(2))
         };
-
       }
 
       // ================= DETAIL PER BAHAN =================
-      const detailBahan = kategoriData[menu][kat]
-        .filter(item => listAktif.some(b => b.nama === item.nama))
-        .map(item => {
+      const detailBahan = dataAktif.map(item => {
 
-          const db = database.find(d =>
-            String(getNamaBahan(d) ?? "")
-              .toLowerCase()
-              .includes(item.nama.toLowerCase().trim())
-          );
+        const db = database.find(d =>
+          String(getNamaBahan(d) ?? "")
+            .toLowerCase()
+            .includes(item.nama.toLowerCase().trim())
+        );
 
-          if (!db) {
-
-            return {
-              nama: item.nama,
-              berat: item.berat,
-              satuan: item.satuan,
-              energi: 0,
-              protein: 0,
-              lemak: 0,
-              karbo: 0,
-              kalsium: 0,
-              serat: 0
-            };
-
-          }
-
-          let faktor = 0;
-
-          if (item.satuan === "GRAM") {
-            faktor = item.berat / 100;
-          } else {
-            faktor = item.berat;
-          }
-
+        if (!db) {
           return {
-
             nama: item.nama,
             berat: item.berat,
             satuan: item.satuan,
-
-            energi: faktor * Number(db["ENERGI"] ?? db["energi"] ?? 0),
-            protein: faktor * Number(db["PROTEIN"] ?? db["protein"] ?? 0),
-            lemak: faktor * Number(db["LEMAK"] ?? db["lemak"] ?? 0),
-            karbo: faktor * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0),
-            kalsium: faktor * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0),
-            serat: faktor * Number(db["SERAT"] ?? db["serat"] ?? 0)
-
+            energi: 0,
+            protein: 0,
+            lemak: 0,
+            karbo: 0,
+            kalsium: 0,
+            serat: 0
           };
+        }
 
-        });
+        let faktor = item.satuan === "GRAM"
+          ? item.berat / 100
+          : item.berat;
+
+        return {
+          nama: item.nama,
+          berat: item.berat,
+          satuan: item.satuan,
+          energi: faktor * Number(db["ENERGI"] ?? db["energi"] ?? 0),
+          protein: faktor * Number(db["PROTEIN"] ?? db["protein"] ?? 0),
+          lemak: faktor * Number(db["LEMAK"] ?? db["lemak"] ?? 0),
+          karbo: faktor * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0),
+          kalsium: faktor * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0),
+          serat: faktor * Number(db["SERAT"] ?? db["serat"] ?? 0)
+        };
+
+      });
 
       // ================= SIMPAN DETAIL =================
       detailBahan.forEach(b => {
 
         window.dataSpreadsheet[menu].detail.push({
-
           menu: menu,
           kategori: kat,
           nama: b.nama,
           berat: b.berat,
           satuan: b.satuan,
-
-          energi: Number(b.energi.toFixed(2)),
-          protein: Number(b.protein.toFixed(2)),
-          lemak: Number(b.lemak.toFixed(2)),
-          karbo: Number(b.karbo.toFixed(2)),
-          kalsium: Number(b.kalsium.toFixed(2)),
-          serat: Number(b.serat.toFixed(2))
-
+          energi: Number((b.energi || 0).toFixed(2)),
+          protein: Number((b.protein || 0).toFixed(2)),
+          lemak: Number((b.lemak || 0).toFixed(2)),
+          karbo: Number((b.karbo || 0).toFixed(2)),
+          kalsium: Number((b.kalsium || 0).toFixed(2)),
+          serat: Number((b.serat || 0).toFixed(2))
         });
 
       });
 
       // ================= STANDAR AKG =================
       const standar = AKG[kat] || {
-
         Energi: 0,
         Protein: 0,
         Lemak: 0,
         Karbohidrat: 0,
         Kalsium: 0,
         Serat: 0
-
       };
 
       // ================= RENDER =================
       hasilDiv.innerHTML += `
-      <div class="kategori-card">
+        <div class="kategori-card">
 
-        <div class="kategori-header">
+          <div class="kategori-header">
+            <h3>${kat}</h3>
 
-          <h3>${kat}</h3>
+            <div class="libur-ios-wrapper">
+              <span class="label-libur">Libur</span>
 
-          <div class="libur-ios-wrapper">
-            <span class="label-libur">Libur</span>
-
-            <label class="switch-ios">
-              <input type="checkbox"
-                ${kategoriLibur[kat] ? "checked" : ""}
-                onchange="toggleLibur('${kat}', this.checked)">
-              <span class="slider-ios"></span>
-            </label>
-
+              <label class="switch-ios">
+                <input type="checkbox"
+                  ${kategoriLibur[kat] ? "checked" : ""}
+                  onchange="toggleLibur('${kat}', this.checked)">
+                <span class="slider-ios"></span>
+              </label>
+            </div>
           </div>
 
+          ${renderEditableList(menu, kat)}
+
+          ${renderTabelKategori(menu, kat, detailBahan, {
+            energi: standar.Energi,
+            protein: standar.Protein,
+            lemak: standar.Lemak,
+            karbo: standar.Karbohidrat,
+            kalsium: standar.Kalsium,
+            serat: standar.Serat
+          })}
+
         </div>
-
-        ${renderEditableList(menu, kat)}
-
-        ${renderTabelKategori(menu, kat, detailBahan, {
-
-          energi: standar.Energi,
-          protein: standar.Protein,
-          lemak: standar.Lemak,
-          karbo: standar.Karbohidrat,
-          kalsium: standar.Kalsium,
-          serat: standar.Serat
-
-        })}
-
-      </div>
       `;
 
     });
