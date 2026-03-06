@@ -751,7 +751,7 @@ function generateLaporan() {
 
         </div>
 
-        ${renderEditableList(kat)}
+        ${renderEditableList(menu, kat)}
 
         ${renderTabelKategori(kat, detailBahan, {
 
@@ -788,29 +788,26 @@ function renderAKG(nutrien, total, kategori) {
 }
 
 // ================= EDITABLE BERAT =================
-function renderEditableList(kat) {
-  return kategoriData[menu][kat]
-    .map((b, i) => `
-    <div style="display:flex; gap:6px; margin:4px 0; align-items:center;">
-      <span style="flex:1">${b.nama}</span>
+function renderEditableList(menu, kat) {
 
-      <input
-        type="number"
-        value="${b.berat}"
-        style="width:80px"
-        onchange="editBerat('${kat}', ${i}, this.value)"
-      >
+  const list = kategoriData[menu][kat] || [];
 
-      <span style="width:40px;text-align:center">
-        ${b.satuan === "GRAM" ? "g" : "pcs"}
-      </span>
+  let html = `<div class="editable-list">`;
 
-      <button onclick="hapusBahan('${kat}', ${i})"
-        style="background:#ef4444;color:white;border:none;padding:4px 8px;border-radius:6px;">
-        ❌
-      </button>
-    </div>
-  `).join("");
+  list.forEach((item,i)=>{
+
+    html += `
+      <div class="bahan-item">
+        <span>${item.nama}</span>
+        <span>${item.berat} ${item.satuan}</span>
+      </div>
+    `;
+
+  });
+
+  html += `</div>`;
+
+  return html;
 }
 function editBerat(kat, index, value) {
   kategoriData[menu][kat][index].berat = parseFloat(value) || 0;
