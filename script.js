@@ -625,7 +625,20 @@ function generateLaporan() {
         listAktif.some(b => b.nama === item.nama)
       );
 
-      const total = hitungTotal(dataAktif);
+      let total;
+
+if (kategoriLibur[kat]) {
+  total = {
+    Energi: 0,
+    Protein: 0,
+    Lemak: 0,
+    Karbohidrat: 0,
+    Kalsium: 0,
+    Serat: 0
+  };
+} else {
+  total = hitungTotal(dataAktif);
+}
 
       // ================= SIMPAN GIZI UNTUK CAPTION =================
 if (!window.hasilGiziPerKategori) {
