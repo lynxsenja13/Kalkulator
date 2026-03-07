@@ -191,8 +191,26 @@ initAutocomplete();
 }
 // ================= TOGGLE LIBUR =================
 function toggleLibur(kat, checked) {
+
   kategoriLibur[kat] = checked;
-  liburLaporan[kat] = checked; // 🔥 TAMBAHKAN INI
+  liburLaporan[kat] = checked;
+
+  // sync SD
+  if (kat === "SD 1-3" || kat === "SD 4-6") {
+    kategoriLibur["SD 1-3"] = checked;
+    kategoriLibur["SD 4-6"] = checked;
+  }
+
+  // sync SMP
+  if (kat === "SMP") {
+    kategoriLibur["SMP"] = checked;
+  }
+
+  // sync SMA
+  if (kat === "SMA") {
+    kategoriLibur["SMA"] = checked;
+  }
+
   generateLaporan();
 }
 
@@ -831,7 +849,19 @@ function renderEditableList(menu, kat) {
     html += `
       <div class="bahan-item">
         <span>${item.nama}</span>
-        <span>${item.berat} ${item.satuan}</span>
+
+        <input
+          type="number"
+          value="${item.berat}"
+          style="width:70px"
+          onchange="editBerat('${menu}','${kat}',${i},this.value)"
+        >
+
+        <span>${item.satuan}</span>
+
+        <button onclick="hapusBahan('${menu}','${kat}',${i})">
+          ❌
+        </button>
       </div>
     `;
 
@@ -841,6 +871,7 @@ function renderEditableList(menu, kat) {
 
   return html;
 }
+
 function editBerat(menu, kat, index, value) {
   kategoriData[menu][kat][index].berat = parseFloat(value) || 0;
   generateLaporan();
@@ -1357,7 +1388,7 @@ C. Personel :
 3. Akuntan/No tlp : Febrianto/082121312500
 4. Jml Karyawan : 44
 
-D. Jumlah penerima sebanyak ${jumlahPenerima} orang
+D. Jumlah penerima sebanyak ${totalPenerima} orang
 1. BALITA = ${D1}
 2. BUMIL & BUSUI = ${D2}
 3. SD YAS = ${D3}
@@ -1488,6 +1519,18 @@ function autoResizeTextarea(el) {
 }
 
 function generateLaporanGizi() {
+
+const kategoriLibur = window.kategoriLibur || {};
+
+const libur = {
+  balita: kategoriLibur["Balita"] || false,
+  bumil: kategoriLibur["Bumil & Busui"] || false,
+  sd13: kategoriLibur["SD 1-3"] || false,
+  sd46: kategoriLibur["SD 4-6"] || false,
+  smp: kategoriLibur["SMP"] || false,
+  sma: kategoriLibur["SMA"] || false
+};
+  
   // ===============================
   // 📅 TANGGAL HARI INI
   // ===============================
