@@ -847,21 +847,30 @@ function renderEditableList(menu, kat) {
   list.forEach((item,i)=>{
 
     html += `
-      <div class="bahan-item">
-        <span>${item.nama}</span>
+      <div class="bahan-row">
 
-        <input
-          type="number"
-          value="${item.berat}"
-          style="width:70px"
-          onchange="editBerat('${menu}','${kat}',${i},this.value)"
-        >
+        <div class="bahan-nama">
+          ${item.nama}
+        </div>
 
-        <span>${item.satuan}</span>
+        <div class="bahan-edit">
 
-        <button onclick="hapusBahan('${menu}','${kat}',${i})">
-          ❌
-        </button>
+          <input
+            type="number"
+            value="${item.berat}"
+            onchange="editBerat('${menu}','${kat}',${i},this.value)"
+          >
+
+          <span>${item.satuan}</span>
+
+          <button
+            class="btn-hapus"
+            onclick="hapusBahan('${menu}','${kat}',${i})">
+            ❌
+          </button>
+
+        </div>
+
       </div>
     `;
 
@@ -1230,6 +1239,7 @@ function setSubTab(tab) {
 }
 
 function bukaModalLibur() {
+  syncLiburModal();
   document.getElementById("modalLibur").style.display = "flex";
 }
 
@@ -1555,6 +1565,17 @@ const libur = {
   });
 
   // ===============================
+  // 🧱 SUSUN CAPTION
+  // ===============================
+let caption = `Assalamualaikum wr.wb, Selamat Pagi.
+Izin menginformasikan, untuk menu hari ini.
+Tanggal : ${hari}, ${tanggal}
+
+Menu:
+${menuText}
+`;
+
+  // ===============================
   // 🔴 STATUS LIBUR
   // ===============================
   if (!libur.balita)
@@ -1597,17 +1618,6 @@ if (!libur.sma)
  • Serat: ${data.serat ?? 0} gr
 `;
   }
-
-  // ===============================
-  // 🧱 SUSUN CAPTION
-  // ===============================
-  let caption = `Assalamualaikum wr.wb, Selamat Pagi.
-Izin menginformasikan, untuk menu hari ini.
-Tanggal : ${hari}, ${tanggal}
-
-Menu:
-${menuText}
-`;
 
   // ===============================
   // ➕ TAMBAH BLOK (HANYA YANG TIDAK LIBUR)
@@ -2133,4 +2143,22 @@ function kirimLaporanKeSpreadsheet() {
     clearTimeout(t);
     t = setTimeout(() => fn(...args), delay);
   };
+}
+
+function syncLiburModal() {
+
+  document.getElementById("liburBalita").checked =
+    kategoriLibur["Balita"] || false;
+
+  document.getElementById("liburBumil").checked =
+    kategoriLibur["Bumil & Busui"] || false;
+
+  document.getElementById("liburSDYas").checked =
+    kategoriLibur["SD 1-3"] || false;
+
+  document.getElementById("liburSMPYas").checked =
+    kategoriLibur["SMP"] || false;
+
+  document.getElementById("liburSMAYas").checked =
+    kategoriLibur["SMA"] || false;
 }
