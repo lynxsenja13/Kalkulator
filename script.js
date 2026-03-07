@@ -1514,13 +1514,23 @@ function generateLaporanGizi() {
   // ===============================
   // 🔴 STATUS LIBUR
   // ===============================
-  const libur = {
-  balita: kategoriLibur["Balita"] || false,
-  bumil: kategoriLibur["Bumil & Busui"] || false,
-  sdyas: kategoriLibur["SD 1-3"] || false,
-  smpyas: kategoriLibur["SMP"] || false,
-  smayas: kategoriLibur["SMA"] || false
-};
+  if (!libur.balita)
+  caption += blok("Analisis Nilai Gizi Balita", gizi.balita);
+
+if (!libur.bumil)
+  caption += blok("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
+
+if (!libur.sd13)
+  caption += blok("Analisis Nilai Gizi SD 1-3", gizi.sd1_3);
+
+if (!libur.sd46)
+  caption += blok("Analisis Nilai Gizi SD 4-6", gizi.sd4_6);
+
+if (!libur.smp)
+  caption += blok("Analisis Nilai Gizi SMP", gizi.smp);
+
+if (!libur.sma)
+  caption += blok("Analisis Nilai Gizi SMA", gizi.sma);
 
   // ===============================
   // 🧮 AMBIL DATA GIZI (DARI SISTEMMU)
@@ -1560,17 +1570,33 @@ ${menuText}
   // ➕ TAMBAH BLOK (HANYA YANG TIDAK LIBUR)
   // ===============================
 
-  if (!libur.balita)
+  if (!kategoriLibur["Balita"]) {
     caption += blokGizi("Analisis Nilai Gizi Balita", gizi.balita);
+    }
 
-  if (!libur.bumil)
-    caption += blokGizi("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
+ if (!kategoriLibur["Bumil & Busui"]) {
+  caption += blokGizi("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
+}
   
-  if (!libur.sdyas)
-    caption += blokGizi("Analisis Nilai Gizi SD 1-3", gizi.sd1_3);
+  const sdAwiLibur = kategoriLibur["SD Awi Gombong"];
+  const sdYasLibur = kategoriLibur["SD YAS"];
 
-  if (!libur.sdyas)
-    caption += blokGizi("Analisis Nilai Gizi SD 4-6", gizi.sd4_6);
+// jika dua-duanya libur maka tidak tampil
+if (!(sdAwiLibur && sdYasLibur)) {
+
+  if (!sdAwiLibur) {
+    caption += blokGizi("Analisis Nilai Gizi SD Awi Gombong", gizi.sdawi);
+  }
+
+  if (!sdYasLibur) {
+    caption += blokGizi("Analisis Nilai Gizi SD YAS", gizi.sdyas);
+  }
+
+  // analisis gabungan SD
+  caption += blokGizi("Analisis Nilai Gizi SD Kelas 1-3", gizi.sd_kecil);
+  caption += blokGizi("Analisis Nilai Gizi SD Kelas 4-6", gizi.sd_besar);
+
+  }
 
   if (!libur.smpyas)
     caption += blokGizi("Analisis Nilai Gizi SMP", gizi.smp);
@@ -1703,38 +1729,31 @@ if (!libur.sma)
 }
 
 function generateCaptionSnack() {
-  const gizi = window.hasilGiziPerKategori || {};
-  const libur = window.kategoriLibur || {};
 
-  function blok(judul, data) {
-    if (!data) return "";
-    return `
-${judul}
- • Energi: ${data.energi ?? 0} kkal
- • Protein: ${data.protein ?? 0} gr
- • Lemak: ${data.lemak ?? 0} gr
- • Karbohidrat: ${data.karbo ?? 0} gr
- • Serat: ${data.serat ?? 0} gr
+  const gizi = window.hasilGiziPerKategori || {};
+  const kategoriLibur = window.kategoriLibur || {};
+
+  let caption = `
+🍪 Snack Bergizi Gratis
+
+⚖️ Kandungan Gizi (per porsi):
 `;
+
+  if (!kategoriLibur["Balita"]) {
+    caption += blokGizi("Analisis Nilai Gizi Balita", gizi.balita);
   }
 
-  let caption = "";
+  if (!kategoriLibur["Bumil & Busui"]) {
+    caption += blokGizi("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
+  }
 
-if (!kategoriLibur["Balita"]) {
-  caption += blokGizi("Analisis Nilai Gizi Balita", gizi.balita);
-}
+  if (!kategoriLibur["Keringan Sekolah Kecil"]) {
+    caption += blokGizi("Analisis Nilai Gizi Keringan Sekolah Kecil", gizi.kecil);
+  }
 
-if (!kategoriLibur["Bumil & Busui"]) {
-  caption += blokGizi("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
-}
-
-if (!kategoriLibur["Keringan Sekolah Kecil"]) {
-  caption += blokGizi("Analisis Nilai Gizi Keringan Sekolah Kecil", gizi.kecil);
-}
-
-if (!kategoriLibur["Keringan Sekolah Besar"]) {
-  caption += blokGizi("Analisis Nilai Gizi Keringan Sekolah Besar", gizi.besar);
-}
+  if (!kategoriLibur["Keringan Sekolah Besar"]) {
+    caption += blokGizi("Analisis Nilai Gizi Keringan Sekolah Besar", gizi.besar);
+  }
 
   caption += `
 🌿 “Makan bergizi, tubuh berenergi!”
@@ -1744,7 +1763,6 @@ if (!kategoriLibur["Keringan Sekolah Besar"]) {
 
   document.getElementById("captionOutput").value = caption.trim();
 }
-
 function blokGizi(judul, data) {
   if (!data) return "";
 
