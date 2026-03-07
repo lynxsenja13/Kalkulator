@@ -195,20 +195,17 @@ function toggleLibur(kat, checked) {
   kategoriLibur[kat] = checked;
   window.kategoriLibur = kategoriLibur;
 
-  // sync SD
   if (kat === "SD 1-3" || kat === "SD 4-6") {
-    kategoriLiburData["SD 1-3"] = checked;
-    kategoriLiburData["SD 4-6"] = checked;
+    kategoriLibur["SD 1-3"] = checked;
+    kategoriLibur["SD 4-6"] = checked;
   }
 
-  // sync SMP
   if (kat === "SMP") {
-    kategoriLiburData["SMP"] = checked;
+    kategoriLibur["SMP"] = checked;
   }
 
-  // sync SMA
   if (kat === "SMA") {
-    kategoriLiburData["SMA"] = checked;
+    kategoriLibur["SMA"] = checked;
   }
 
   generateLaporan();
@@ -1530,8 +1527,7 @@ function autoResizeTextarea(el) {
 
 function generateLaporanGizi() {
 
-const output = document.getElementById("captionOutput");
-if (output) output.value = "";
+let caption = "";
 
 const kategoriLiburData = kategoriLibur || {};
 
@@ -1543,34 +1539,24 @@ const libur = {
   smp: kategoriLiburData["SMP"] || false,
   sma: kategoriLiburData["SMA"] || false
 };
-  
-  // ===============================
-  // 📅 TANGGAL HARI INI
-  // ===============================
-  const now = new Date();
-  const hari = now.toLocaleDateString("id-ID", { weekday: "long" });
-  const tanggal = now.toLocaleDateString("id-ID", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric"
-  });
 
-  // ===============================
-  // 🍽️ AMBIL MENU
-  // ===============================
-  const menuInputs = document.querySelectorAll("#menuContainer .input-menu");
+const now = new Date();
+const hari = now.toLocaleDateString("id-ID", { weekday: "long" });
+const tanggal = now.toLocaleDateString("id-ID", {
+  day: "2-digit",
+  month: "long",
+  year: "numeric"
+});
 
-  let menuText = "";
-  menuInputs.forEach((inp, i) => {
-    if (inp.value.trim()) {
-      menuText += `${i + 1}. ${inp.value.trim()}\n`;
-    }
-  });
+const menuInputs = document.querySelectorAll("#menuContainer .input-menu");
 
-  // ===============================
-  // 🧱 SUSUN CAPTION
-  // ===============================
-let caption = "";
+let menuText = "";
+
+menuInputs.forEach((inp,i)=>{
+if(inp.value.trim()){
+menuText += `${i+1}. ${inp.value.trim()}\n`;
+}
+});
 
 caption += `Assalamualaikum wr.wb, Selamat Pagi.
 Izin menginformasikan, untuk menu hari ini.
@@ -1580,93 +1566,28 @@ Menu:
 ${menuText}
 `;
 
-  // ===============================
-  // 🧮 AMBIL DATA GIZI (DARI SISTEMMU)
-  // ⚠️ SESUAIKAN jika nama variabel beda
-  // ===============================
-  const gizi = window.hasilGiziPerKategori || {};
+const gizi = window.hasilGiziPerKategori || {};
 
-  // ===============================
-  // 🔴 STATUS LIBUR
-  // ===============================
-  if (!libur.balita)
-  caption += blokGizi("Analisis Nilai Gizi Balita", gizi.balita);
+if (!libur.balita)
+caption += blokGizi("Analisis Nilai Gizi Balita", gizi.balita);
 
 if (!libur.bumil)
-  caption += blokGizi("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
+caption += blokGizi("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
 
 if (!libur.sd13)
-  caption += blokGizi("Analisis Nilai Gizi SD 1-3", gizi.sd1_3);
+caption += blokGizi("Analisis Nilai Gizi SD 1-3", gizi.sd1_3);
 
 if (!libur.sd46)
-  caption += blokGizi("Analisis Nilai Gizi SD 4-6", gizi.sd4_6);
+caption += blokGizi("Analisis Nilai Gizi SD 4-6", gizi.sd4_6);
 
 if (!libur.smp)
-  caption += blokGizi("Analisis Nilai Gizi SMP", gizi.smp);
+caption += blokGizi("Analisis Nilai Gizi SMP", gizi.smp);
 
 if (!libur.sma)
-  caption += blokGizi("Analisis Nilai Gizi SMA", gizi.sma);
+caption += blokGizi("Analisis Nilai Gizi SMA", gizi.sma);
 
-  // ===============================
-  // 🧩 HELPER FORMAT BLOK GIZI
-  // ===============================
-  function blokGizi(judul, data) {
-    if (!data) return "";
-
-    return `
-🥗 ${judul} 🥗
- • Energi: ${data.energi ?? 0} kkal
- • Protein: ${data.protein ?? 0} gr
- • Lemak: ${data.lemak ?? 0} gr
- • Karbohidrat: ${data.karbo ?? 0} gr
- • Zat Besi: ${data.besi ?? 0} mg
- • Serat: ${data.serat ?? 0} gr
-`;
-  }
-
-  // ===============================
-  // ➕ TAMBAH BLOK (HANYA YANG TIDAK LIBUR)
-  // ===============================
-
-  if (!kategoriLiburData["Balita"]) {
-    caption += blokGizi("Analisis Nilai Gizi Balita", gizi.balita);
-    }
-
- if (!kategoriLiburData["Bumil & Busui"]) {
-  caption += blokGizi("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
-}
-  
-  const sdAwiLibur = kategoriLiburData["SD Awi Gombong"];
-  const sdYasLibur = kategoriLiburData["SD YAS"];
-
-// jika dua-duanya libur maka tidak tampil
-if (!(sdAwiLibur && sdYasLibur)) {
-
-  if (!sdAwiLibur) {
-    caption += blokGizi("Analisis Nilai Gizi SD Awi Gombong", gizi.sdawi);
-  }
-
-  if (!sdYasLibur) {
-    caption += blokGizi("Analisis Nilai Gizi SD YAS", gizi.sdyas);
-  }
-
-  // analisis gabungan SD
-  caption += blokGizi("Analisis Nilai Gizi SD Kelas 1-3", gizi.sd_kecil);
-  caption += blokGizi("Analisis Nilai Gizi SD Kelas 4-6", gizi.sd_besar);
-
-  }
-
-  if (!libur.smpyas)
-    caption += blokGizi("Analisis Nilai Gizi SMP", gizi.smp);
-
-  if (!libur.smayas)
-    caption += blokGizi("Analisis Nilai Gizi SMA", gizi.sma);
-
-  // ===============================
-  // 📤 OUTPUT
-  // ===============================
-  const output = document.getElementById("captionOutput");
-  if (output) output.value = caption.trim();
+const outputBox = document.getElementById("captionOutput");
+if (outputBox) outputBox.value = caption.trim();
 }
 
 function prosesGenerateLaporan() {
