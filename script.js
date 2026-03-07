@@ -1807,25 +1807,29 @@ function kirimKeSpreadsheet() {
     return;
   }
 
+  // 🔥 PAKSA GENERATE SEMUA MENU
+  const modeBackup = modeMenu;
+
+  modeMenu = "OMPRENGAN";
+  generateLaporan();
+
+  modeMenu = "SNACK";
+  generateLaporan();
+
+  modeMenu = modeBackup;
+
   const tanggal = formatTanggalIndonesia();
 
   const data = {
-  tanggal: tanggal,
+    tanggal: tanggal,
 
-  menu: menuHarian.filter(m => m.trim()),
+    menu: menuHarian.filter(m => m.trim()),
 
-  omprengan: window.dataSpreadsheet.OMPRENGAN || {
-    gizi:{},
-    detail:[]
-  },
+    omprengan: window.dataSpreadsheet.OMPRENGAN,
+    snack: window.dataSpreadsheet.SNACK,
 
-  snack: window.dataSpreadsheet.SNACK || {
-    gizi:{},
-    detail:[]
-  },
-
-  catatan: document.getElementById("note")?.value || ""
-};
+    catatan: document.getElementById("note")?.value || ""
+  };
 
   const formData = new FormData();
   formData.append("data", JSON.stringify(data));
