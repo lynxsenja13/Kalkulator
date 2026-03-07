@@ -584,9 +584,7 @@ function generateLaporan() {
   }
 
   const hasilDiv = document.getElementById("hasil");
-  if(modeMenu === "OMPRENGAN"){
   hasilDiv.innerHTML = "";
-}
 
   // reset data spreadsheet
   window.dataSpreadsheet = {
@@ -1578,31 +1576,31 @@ ${menuText}
 `;
 
   // ===============================
-  // 🔴 STATUS LIBUR
-  // ===============================
-  if (!libur.balita)
-  caption += blok("Analisis Nilai Gizi Balita", gizi.balita);
-
-if (!libur.bumil)
-  caption += blok("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
-
-if (!libur.sd13)
-  caption += blok("Analisis Nilai Gizi SD 1-3", gizi.sd1_3);
-
-if (!libur.sd46)
-  caption += blok("Analisis Nilai Gizi SD 4-6", gizi.sd4_6);
-
-if (!libur.smp)
-  caption += blok("Analisis Nilai Gizi SMP", gizi.smp);
-
-if (!libur.sma)
-  caption += blok("Analisis Nilai Gizi SMA", gizi.sma);
-
-  // ===============================
   // 🧮 AMBIL DATA GIZI (DARI SISTEMMU)
   // ⚠️ SESUAIKAN jika nama variabel beda
   // ===============================
   const gizi = window.hasilGiziPerKategori || {};
+
+  // ===============================
+  // 🔴 STATUS LIBUR
+  // ===============================
+  if (!libur.balita)
+  caption += blokGizi("Analisis Nilai Gizi Balita", gizi.balita);
+
+if (!libur.bumil)
+  caption += blokGizi("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
+
+if (!libur.sd13)
+  caption += blokGizi("Analisis Nilai Gizi SD 1-3", gizi.sd1_3);
+
+if (!libur.sd46)
+  caption += blokGizi("Analisis Nilai Gizi SD 4-6", gizi.sd4_6);
+
+if (!libur.smp)
+  caption += blokGizi("Analisis Nilai Gizi SMP", gizi.smp);
+
+if (!libur.sma)
+  caption += blokGizi("Analisis Nilai Gizi SMA", gizi.sma);
 
   // ===============================
   // 🧩 HELPER FORMAT BLOK GIZI
@@ -1757,22 +1755,22 @@ ${menuText}
 `;
 
   if (!libur.balita)
-  caption += blok("Analisis Nilai Gizi Balita", gizi.balita);
+  caption += blokGizi("Analisis Nilai Gizi Balita", gizi.balita);
 
 if (!libur.bumil)
-  caption += blok("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
+  caption += blokGizi("Analisis Nilai Gizi Bumil & Busui", gizi.bumil);
 
 if (!libur.sd13)
-  caption += blok("Analisis Nilai Gizi SD 1-3", gizi.sd1_3);
+  caption += blokGizi("Analisis Nilai Gizi SD 1-3", gizi.sd1_3);
 
 if (!libur.sd46)
-  caption += blok("Analisis Nilai Gizi SD 4-6", gizi.sd4_6);
+  caption += blokGizi("Analisis Nilai Gizi SD 4-6", gizi.sd4_6);
 
 if (!libur.smp)
-  caption += blok("Analisis Nilai Gizi SMP", gizi.smp);
+  caption += blokGizi("Analisis Nilai Gizi SMP", gizi.smp);
 
 if (!libur.sma)
-  caption += blok("Analisis Nilai Gizi SMA", gizi.sma);
+  caption += blokGizi("Analisis Nilai Gizi SMA", gizi.sma);
 
   caption += `
 🌿 “Makan bergizi, tubuh berenergi!”
