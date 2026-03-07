@@ -584,7 +584,9 @@ function generateLaporan() {
   }
 
   const hasilDiv = document.getElementById("hasil");
+  if(modeMenu === "OMPRENGAN"){
   hasilDiv.innerHTML = "";
+}
 
   // reset data spreadsheet
   window.dataSpreadsheet = {
@@ -598,7 +600,7 @@ function generateLaporan() {
     }
   };
 
-  const semuaMenu = ["OMPRENGAN", "SNACK"];
+  const semuaMenu = [modeMenu];
 
   semuaMenu.forEach(menu => {
 
