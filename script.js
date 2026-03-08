@@ -37,7 +37,7 @@ let pendingBerat = null;
 let modeKategori = "SEMUA";
 let menuHarian = [""];
 let menuKategori = "semua";
-let modeMenu = "semua"; 
+let modeMenuLaporan = "semua"; 
 let menuSemua = [];
 let menuBalita = [];
 let menuSekolah = [];
@@ -1085,7 +1085,7 @@ const totalSemua = Object.values(data).reduce((a,b)=>a+b,0);
 
 let menuList = "";
 
-if(modeMenu === "semua"){
+if(modeMenuLaporan === "semua"){
 
 const valid = menuSemua.filter(m=>m.trim());
 
@@ -1188,7 +1188,7 @@ function editMenuHarian(index, value) {
 function renderMenuHarian() {
   const container = document.getElementById("menuContainer");
 
-if(modeMenu === "semua"){
+if(modeMenuLaporan === "semua"){
 
 container.innerHTML = `
 
@@ -1207,7 +1207,7 @@ oninput="menuSemua[${i}] = this.value">
 
 <br><br>
 
-<button onclick="modeMenu='terpisah'; renderMenuHarian()">
+<button onclick="modeMenuLaporan='terpisah'; renderMenuHarian()">
 Gunakan Menu Balita & Sekolah
 </button>
 
