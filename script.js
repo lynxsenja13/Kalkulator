@@ -35,7 +35,9 @@ let databaseLoaded = false;
 let pendingNama = null;
 let pendingBerat = null;
 let modeKategori = "SEMUA";
-let menuHarian = [""];
+let menuBalita = [];
+let menuSekolah = [];
+let menuSemua = [];
 let liburLaporan = {};
 let subTabAktif = "harian"; // default
 let mainTabAktif = "laporan";
@@ -1078,10 +1080,41 @@ const totalD =
 const totalSemua = Object.values(data).reduce((a,b)=>a+b,0);
   const tanggal = formatTanggalIndonesia();
 
-  const menuList = menuHarian
+let menuList = "";
+
+if (menuSemua.length > 0) {
+
+  menuList = menuSemua
     .filter(m => m.trim())
     .map((m,i)=>`${i+1}. ${m}`)
     .join("\n");
+
+} else {
+
+  if (menuBalita.length > 0) {
+
+    menuList += `Menu Balita, Bumil & Busui :\n\n`;
+
+    menuList += menuBalita
+      .filter(m => m.trim())
+      .map((m,i)=>`${i+1}. ${m}`)
+      .join("\n");
+
+    menuList += "\n\n";
+  }
+
+  if (menuSekolah.length > 0) {
+
+    menuList += `Menu Sekolah :\n`;
+
+    menuList += menuSekolah
+      .filter(m => m.trim())
+      .map((m,i)=>`${i+1}. ${m}`)
+      .join("\n");
+
+  }
+
+}
 
   const caption = `
 Yth. Dandim 0618/Kota Bandung
