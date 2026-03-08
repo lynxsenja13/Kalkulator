@@ -263,33 +263,40 @@ function getKategoriAktif() {
     : kategoriSnack;
 }
 
-function renderKategori() {
-  const container = document.getElementById("kategoriCheckbox");
-  if (!container) return;
+function renderKategori(){
 
-  container.innerHTML = `
-<label class="kategori-item">
+const container = document.getElementById("kategoriCheckbox");
+
+if(!container) return;
+
+container.innerHTML = "";
+
+/* 🔥 tombol SEMUA */
+container.innerHTML += `
+<label class="kategori-chip semua">
 <input type="checkbox" id="kategoriSemua">
-Semua
+<span>Semua</span>
 </label>
 `;
 
-  const kategori =
-    modeMenu === "OMPRENGAN"
-      ? kategoriOmprengan
-      : kategoriSnack;
+const kategori =
+modeMenu === "OMPRENGAN"
+? kategoriOmprengan
+: kategoriSnack;
 
-  kategori.forEach(kat => {
-    const label = document.createElement("label");
-    label.className = "kategori-item";
+kategori.forEach(kat=>{
 
-    label.innerHTML = `
-      <input type="checkbox" value="${kat}" class="kategori-check">
-      ${kat}
-    `;
+container.innerHTML += `
+<label class="kategori-chip">
+<input type="checkbox" class="kategori-check" value="${kat}">
+<span>${kat}</span>
+</label>
+`;
 
-    container.appendChild(label);
-  });
+});
+
+initCheckboxSemua();
+
 }
 
 function initCheckboxSemua(){
