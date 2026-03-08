@@ -2144,30 +2144,23 @@ function renderKategoriCheckbox(){
 
   kategoriAktif.forEach(kat=>{
 
-    const label=document.createElement("label");
-    label.className="kategori-item";
+    const btn=document.createElement("div");
+    btn.className="kategori-chip";
+    btn.dataset.value=kat;
+    btn.textContent=kat;
 
-    label.innerHTML=`
-      <input type="checkbox" value="${kat}">
-      ${kat}
-    `;
-
-    container.appendChild(label);
+    container.appendChild(btn);
 
   });
 
-  const semua=document.createElement("label");
-  semua.className="kategori-item";
-
-  semua.innerHTML=`
-    <input type="checkbox" value="SEMUA">
-    Semua
-  `;
+  const semua=document.createElement("div");
+  semua.className="kategori-chip semua";
+  semua.dataset.value="SEMUA";
+  semua.textContent="SEMUA";
 
   container.appendChild(semua);
 
 }
-
 function ambilKategoriDipilih() {
 
   const checked = document.querySelectorAll(
