@@ -1673,7 +1673,7 @@ if (!libur.sma)
 
 function generateCaptionSnack() {
 
-  const gizi = window.hasilGizi.SNACK; || {};
+  const gizi = window.hasilGizi.SNACK || {};
 
   const kecil = gizi.kecil || {};
   const besar = gizi.besar || {};
