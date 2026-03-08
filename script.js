@@ -663,15 +663,14 @@ function generateLaporan() {
       const keyCaption = mapCaption[kat];
 
       if (keyCaption) {
-        // 🔥 pisahkan antara OMPRENGAN dan SNACK
-        window.hasilGiziPerKategori[menu][keyCaption] = {
-          energi: Number((total.Energi || 0).toFixed(2)),
-          protein: Number((total.Protein || 0).toFixed(2)),
-          lemak: Number((total.Lemak || 0).toFixed(2)),
-          karbo: Number((total.Karbohidrat || 0).toFixed(2)),
-          serat: Number((total.Serat || 0).toFixed(2))
-        };
-      }
+      window.hasilGizi[menu][keyCaption] = {
+        energi: Number((total.Energi || 0).toFixed(2)),
+        protein: Number((total.Protein || 0).toFixed(2)),
+        lemak: Number((total.Lemak || 0).toFixed(2)),
+        karbo: Number((total.Karbohidrat || 0).toFixed(2)),
+        serat: Number((total.Serat || 0).toFixed(2))
+      };
+    }
 
       // ================= SIMPAN TOTAL GIZI KE SPREADSHEET =================
       const keyMap = {
