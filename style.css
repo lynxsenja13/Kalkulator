@@ -1673,3 +1673,27 @@ cursor:pointer;
 accent-color:#2563eb;
 cursor:pointer;
 }
+
+.kategori-scroll{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-bottom:12px;
+}
+
+.kategori-item{
+display:flex;
+align-items:center;
+gap:6px;
+padding:6px 10px;
+background:#2c2f3a;
+border-radius:6px;
+color:white;
+font-size:14px;
+}
+
+.kategori-item input{
+accent-color:#4cafef;
+width:16px;
+height:16px;
+}
