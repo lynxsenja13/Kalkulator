@@ -1650,3 +1650,26 @@ font-weight:600;
   background:#e67e22;
   border-color:#e67e22;
 }
+
+.kategori-scroll{
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+margin-top:8px;
+}
+
+.kategori-pill{
+display:flex;
+align-items:center;
+gap:6px;
+background:#f3f4f6;
+padding:6px 10px;
+border-radius:20px;
+font-size:13px;
+cursor:pointer;
+}
+
+.kategori-pill input{
+accent-color:#2563eb;
+cursor:pointer;
+}
