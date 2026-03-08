@@ -1726,3 +1726,7 @@ background:#4cafef;
 border-color:#4cafef;
 color:white;
 }
+
+.kategori-chip:active{
+transform:scale(0.95);
+}
