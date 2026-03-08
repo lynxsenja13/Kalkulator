@@ -1083,7 +1083,7 @@ const totalD =
 const totalSemua = Object.values(data).reduce((a,b)=>a+b,0);
   const tanggal = formatTanggalIndonesia();
 
-let menuList = "";
+let menuList = ambilMenuUntukLaporan().join("\n");
 
 if (modeMenuLaporan === "semua") {
 
@@ -1204,7 +1204,7 @@ oninput="menuSemua[${i}] = this.value; generateCaptionHarian()">
 <br><br>
 
 <button onclick="modeMenuLaporan='terpisah'; renderMenuHarian()">
-Gunakan Menu Balita & Sekolah
+Gunakan Menu B3 & Sekolah
 </button>
 
 `;
@@ -1246,7 +1246,7 @@ oninput="menuSekolah[${i}] = this.value; generateCaptionHarian()">
 <br><br>
 
 <button onclick="modeMenuLaporan='semua'; renderMenuHarian()">
-Gunakan Menu Sama Untuk Semua
+Gunakan Menu Universal
 </button>
   `;
   }
@@ -1613,7 +1613,7 @@ const tanggal = now.toLocaleDateString("id-ID", {
 
 const menuInputs = document.querySelectorAll("#menuContainer .input-menu");
 
-let menuText = "";
+let menuText = ambilMenuUntukLaporan().join("\n");
 
 menuInputs.forEach((inp,i)=>{
 if(inp.value.trim()){
@@ -1700,7 +1700,7 @@ function generateCaptionOmprengan() {
 
   // menu
   const menuInputs = document.querySelectorAll("#menuContainer .input-menu");
-  let menuText = "";
+  let menuText = ambilMenuUntukLaporan().join("\n");
 
   menuInputs.forEach((inp) => {
     if (inp.value.trim()) {
@@ -1871,36 +1871,13 @@ function kirimKeSpreadsheet() {
 
   const tanggal = formatTanggalIndonesia();
 
-  // ===============================
-  // 🔥 SUSUN MENU
-  // ===============================
-  let menuFix = [];
+  let menuFix = ambilMenuUntukLaporan();
 
-  if (modeMenuLaporan === "semua") {
-
-    menuFix = menuSemua.filter(m => m.trim());
-
-  } else {
-
-    menuFix = [
-      "Menu Balita, Bumil & Busui",
-      ...menuBalita.filter(m => m.trim()),
-      "",
-      "Menu Sekolah",
-      ...menuSekolah.filter(m => m.trim())
-    ];
-
-  }
-
-  // ===============================
-  // 🔥 DATA FINAL
-  // ===============================
   const data = {
     tanggal: tanggal,
     menu: menuFix,
     omprengan: window.dataSpreadsheet.OMPRENGAN,
-    snack: window.dataSpreadsheet.SNACK,
-    catatan: document.getElementById("note")?.value || ""
+    snack: window.dataSpreadsheet.SNACK
   };
 
   const formData = new FormData();
@@ -2179,4 +2156,30 @@ function syncLiburModal() {
 function ubahKategoriMenu(value){
   menuKategori = value;
   generateCaptionHarian();
+}
+
+function ambilMenuUntukLaporan(){
+
+  if(modeMenuLaporan === "semua"){
+    return menuSemua.filter(m => m.trim());
+  }
+
+  let hasil = [];
+
+  if(menuBalita.length){
+    hasil.push("Menu Balita, Bumil & Busui :");
+    menuBalita.filter(m=>m.trim()).forEach((m,i)=>{
+      hasil.push((i+1)+". "+m);
+    });
+  }
+
+  if(menuSekolah.length){
+    hasil.push("");
+    hasil.push("Menu Sekolah :");
+    menuSekolah.filter(m=>m.trim()).forEach((m,i)=>{
+      hasil.push((i+1)+". "+m);
+    });
+  }
+
+  return hasil;
 }
