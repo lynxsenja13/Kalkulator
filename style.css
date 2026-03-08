@@ -1584,3 +1584,8 @@ font-weight:600;
   background:#e67e22;
   border-color:#e67e22;
 }
+
+.kategori-chip span{
+  padding:4px 8px;
+  font-size:11px;
+}
