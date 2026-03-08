@@ -682,7 +682,7 @@ const mapCaption = {
 
 const keyCaption = mapCaption[kat];
 
-if (keyCaption) {
+if (keyCaption && menu === "OMPRENGAN") {
   window.hasilGiziPerKategori[keyCaption] = {
     energi: Number((total.Energi || 0).toFixed(2)),
     protein: Number((total.Protein || 0).toFixed(2)),
@@ -1084,35 +1084,7 @@ const totalSemua = Object.values(data).reduce((a,b)=>a+b,0);
   const tanggal = formatTanggalIndonesia();
 
 let menuList = ambilMenuUntukLaporan().join("\n");
-
-if (modeMenuLaporan === "semua") {
-
-  const valid = menuSemua.filter(m => m.trim());
-
-  menuList = valid
-    .map((m,i) => `${i+1}. ${m}`)
-    .join("\n");
-
-} else {
-
-  const balitaValid = menuBalita.filter(m => m.trim());
-  const sekolahValid = menuSekolah.filter(m => m.trim());
-
-  menuList += `Menu Balita, Bumil & Busui :\n`;
-
-  menuList += balitaValid
-    .map((m,i) => `${i+1}. ${m}`)
-    .join("\n");
-
-  menuList += "\n\n";
-
-  menuList += `Menu Sekolah :\n`;
-
-  menuList += sekolahValid
-    .map((m,i) => `${i+1}. ${m}`)
-    .join("\n");
-}
-
+  
   const caption = `
 Yth. Dandim 0618/Kota Bandung
 Cc. Pasiter Kodim 0618/Kota Bandung
@@ -1615,7 +1587,7 @@ const menuInputs = document.querySelectorAll("#menuContainer .input-menu");
 
 let menuText = ambilMenuUntukLaporan().join("\n");
 
-menuInputs.forEach((inp,i)=>{
+((inp,i)=>{
 if(inp.value.trim()){
 menuText += `${i+1}. ${inp.value.trim()}\n`;
 }
@@ -2057,6 +2029,17 @@ function kirimLaporan(data) {
 }
 
 function kirimLaporanKeSpreadsheet() {
+
+const tanggal = formatTanggalIndonesia();
+
+let menuFix = ambilMenuUntukLaporan();
+
+const data = {
+  tanggal: tanggal,
+  menu: menuFix,
+  omprengan: window.dataSpreadsheet.OMPRENGAN,
+  snack: window.dataSpreadsheet.SNACK
+};
 
   const semuaDetail = [];
   const semuaLibur = {};
