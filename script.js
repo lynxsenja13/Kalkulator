@@ -1823,7 +1823,7 @@ function kirimLaporan(data) {
   // =======================
   // 🟦 JUDUL
   // =======================
-  sheet.getRange("A1").setValue("LAPORAN MAKAN BERGIZI GRATIS");
+  sheet.getRange("A1").setValue("LAPORAN MENU MBG SPPG CICADAS 01");
   sheet.getRange("A2").setValue("Tanggal: " + data.tanggal);
 
   sheet.getRange("A1").setFontSize(14).setFontWeight("bold");
@@ -1940,6 +1940,20 @@ function kirimLaporan(data) {
   sheet.getRange(row, 4).setValue(total.lemak);
   sheet.getRange(row, 5).setValue(total.karbo);
   sheet.getRange(row, 6).setValue(total.serat);
+
+  const target = AKG["SMA"]; // standar tertinggi
+
+const warnaEnergi = total.energi >= target.Energi ? "#bbf7d0" : "#fecaca";
+const warnaProtein = total.protein >= target.Protein ? "#bbf7d0" : "#fecaca";
+const warnaLemak = total.lemak >= target.Lemak ? "#bbf7d0" : "#fecaca";
+const warnaKarbo = total.karbo >= target.Karbohidrat ? "#bbf7d0" : "#fecaca";
+const warnaSerat = total.serat >= target.Serat ? "#bbf7d0" : "#fecaca";
+
+sheet.getRange(row,2).setBackground(warnaEnergi);
+sheet.getRange(row,3).setBackground(warnaProtein);
+sheet.getRange(row,4).setBackground(warnaLemak);
+sheet.getRange(row,5).setBackground(warnaKarbo);
+sheet.getRange(row,6).setBackground(warnaSerat);
 
   sheet.getRange(row, 1, 1, header.length)
     .setFontWeight("bold")
