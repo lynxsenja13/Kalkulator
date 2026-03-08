@@ -303,6 +303,52 @@ html += `
 
 container.innerHTML = html;
 
+initKategoriLogic();
+
+}
+
+function initKategoriLogic(){
+
+const semua = document.getElementById("kategoriSemua");
+const kategori = document.querySelectorAll(".kategori-check");
+
+if(!semua) return;
+
+/* ketika klik SEMUA */
+
+semua.addEventListener("change", function(){
+
+if(this.checked){
+
+kategori.forEach(k=>{
+k.checked = false;
+k.disabled = true;
+});
+
+}else{
+
+kategori.forEach(k=>{
+k.disabled = false;
+});
+
+}
+
+});
+
+/* ketika klik kategori lain */
+
+kategori.forEach(k=>{
+
+k.addEventListener("change",function(){
+
+if(this.checked){
+semua.checked = false;
+}
+
+});
+
+});
+
 }
 
 function initCheckboxSemua(){
