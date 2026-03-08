@@ -1085,35 +1085,32 @@ const totalSemua = Object.values(data).reduce((a,b)=>a+b,0);
 
 let menuList = "";
 
-if(modeMenuLaporan === "semua"){
+if (modeMenuLaporan === "semua") {
 
-const valid = menuSemua.filter(m=>m.trim());
+  const valid = menuSemua.filter(m => m.trim());
 
-menuList = valid
-.map((m,i)=>`${i+1}. ${m}`)
-.join("\n");
+  menuList = valid
+    .map((m,i) => `${i+1}. ${m}`)
+    .join("\n");
 
-}
+} else {
 
-else{
+  const balitaValid = menuBalita.filter(m => m.trim());
+  const sekolahValid = menuSekolah.filter(m => m.trim());
 
-const balitaValid = menuBalita.filter(m=>m.trim());
-const sekolahValid = menuSekolah.filter(m=>m.trim());
+  menuList += `Menu Balita, Bumil & Busui :\n`;
 
-menuList += `Menu Balita, Bumil & Busui :\n`;
+  menuList += balitaValid
+    .map((m,i) => `${i+1}. ${m}`)
+    .join("\n");
 
-menuList += balitaValid
-.map((m,i)=>`${i+1}. ${m}`)
-.join("\n");
+  menuList += "\n\n";
 
-menuList += "\n\n";
+  menuList += `Menu Sekolah :\n`;
 
-menuList += `Menu Sekolah :\n`;
-
-menuList += sekolahValid
-.map((m,i)=>`${i+1}. ${m}`)
-.join("\n");
-
+  menuList += sekolahValid
+    .map((m,i) => `${i+1}. ${m}`)
+    .join("\n");
 }
 
   const caption = `
@@ -1146,7 +1143,7 @@ D. Jumlah penerima sebanyak ${totalD} orang.
 
 Jumlah makan : ${totalSemua} porsi.
 
-E. Menu Makan hari ini ${tanggal}\n\n`;
+E. Menu Makan hari ini ${tanggal}
 ${menuList}
 
 Demikian kami laporkan.
