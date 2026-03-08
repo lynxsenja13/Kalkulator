@@ -266,36 +266,42 @@ function getKategoriAktif() {
 function renderKategori(){
 
 const container = document.getElementById("kategoriCheckbox");
-
 if(!container) return;
 
-container.innerHTML = "";
+const kategori = [
+"Balita",
+"Bumil",
+"SD 1-3",
+"SD 4-6",
+"SMP",
+"SMA"
+];
 
-/* 🔥 tombol SEMUA */
-container.innerHTML += `
+let html = "";
+
+/* tombol SEMUA */
+
+html += `
 <label class="kategori-chip semua">
 <input type="checkbox" id="kategoriSemua">
 <span>Semua</span>
 </label>
 `;
 
-const kategori =
-modeMenu === "OMPRENGAN"
-? kategoriOmprengan
-: kategoriSnack;
+/* kategori lain */
 
-kategori.forEach(kat=>{
+kategori.forEach(k => {
 
-container.innerHTML += `
+html += `
 <label class="kategori-chip">
-<input type="checkbox" class="kategori-check" value="${kat}">
-<span>${kat}</span>
+<input type="checkbox" class="kategori-check" value="${k}">
+<span>${k}</span>
 </label>
 `;
 
 });
 
-initCheckboxSemua();
+container.innerHTML = html;
 
 }
 
