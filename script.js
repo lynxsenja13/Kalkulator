@@ -15,6 +15,11 @@ window.dataSpreadsheet = {
   }
 };
 
+window.hasilGizi = {
+  OMPRENGAN: {},
+  SNACK: {}
+};
+
 const STATE = {
   modeMenu:"OMPRENGAN",
   modeKategori:"SEMUA",
@@ -595,37 +600,34 @@ function generateLaporan() {
 
   const hasilDiv = document.getElementById("hasil");
   hasilDiv.innerHTML = "";
-  window.hasilGiziPerKategori = {};
 
   // 🔥 RESET DATA SEBELUM HITUNG
   window.dataSpreadsheet.OMPRENGAN.detail = [];
   window.dataSpreadsheet.SNACK.detail = [];
-
   window.dataSpreadsheet.OMPRENGAN.gizi = {};
   window.dataSpreadsheet.SNACK.gizi = {};
+
+  // 🔥 RESET HASIL GIZI PER KATEGORI
+  window.hasilGiziPerKategori = {
+    OMPRENGAN: {},
+    SNACK: {}
+  };
 
   const semuaMenu = ["OMPRENGAN", "SNACK"];
 
   semuaMenu.forEach(menu => {
 
     const listAktif = bahanMaster[menu] || [];
-
-    const kategoriList =
-      menu === "OMPRENGAN"
-        ? kategoriOmprengan
-        : kategoriSnack;
+    const kategoriList = menu === "OMPRENGAN" ? kategoriOmprengan : kategoriSnack;
 
     kategoriList.forEach(kat => {
 
       const isLibur = kategoriLibur[kat] || false;
 
-      // ================= LIBUR =================
       if (isLibur) {
-
         hasilDiv.innerHTML += `
           <div class="kategori-card kategori-libur">
             <h3>${kat} Libur</h3>
-
             <div class="libur-toggle">
               <label>
                 <input type="checkbox"
@@ -636,73 +638,49 @@ function generateLaporan() {
             </div>
           </div>
         `;
-
         return;
       }
 
-      // ================= DATA KATEGORI =================
-      const dataKategori =
-        (kategoriData[menu] && kategoriData[menu][kat])
-          ? kategoriData[menu][kat]
-          : [];
-
+      const dataKategori = kategoriData[menu][kat] || [];
       const dataAktif = dataKategori.filter(item =>
         listAktif.some(b => b.nama === item.nama)
       );
 
-      let total;
-
-if (kategoriLibur[kat]) {
-  total = {
-    Energi: 0,
-    Protein: 0,
-    Lemak: 0,
-    Karbohidrat: 0,
-    Kalsium: 0,
-    Serat: 0
-  };
-} else {
-  total = hitungTotal(dataAktif);
-}
+      const total = hitungTotal(dataAktif);
 
       // ================= SIMPAN GIZI UNTUK CAPTION =================
-if (!window.hasilGiziPerKategori) {
-  window.hasilGiziPerKategori = {};
-}
+      const mapCaption = {
+        "Balita": "balita",
+        "Bumil & Busui": "bumil",
+        "SD 1-3": "sd1_3",
+        "SD 4-6": "sd4_6",
+        "SMP": "smp",
+        "SMA": "sma",
+        "Keringan Sekolah Kecil": "kecil",
+        "Keringan Sekolah Besar": "besar"
+      };
 
-const mapCaption = {
-  "Balita": "balita",
-  "Bumil & Busui": "bumil",
-  "SD 1-3": "sd1_3",
-  "SD 4-6": "sd4_6",
-  "SMP": "smp",
-  "SMA": "sma",
-  "Keringan Sekolah Kecil": "kecil",
-  "Keringan Sekolah Besar": "besar"
-};
+      const keyCaption = mapCaption[kat];
 
-const keyCaption = mapCaption[kat];
+      if (keyCaption) {
+        // 🔥 pisahkan antara OMPRENGAN dan SNACK
+        window.hasilGiziPerKategori[menu][keyCaption] = {
+          energi: Number((total.Energi || 0).toFixed(2)),
+          protein: Number((total.Protein || 0).toFixed(2)),
+          lemak: Number((total.Lemak || 0).toFixed(2)),
+          karbo: Number((total.Karbohidrat || 0).toFixed(2)),
+          serat: Number((total.Serat || 0).toFixed(2))
+        };
+      }
 
-if (keyCaption) {
-  window.hasilGiziPerKategori[keyCaption] = {
-    energi: Number((total.Energi || 0).toFixed(2)),
-    protein: Number((total.Protein || 0).toFixed(2)),
-    lemak: Number((total.Lemak || 0).toFixed(2)),
-    karbo: Number((total.Karbohidrat || 0).toFixed(2)),
-    serat: Number((total.Serat || 0).toFixed(2))
-  };
-}
-
-      // ================= SIMPAN TOTAL GIZI =================
+      // ================= SIMPAN TOTAL GIZI KE SPREADSHEET =================
       const keyMap = {
         "Balita": menu === "OMPRENGAN" ? "omprengan_balita" : "snack_balita",
         "Bumil & Busui": menu === "OMPRENGAN" ? "omprengan_bumil" : "snack_bumil",
-
         "SD 1-3": "omprengan_sd1_3",
         "SD 4-6": "omprengan_sd4_6",
         "SMP": "omprengan_smp",
         "SMA": "omprengan_sma",
-
         "Keringan Sekolah Kecil": "snack_kecil",
         "Keringan Sekolah Besar": "snack_besar"
       };
@@ -722,48 +700,27 @@ if (keyCaption) {
 
       // ================= DETAIL PER BAHAN =================
       const detailBahan = dataAktif.map(item => {
-
         const db = database.find(d =>
-          String(getNamaBahan(d) ?? "")
-            .toLowerCase()
-            .includes(item.nama.toLowerCase().trim())
+          String(getNamaBahan(d) ?? "").toLowerCase().includes(item.nama.toLowerCase().trim())
         );
 
-        if (!db) {
-          return {
-            nama: item.nama,
-            berat: item.berat,
-            satuan: item.satuan,
-            energi: 0,
-            protein: 0,
-            lemak: 0,
-            karbo: 0,
-            kalsium: 0,
-            serat: 0
-          };
-        }
-
-        let faktor = item.satuan === "GRAM"
-          ? item.berat / 100
-          : item.berat;
+        let faktor = item.satuan === "GRAM" ? item.berat / 100 : item.berat;
 
         return {
           nama: item.nama,
           berat: item.berat,
           satuan: item.satuan,
-          energi: faktor * Number(db["ENERGI"] ?? db["energi"] ?? 0),
-          protein: faktor * Number(db["PROTEIN"] ?? db["protein"] ?? 0),
-          lemak: faktor * Number(db["LEMAK"] ?? db["lemak"] ?? 0),
-          karbo: faktor * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0),
-          kalsium: faktor * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0),
-          serat: faktor * Number(db["SERAT"] ?? db["serat"] ?? 0)
+          energi: db ? faktor * Number(db["ENERGI"] ?? db["energi"] ?? 0) : 0,
+          protein: db ? faktor * Number(db["PROTEIN"] ?? db["protein"] ?? 0) : 0,
+          lemak: db ? faktor * Number(db["LEMAK"] ?? db["lemak"] ?? 0) : 0,
+          karbo: db ? faktor * Number(db["KARBOHIDRAT"] ?? db["karbohidrat"] ?? 0) : 0,
+          kalsium: db ? faktor * Number(db["KALSIUM"] ?? db["kalsium"] ?? 0) : 0,
+          serat: db ? faktor * Number(db["SERAT"] ?? db["serat"] ?? 0) : 0
         };
-
       });
 
       // ================= SIMPAN DETAIL =================
       detailBahan.forEach(b => {
-
         window.dataSpreadsheet[menu].detail.push({
           menu: menu,
           kategori: kat,
@@ -777,40 +734,27 @@ if (keyCaption) {
           kalsium: Number((b.kalsium || 0).toFixed(2)),
           serat: Number((b.serat || 0).toFixed(2))
         });
-
       });
 
-      // ================= STANDAR AKG =================
+      // ================= RENDER =================
       const standar = AKG[kat] || {
-        Energi: 0,
-        Protein: 0,
-        Lemak: 0,
-        Karbohidrat: 0,
-        Kalsium: 0,
-        Serat: 0
+        Energi: 0, Protein: 0, Lemak: 0,
+        Karbohidrat: 0, Kalsium: 0, Serat: 0
       };
 
-      // ================= RENDER =================
       hasilDiv.innerHTML += `
         <div class="kategori-card">
-
           <div class="kategori-header">
             <h3>${kat}</h3>
-
             <div class="libur-ios-wrapper">
               <span class="label-libur">Libur</span>
-
               <label class="switch-ios">
-                <input type="checkbox"
-                  ${kategoriLibur[kat] ? "checked" : ""}
-                  onchange="toggleLibur('${kat}', this.checked)">
+                <input type="checkbox" ${kategoriLibur[kat] ? "checked" : ""} onchange="toggleLibur('${kat}', this.checked)">
                 <span class="slider-ios"></span>
               </label>
             </div>
           </div>
-
           ${renderEditableList(menu, kat)}
-
           ${renderTabelKategori(menu, kat, detailBahan, {
             energi: standar.Energi,
             protein: standar.Protein,
@@ -819,14 +763,10 @@ if (keyCaption) {
             kalsium: standar.Kalsium,
             serat: standar.Serat
           })}
-
         </div>
       `;
-
     });
-
   });
-
 }
 function renderAKG(nutrien, total, kategori) {
   const nilai = total[nutrien] || 0;
@@ -1602,7 +1542,7 @@ Menu:
 ${menuText}
 `;
 
-const gizi = window.hasilGiziPerKategori || {};
+const gizi = window.hasilGizi.OMPRENGAN || {};
 
 if (!libur.balita)
 caption += blokGizi("Analisis Nilai Gizi Balita", gizi.balita);
@@ -1693,7 +1633,7 @@ function generateCaptionOmprengan() {
   sma: kategoriLibur["SMA"] || false
 };
   
-  const gizi = window.hasilGiziPerKategori || {};
+  const gizi = window.hasilGizi.OMPRENGAN; || {};
 
   let caption = `🍱 Menu Bergizi Gratis
 📅 ${hari}, ${tanggal}
@@ -1733,7 +1673,7 @@ if (!libur.sma)
 
 function generateCaptionSnack() {
 
-  const gizi = window.hasilGiziPerKategori || {};
+  const gizi = window.hasilGizi.SNACK; || {};
 
   const kecil = gizi.kecil || {};
   const besar = gizi.besar || {};
