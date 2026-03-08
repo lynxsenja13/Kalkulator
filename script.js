@@ -264,7 +264,7 @@ function renderKategori() {
   const container = document.getElementById("kategoriCheckbox");
   container.innerHTML = "";
 
-  const daftar = modeMenu === "snack" ? kategoriSnack : kategoriOmprengan;
+ const daftar = modeMenu === "SNACK" ? kategoriSnack : kategoriOmprengan;
 
   // checkbox SEMUA
   const semua = document.createElement("label");
@@ -297,26 +297,31 @@ function renderKategori() {
 
 function initCheckboxSemua(){
 
-  const semua = document.getElementById("kategoriSemua");
-  const checkboxes = document.querySelectorAll(".kategori-check");
+const semua = document.getElementById("kategoriSemua");
+const checkboxes = document.querySelectorAll(".kategori-check");
 
-  if(!semua) return;
+if(!semua) return;
 
-  semua.addEventListener("change", function(){
+// klik semua
+semua.addEventListener("change", function(){
 
-    checkboxes.forEach(cb => {
-
-  cb.addEventListener("change", function(){
-
-    const semuaChecked = [...checkboxes].every(c => c.checked);
-
-    semua.checked = semuaChecked;
-
-  });
+checkboxes.forEach(cb => {
+cb.checked = semua.checked;
+});
 
 });
 
-  });
+// jika checkbox satu-satu diklik
+checkboxes.forEach(cb => {
+
+cb.addEventListener("change", function(){
+
+const semuaChecked = [...checkboxes].every(c => c.checked);
+semua.checked = semuaChecked;
+
+});
+
+});
 
 }
 
