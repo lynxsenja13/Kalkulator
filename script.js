@@ -180,8 +180,7 @@ bahanMaster[modeMenu].push({
   satuan: document.getElementById("satuanBahan")?.value || "GRAM"
 });
 
-const select = document.getElementById("pilihKategori");
-const selected = [...select.selectedOptions].map(o => o.value);
+const selected = ambilKategoriDipilih();
 
 if (selected.includes("SEMUA") || selected.length === 0) {
 
@@ -430,15 +429,31 @@ let db = database.find(d =>
   satuan
 });
 
-  if (modeKategori === "SEMUA") {
+  const selected = ambilKategoriDipilih();
+
+if (selected.includes("SEMUA") || selected.length === 0) {
 
   getKategoriAktif().forEach(k => {
-    kategoriData[modeMenu][k].push({ nama: nama.trim(), berat, satuan });
+    kategoriData[modeMenu][k].push({
+      nama: nama.trim(),
+      berat,
+      satuan
+    });
   });
 
 } else {
 
-  kategoriData[modeMenu][modeKategori].push({ nama: nama.trim(), berat, satuan });
+  selected.forEach(k => {
+    if (!kategoriData[modeMenu][k]) {
+      kategoriData[modeMenu][k] = [];
+    }
+
+    kategoriData[modeMenu][k].push({
+      nama: nama.trim(),
+      berat,
+      satuan
+    });
+  });
 
 }
 
@@ -2116,4 +2131,63 @@ function ambilMenuUntukLaporan(){
   }
 
   return hasil;
+}
+
+function renderKategoriCheckbox() {
+
+  const container = document.getElementById("kategoriCheckbox");
+
+  if (!container) return;
+
+  const kategoriAktif = getKategoriAktif();
+
+  container.innerHTML = "";
+
+  kategoriAktif.forEach(kat => {
+
+    const label = document.createElement("label");
+    label.className = "kategori-item";
+
+    label.innerHTML = `
+      <input type="checkbox" value="${kat}">
+      ${kat}
+    `;
+
+    container.appendChild(label);
+
+  });
+
+  const semua = document.createElement("label");
+
+  semua.className = "kategori-item kategori-semua";
+
+  semua.innerHTML = `
+    <input type="checkbox" value="SEMUA">
+    Semua
+  `;
+
+  container.appendChild(semua);
+
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+
+renderKategoriCheckbox();
+
+});
+
+function ambilKategoriDipilih() {
+
+  const checked = document.querySelectorAll(
+    "#kategoriCheckbox input:checked"
+  );
+
+  let list = [];
+
+  checked.forEach(cb => {
+    list.push(cb.value);
+  });
+
+  return list;
+
 }
