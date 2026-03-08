@@ -2183,3 +2183,19 @@ function ambilKategoriDipilih() {
   return list;
 
 }
+
+document.addEventListener("change", function(e){
+
+  if(e.target.value==="SEMUA"){
+
+    const all=document.querySelectorAll(
+      '#kategoriCheckbox input:not([value="SEMUA"])'
+    );
+
+    all.forEach(cb=>{
+      cb.checked=e.target.checked;
+    });
+
+  }
+
+});
