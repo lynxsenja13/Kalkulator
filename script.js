@@ -595,6 +595,7 @@ function generateLaporan() {
 
   const hasilDiv = document.getElementById("hasil");
   hasilDiv.innerHTML = "";
+  window.hasilGiziPerKategori = {};
 
   // 🔥 RESET DATA SEBELUM HITUNG
   window.dataSpreadsheet.OMPRENGAN.detail = [];
@@ -682,7 +683,7 @@ const mapCaption = {
 
 const keyCaption = mapCaption[kat];
 
-if (keyCaption && menu === "OMPRENGAN") {
+if (keyCaption) {
   window.hasilGiziPerKategori[keyCaption] = {
     energi: Number((total.Energi || 0).toFixed(2)),
     protein: Number((total.Protein || 0).toFixed(2)),
@@ -1733,7 +1734,9 @@ if (!libur.sma)
 function generateCaptionSnack() {
 
   const gizi = window.hasilGiziPerKategori || {};
-  const kategoriLibur = window.kategoriLibur || {};
+
+  const kecil = gizi.kecil || {};
+  const besar = gizi.besar || {};
 
   let caption = `
 🍪 Snack Bergizi Gratis
@@ -1750,12 +1753,12 @@ function generateCaptionSnack() {
   }
 
   if (!kategoriLibur["Keringan Sekolah Kecil"]) {
-    caption += blokGizi("Analisis Nilai Gizi Keringan Sekolah Kecil", gizi.kecil);
-  }
+  caption += blokGizi("Analisis Nilai Gizi Keringan Sekolah Kecil", kecil);
+}
 
-  if (!kategoriLibur["Keringan Sekolah Besar"]) {
-    caption += blokGizi("Analisis Nilai Gizi Keringan Sekolah Besar", gizi.besar);
-  }
+if (!kategoriLibur["Keringan Sekolah Besar"]) {
+  caption += blokGizi("Analisis Nilai Gizi Keringan Sekolah Besar", besar);
+}
 
   caption += `
 🌿 “Makan bergizi, tubuh berenergi!”
