@@ -38,9 +38,9 @@ let modeKategori = "SEMUA";
 let menuHarian = [""];
 let menuKategori = "semua";
 let modeMenuLaporan = "semua"; 
-let menuSemua = [];
-let menuBalita = [];
-let menuSekolah = [];
+let menuSemua = [""];
+let menuBalita = [""];
+let menuSekolah = [""];
 let liburLaporan = {};
 let subTabAktif = "harian"; // default
 let mainTabAktif = "laporan";
@@ -1194,7 +1194,7 @@ ${menuSemua.map((menu,i)=>`
 <input type="text"
 value="${menu}"
 placeholder="Menu ${i+1}"
-oninput="menuSemua[${i}] = this.value">
+oninput="menuSemua[${i}] = this.value; generateCaptionHarian()">
 `).join("")}
 
 <button onclick="menuSemua.push(''); renderMenuHarian()">
@@ -1221,7 +1221,7 @@ ${menuBalita.map((menu,i)=>`
 <input type="text"
 value="${menu}"
 placeholder="Menu Balita ${i+1}"
-oninput="menuBalita[${i}] = this.value">
+oninput="menuBalita[${i}] = this.value; generateCaptionHarian()">
 `).join("")}
 
 <button onclick="menuBalita.push(''); renderMenuHarian()">
@@ -1236,7 +1236,7 @@ ${menuSekolah.map((menu,i)=>`
 <input type="text"
 value="${menu}"
 placeholder="Menu Sekolah ${i+1}"
-oninput="menuSekolah[${i}] = this.value">
+oninput="menuSekolah[${i}] = this.value; generateCaptionHarian()">
 `).join("")}
 
 <button onclick="menuSekolah.push(''); renderMenuHarian()">
@@ -1245,7 +1245,7 @@ oninput="menuSekolah[${i}] = this.value">
 
 <br><br>
 
-<button onclick="modeMenu='semua'; renderMenuHarian()">
+<button onclick="modeMenuLaporan='semua'; renderMenuHarian()">
 Gunakan Menu Sama Untuk Semua
 </button>
   `;
@@ -1874,7 +1874,19 @@ function kirimKeSpreadsheet() {
   const data = {
     tanggal: tanggal,
 
-    menu: menuHarian.filter(m => m.trim()),
+    let menuFix = [];
+
+if(modeMenuLaporan === "semua"){
+  menuFix = menuSemua.filter(m => m.trim());
+}else{
+  menuFix = [
+    "Menu Balita, Bumil & Busui",
+    ...menuBalita.filter(m=>m.trim()),
+    "",
+    "Menu Sekolah",
+    ...menuSekolah.filter(m=>m.trim())
+  ];
+}
 
     omprengan: window.dataSpreadsheet.OMPRENGAN,
     snack: window.dataSpreadsheet.SNACK,
@@ -2079,12 +2091,12 @@ function kirimLaporanKeSpreadsheet() {
   });
 
   const data = {
-    tanggal: getTanggalLengkap(),
-    menu: menuHarian.filter(m => m.trim()),
-    detail: semuaDetail,
-    libur: semuaLibur,
-    catatan: document.getElementById("catatan")?.value || ""
-  };
+  tanggal: tanggal,
+  menu: menuFix,
+  omprengan: window.dataSpreadsheet.OMPRENGAN,
+  snack: window.dataSpreadsheet.SNACK,
+  catatan: document.getElementById("note")?.value || ""
+};
 
   const formData = new FormData();
   formData.append("data", JSON.stringify(data));
