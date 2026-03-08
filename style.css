@@ -1698,51 +1698,30 @@ width:16px;
 height:16px;
 }
 
+/* container */
+
 .kategori-scroll{
 display:flex;
 flex-wrap:wrap;
 gap:8px;
-margin-bottom:10px;
+margin:10px 0;
 }
 
+/* chip */
+
 .kategori-chip{
-padding:6px 14px;
-border-radius:20px;
-background:#2b2b2b;
-color:white;
-font-size:14px;
 cursor:pointer;
-border:1px solid #444;
-transition:0.2s;
-user-select:none;
-}
-
-.kategori-chip:hover{
-background:#3a3a3a;
-}
-
-.kategori-chip.active{
-background:#2b7cff;
-border-color:#2b7cff;
-color:white;
-}
-
-.kategori-chip:active{
-transform:scale(0.95);
-}
-
-/* ===== KATEGORI CHIP STYLE ===== */
-
-.kategori-chip{
-position:relative;
 display:inline-flex;
 align-items:center;
-cursor:pointer;
 }
+
+/* sembunyikan checkbox */
 
 .kategori-chip input{
 display:none;
 }
+
+/* tampilan tombol */
 
 .kategori-chip span{
 
@@ -1760,11 +1739,13 @@ transition:all .2s ease;
 
 }
 
+/* hover */
+
 .kategori-chip span:hover{
 background:#374151;
 }
 
-/* jika dipilih */
+/* saat dipilih */
 
 .kategori-chip input:checked + span{
 
@@ -1774,7 +1755,7 @@ color:white;
 
 }
 
-/* tombol SEMUA */
+/* tombol semua */
 
 .kategori-chip.semua input:checked + span{
 
@@ -1782,7 +1763,6 @@ background:#10b981;
 border-color:#10b981;
 
 }
-
 .kategori-scroll{
 display:flex;
 flex-wrap:wrap;
