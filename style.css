@@ -1589,3 +1589,24 @@ font-weight:600;
   padding:4px 8px;
   font-size:11px;
 }
+
+.kategori-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:4px;
+  margin-top:6px;
+}
+
+.kategori-item{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  font-size:12px;
+  background:#f4f6f8;
+  padding:4px 6px;
+  border-radius:6px;
+}
+
+.kategori-item input{
+  transform:scale(0.9);
+}
