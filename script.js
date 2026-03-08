@@ -2136,33 +2136,32 @@ function ambilMenuUntukLaporan(){
 function renderKategoriCheckbox(){
 
   const container = document.getElementById("kategoriCheckbox");
-
   if(!container) return;
 
   const kategoriAktif = getKategoriAktif();
 
-  container.innerHTML = "";
+  container.innerHTML="";
 
   kategoriAktif.forEach(kat=>{
 
-    const label = document.createElement("label");
-    label.className = "kategori-chip";
+    const label=document.createElement("label");
+    label.className="kategori-item";
 
-    label.innerHTML = `
+    label.innerHTML=`
       <input type="checkbox" value="${kat}">
-      <span>${kat}</span>
+      ${kat}
     `;
 
     container.appendChild(label);
 
   });
 
-  const semua = document.createElement("label");
-  semua.className = "kategori-chip kategori-semua";
+  const semua=document.createElement("label");
+  semua.className="kategori-item";
 
-  semua.innerHTML = `
+  semua.innerHTML=`
     <input type="checkbox" value="SEMUA">
-    <span>SEMUA</span>
+    Semua
   `;
 
   container.appendChild(semua);
