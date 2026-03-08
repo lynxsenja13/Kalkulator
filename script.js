@@ -2221,18 +2221,29 @@ function renderKategori() {
 }
 
 function ambilKategoriDipilih(){
-  
-  const selected = ambilKategoriDipilih();
 
-  const aktif=document.querySelectorAll(".kategori-chip.active");
+const semua = document.getElementById("kategoriSemua");
+const checkboxes = document.querySelectorAll(".kategori-check");
 
-  let list=[];
+let kategori = [];
 
-  aktif.forEach(el=>{
-    list.push(el.dataset.value);
-  });
+if(semua && semua.checked){
 
-  return list;
+checkboxes.forEach(cb=>{
+kategori.push(cb.value);
+});
+
+return kategori;
+
+}
+
+checkboxes.forEach(cb=>{
+if(cb.checked){
+kategori.push(cb.value);
+}
+});
+
+return kategori;
 
 }
 
