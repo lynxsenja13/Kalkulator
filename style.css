@@ -1610,3 +1610,33 @@ font-weight:600;
 .kategori-item input{
   transform:scale(0.9);
 }
+
+.kategori-scroll{
+  display:flex;
+  gap:6px;
+  overflow-x:auto;
+  padding:4px 2px;
+  margin-top:6px;
+  scrollbar-width:none;
+}
+
+.kategori-scroll::-webkit-scrollbar{
+  display:none;
+}
+
+.kategori-item{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  font-size:12px;
+  white-space:nowrap;
+  background:#f4f6f8;
+  padding:4px 8px;
+  border-radius:20px;
+  border:1px solid #d0d5da;
+  flex-shrink:0;
+}
+
+.kategori-item input{
+  transform:scale(0.9);
+}
