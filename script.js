@@ -78,8 +78,7 @@ function setModeMenu(menu) {
     document.getElementById("btnSnack").classList.add("active-snack");
   }
 
-  renderKategori(); // 🔥 WAJIB ADA
-  renderDropdownKategori();
+  renderKategori();
 
   renderList();
   generateLaporan();
@@ -187,7 +186,7 @@ if (selected.includes("SEMUA") || selected.length === 0) {
 
   getKategoriAktif().forEach(k => {
     kategoriData[modeMenu][k].push({
-      nama: nama.trim(),
+      nama: namaBaru.trim(),
       berat,
       satuan
     });
@@ -263,26 +262,59 @@ function getKategoriAktif() {
 function renderKategori() {
 
   const container = document.getElementById("kategoriCheckbox");
-  if (!container) return;
-
   container.innerHTML = "";
 
-  const kategori =
-    modeMenu === "OMPRENGAN"
-      ? kategoriOmprengan
-      : kategoriSnack;
+  const daftar = modeMenu === "snack" ? kategoriSnack : kategoriOmprengan;
 
-  kategori.forEach(kat => {
+  // checkbox SEMUA
+  const semua = document.createElement("label");
+  semua.className = "kategori-chip semua";
+
+  semua.innerHTML = `
+    <input type="checkbox" id="kategoriSemua">
+    <span>Semua</span>
+  `;
+
+  container.appendChild(semua);
+
+  // checkbox kategori biasa
+  daftar.forEach(k => {
 
     const label = document.createElement("label");
-    label.className = "kategori-pill";
+    label.className = "kategori-chip";
 
     label.innerHTML = `
-      <input type="checkbox" class="kategori-check" value="${kat}">
-      <span>${kat}</span>
+      <input type="checkbox" value="${k}" class="kategori-check">
+      <span>${k}</span>
     `;
 
     container.appendChild(label);
+
+  });
+
+  initCheckboxSemua();
+}
+
+function initCheckboxSemua(){
+
+  const semua = document.getElementById("kategoriSemua");
+  const checkboxes = document.querySelectorAll(".kategori-check");
+
+  if(!semua) return;
+
+  semua.addEventListener("change", function(){
+
+    checkboxes.forEach(cb => {
+
+  cb.addEventListener("change", function(){
+
+    const semuaChecked = [...checkboxes].every(c => c.checked);
+
+    semua.checked = semuaChecked;
+
+  });
+
+});
 
   });
 
@@ -359,9 +391,9 @@ async function loadDatabase() {
     console.log("Database loaded:", database.length);
 
     initKategori();
-    renderDropdownKategori();
-    initAutocomplete(); // ✅ di sini
-    saveCache();        // ✅ di sini
+    renderKategori(); // ✅
+    initAutocomplete();
+    saveCache();
 
   } catch (err) {
     console.error("Gagal load database:", err);
@@ -400,7 +432,7 @@ function loadCache() {
     database = JSON.parse(cache);
     databaseLoaded = true;
     initKategori();
-    renderDropdownKategori();
+    renderKategori(); // ✅
     initAutocomplete();
     console.log("Database dari cache");
     return true; // 🔥 penting
@@ -1004,9 +1036,13 @@ document.addEventListener("keydown", function(e) {
 });
 
 window.onload = function () {
+
+  renderKategori(); // 🔥 WAJIB
+
   if (!loadCache()) {
-    loadDatabase(); // hanya kalau tidak ada cache
+    loadDatabase();
   }
+
 };
 
 function hitungPenerimaFinal() {
@@ -2172,6 +2208,8 @@ function renderKategori() {
 }
 
 function ambilKategoriDipilih(){
+  
+  const selected = ambilKategoriDipilih();
 
   const aktif=document.querySelectorAll(".kategori-chip.active");
 
