@@ -186,22 +186,25 @@ const selected = ambilKategoriDipilih();
 if (selected.includes("SEMUA") || selected.length === 0) {
 
   getKategoriAktif().forEach(k => {
-    kategoriData[modeMenu][k].push({
-      nama: namaBaru.trim(),
-      berat,
-      satuan
-    });
+    const berat = pendingBerat;
+const satuan = document.getElementById("satuanBahan")?.value || "GRAM";
+
+kategoriData[modeMenu][k].push({
+  nama: namaBaru.trim(),
+  berat,
+  satuan
+});
   });
 
 } else {
 
   selected.forEach(k => {
-    kategoriData[modeMenu][k].push({
-      nama: nama.trim(),
-      berat,
-      satuan
-    });
+  kategoriData[modeMenu][k].push({
+    nama: namaBaru.trim(),
+    berat,
+    satuan
   });
+});
 
 }
 
@@ -264,7 +267,12 @@ function renderKategori() {
   const container = document.getElementById("kategoriCheckbox");
   if (!container) return;
 
-  container.innerHTML = "";
+  container.innerHTML = `
+<label class="kategori-item">
+<input type="checkbox" id="kategoriSemua">
+Semua
+</label>
+`;
 
   const kategori =
     modeMenu === "OMPRENGAN"
@@ -276,7 +284,7 @@ function renderKategori() {
     label.className = "kategori-item";
 
     label.innerHTML = `
-      <input type="checkbox" value="${kat}">
+      <input type="checkbox" value="${kat}" class="kategori-check">
       ${kat}
     `;
 
@@ -291,7 +299,7 @@ const checkboxes = document.querySelectorAll(".kategori-check");
 
 if(!semua) return;
 
-// jika klik SEMUA
+// klik SEMUA
 semua.addEventListener("change", function(){
 
 checkboxes.forEach(cb=>{
@@ -300,7 +308,7 @@ cb.checked = semua.checked;
 
 });
 
-// jika checkbox lain diubah
+// klik kategori
 checkboxes.forEach(cb=>{
 
 cb.addEventListener("change", function(){
@@ -314,6 +322,7 @@ semua.checked = semuaChecked;
 });
 
 }
+
 // ================= AKG TARGET =================
 const AKG = {
   "Balita": {
@@ -1046,7 +1055,7 @@ window.onload = function () {
     loadDatabase();
   }
 
-};;
+};
 
 function hitungPenerimaFinal() {
 
@@ -1313,50 +1322,6 @@ function setSubTab(tab) {
   } else {
     document.getElementById("btnLapGizi").classList.add("active-subtab");
   }
-}
-
-function prosesLaporanHarian() {
-  tutupModalLibur();
-
-  // ✅ cek subtab aktif
-  if (subTabAktif === "gizi") {
-    generateLaporanGizi();
-  } else {
-    generateCaptionHarian();
-  }
-
-  const data = {
-    balita: document.getElementById("libur_balita").checked ? 0 : 211,
-    bumil: document.getElementById("libur_bumil").checked ? 0 : 125,
-    sdyas: document.getElementById("libur_sdyas").checked ? 0 : 186,
-    smpyas: document.getElementById("libur_smpyas").checked ? 0 : 630,
-    smayas: document.getElementById("libur_smayas").checked ? 0 : 534,
-    awig: document.getElementById("libur_awig").checked ? 0 : 1015,
-    guru_sd: document.getElementById("libur_sdyas").checked ? 0 : 17,
-    guru_smp: document.getElementById("libur_smpyas").checked ? 0 : 35,
-    guru_sma: document.getElementById("libur_smayas").checked ? 0 : 37,
-    guru_awig: document.getElementById("libur_awig").checked ? 0 : 62,
-    pic: document.getElementById("libur_balita").checked ? 0 : 5,
-  };
-
-  const totalPenerima =
-    data.balita +
-    data.bumil +
-    data.sdyas +
-    data.smpyas +
-    data.smayas +
-    data.awig +
-    data.guru_sd +
-    data.guru_smp +
-    data.guru_sma +
-    data.guru_awig +
-    data.pic;
-
-  const jumlahMakan = totalPenerima;
-
-  generateCaptionHarian();
-
-  tutupModalLibur();
 }
 
 function copyCaptionWA() {
@@ -2208,17 +2173,22 @@ function renderKategori() {
 
     container.appendChild(label);
   });
+  initCheckboxSemua();
 }
 
 function ambilKategoriDipilih(){
 
-const aktif=document.querySelectorAll(".kategori-chip.active");
+const checkboxes = document.querySelectorAll(".kategori-check:checked");
 
-let list=[];
+let list = [];
 
-aktif.forEach(el=>{
-list.push(el.dataset.kategori);
+checkboxes.forEach(cb=>{
+list.push(cb.value);
 });
+
+if(list.length === 0){
+return ["SEMUA"];
+}
 
 return list;
 
