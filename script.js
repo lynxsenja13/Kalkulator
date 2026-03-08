@@ -2246,3 +2246,13 @@ return kategori;
 document.addEventListener("DOMContentLoaded", () => {
   renderKategori();
 });
+
+document.getElementById("kategoriSemua").addEventListener("change", function(){
+
+const semua = this.checked;
+
+document.querySelectorAll(".kategori-check").forEach(cb=>{
+cb.checked = semua;
+});
+
+});
