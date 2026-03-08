@@ -1528,7 +1528,7 @@ const menuInputs = document.querySelectorAll("#menuContainer .input-menu");
 
 let menuText = ambilMenuUntukLaporan().join("\n");
 
-((inp,i)=>{
+menuInputs.forEach((inp,i)=>{
 if(inp.value.trim()){
 menuText += `${i+1}. ${inp.value.trim()}\n`;
 }
