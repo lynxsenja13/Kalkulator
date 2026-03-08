@@ -1146,7 +1146,7 @@ D. Jumlah penerima sebanyak ${totalD} orang.
 
 Jumlah makan : ${totalSemua} porsi.
 
-E. Menu Makan hari ini ${tanggal}"\n\n";
+E. Menu Makan hari ini ${tanggal}\n\n`;
 ${menuList}
 
 Demikian kami laporkan.
