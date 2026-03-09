@@ -1385,6 +1385,17 @@ function copyCaptionWA() {
 }
 
 function prosesLaporan() {
+
+  // 🔥 SYNC KE STATE UTAMA
+  kategoriLibur["Balita"] = document.getElementById("liburBalita").checked;
+  kategoriLibur["Bumil & Busui"] = document.getElementById("liburBumil").checked;
+  kategoriLibur["SD 1-3"] = document.getElementById("liburSD").checked;
+  kategoriLibur["SD 4-6"] = document.getElementById("liburSD").checked;
+  kategoriLibur["SMP"] = document.getElementById("liburSMP").checked;
+  kategoriLibur["SMA"] = document.getElementById("liburSMA").checked;
+
+  window.kategoriLibur = kategoriLibur;
+
   // =========================
   // AMBIL STATUS LIBUR
   // =========================
@@ -2124,37 +2135,18 @@ function kirimLaporanKeSpreadsheet() {
 
 function syncLiburModal() {
 
-  document.getElementById("liburBalita").checked =
-    kategoriLibur["Balita"] || false;
-
-  document.getElementById("liburBumil").checked =
-    kategoriLibur["Bumil & Busui"] || false;
-
-  document.getElementById("liburSDYas").checked =
-    kategoriLibur["SD 1-3"] || false;
-
-  document.getElementById("liburSMPYas").checked =
-    kategoriLibur["SMP"] || false;
-
-  document.getElementById("liburSMAYas").checked =
-    kategoriLibur["SMA"] || false;
-}
-
-function syncLiburModal() {
-
   const map = {
-    Balita: "liburBalita",
+    "Balita": "liburBalita",
     "Bumil & Busui": "liburBumil",
     "SD 1-3": "liburSD",
     "SD 4-6": "liburSD",
-    SMP: "liburSMP",
-    SMA: "liburSMA"
+    "SMP": "liburSMP",
+    "SMA": "liburSMA"
   };
 
   Object.keys(map).forEach(kat => {
 
-    const id = map[kat];
-    const el = document.getElementById(id);
+    const el = document.getElementById(map[kat]);
 
     if (el) {
       el.checked = kategoriLibur[kat] || false;
