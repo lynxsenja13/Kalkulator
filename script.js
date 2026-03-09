@@ -276,12 +276,15 @@ modeMenu === "SNACK"
 let html = "";
 
 /* tombol semua */
+
 html += `
 <label class="kategori-chip semua">
-<input type="checkbox" id="kategoriSemua">
+<input type="checkbox" id="kategoriSemua" checked>
 <span>Semua</span>
 </label>
 `;
+
+/* kategori lain */
 
 kategori.forEach(k=>{
 
@@ -296,10 +299,6 @@ html += `
 
 container.innerHTML = html;
 
-/* default aktif */
-const semua = document.getElementById("kategoriSemua");
-if(semua) semua.checked = true;
-
 initKategoriLogic();
 
 }
@@ -311,45 +310,32 @@ const kategori = document.querySelectorAll(".kategori-check");
 
 if(!semua) return;
 
-/* =========================
-DEFAULT : SEMUA AKTIF
-========================= */
-
+/* default */
 semua.checked = true;
 kategori.forEach(k => k.checked = false);
 
-/* =========================
-KLIK SEMUA
-========================= */
+/* klik semua */
 
 semua.addEventListener("change", function(){
 
 if(this.checked){
-
-/* matikan semua kategori */
 kategori.forEach(k => k.checked = false);
-
 }
 
 });
 
-/* =========================
-KLIK KATEGORI LAIN
-========================= */
+/* klik kategori lain */
 
 kategori.forEach(k=>{
 
 k.addEventListener("change", function(){
 
-/* jika ada kategori dipilih -> matikan semua */
 if(this.checked){
 semua.checked = false;
 }
 
-/* cek apakah semua kategori kosong */
 const adaYangDipilih = [...kategori].some(cb => cb.checked);
 
-/* jika kosong -> aktifkan semua */
 if(!adaYangDipilih){
 semua.checked = true;
 }
