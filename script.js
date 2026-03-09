@@ -268,19 +268,14 @@ function renderKategori(){
 const container = document.getElementById("kategoriCheckbox");
 if(!container) return;
 
-const kategori = [
-"Balita",
-"Bumil",
-"SD 1-3",
-"SD 4-6",
-"SMP",
-"SMA"
-];
+let kategori =
+modeMenu === "SNACK"
+? kategoriSnack
+: kategoriOmprengan;
 
 let html = "";
 
-/* tombol SEMUA */
-
+/* tombol semua */
 html += `
 <label class="kategori-chip semua">
 <input type="checkbox" id="kategoriSemua">
@@ -288,9 +283,7 @@ html += `
 </label>
 `;
 
-/* kategori lain */
-
-kategori.forEach(k => {
+kategori.forEach(k=>{
 
 html += `
 <label class="kategori-chip">
@@ -303,9 +296,9 @@ html += `
 
 container.innerHTML = html;
 
-/* aktifkan semua sebagai default */
+/* default aktif */
 const semua = document.getElementById("kategoriSemua");
-if (semua) semua.checked = true;
+if(semua) semua.checked = true;
 
 initKategoriLogic();
 
