@@ -314,30 +314,45 @@ const kategori = document.querySelectorAll(".kategori-check");
 
 if(!semua) return;
 
-/* default awal -> semua aktif */
+/* =========================
+DEFAULT : SEMUA AKTIF
+========================= */
+
 semua.checked = true;
 kategori.forEach(k => k.checked = false);
 
-/* klik SEMUA */
+/* =========================
+KLIK SEMUA
+========================= */
+
 semua.addEventListener("change", function(){
 
 if(this.checked){
+
+/* matikan semua kategori */
 kategori.forEach(k => k.checked = false);
+
 }
 
 });
 
-/* klik kategori lain */
+/* =========================
+KLIK KATEGORI LAIN
+========================= */
+
 kategori.forEach(k=>{
 
 k.addEventListener("change", function(){
 
+/* jika ada kategori dipilih -> matikan semua */
 if(this.checked){
 semua.checked = false;
 }
 
+/* cek apakah semua kategori kosong */
 const adaYangDipilih = [...kategori].some(cb => cb.checked);
 
+/* jika kosong -> aktifkan semua */
 if(!adaYangDipilih){
 semua.checked = true;
 }
