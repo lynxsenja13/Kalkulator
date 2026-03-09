@@ -1522,6 +1522,10 @@ function tambahMenuInput() {
 function bukaModalLibur() {
   const modal = document.getElementById("modalLibur");
   if (!modal) return;
+
+  /* TAMBAHKAN INI */
+  syncLiburModal();
+
   modal.style.display = "flex";
 }
 
