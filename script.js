@@ -1438,13 +1438,10 @@ function prosesLaporan() {
   let  D10 = data["Guru & Tendik SD Awi Gombong"];
   let D11 = data["PIC POSYANDU"];
 
-const totalPenerima = total;
-const jumlahMakan = total;
-
   // =========================
   // TOTAL PENERIMA (POIN D)
   // =========================
-  totalPenerima =
+  const totalPenerima =
   D1 + D2 + D3 + D4 + D5 + D6 + D7 + D8 + D9 + D10 + D11;
 
   const jumlahMakan = totalPenerima;
