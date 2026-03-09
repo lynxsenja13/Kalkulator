@@ -303,6 +303,10 @@ html += `
 
 container.innerHTML = html;
 
+/* aktifkan semua sebagai default */
+const semua = document.getElementById("kategoriSemua");
+if (semua) semua.checked = true;
+
 initKategoriLogic();
 
 }
