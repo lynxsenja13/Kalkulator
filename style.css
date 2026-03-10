@@ -1938,3 +1938,8 @@ tr{
   width:100%;
   margin:auto;
 }
+
+.kategori-card{
+  padding:12px;
+  font-size:14px;
+}
