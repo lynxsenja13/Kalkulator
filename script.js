@@ -1053,20 +1053,46 @@ function formatTanggalIndonesia() {
 
 function exportPDF(){
 
+  // tanggal hari ini
+  const now = new Date();
+
+  const tanggal = now.toLocaleDateString("id-ID", {
+    weekday: "long",
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  });
+
+  document.getElementById("tanggalLaporan").innerText = tanggal;
+
+  // jenis menu
+  const mode = modeMenu === "OMPRENGAN" ? "Menu Omprengan" : "Menu Snack";
+  document.getElementById("jenisMenuLaporan").innerText = mode;
+
+  // salin hasil gizi ke template PDF
+  document.getElementById("hasilPDF").innerHTML =
+    document.getElementById("hasil").innerHTML;
+
+  // salin catatan
+  document.getElementById("printNote").innerText =
+    document.getElementById("note").value;
+
   const element = document.getElementById("laporanPDF");
 
-  element.style.display="block";
+  element.style.visibility = "visible";
+  element.style.left = "0";
 
   const opt = {
     margin:10,
     filename:`Laporan Gizi ${formatTanggalFile()}.pdf`,
-    html2canvas:{ scale:2 },
-    jsPDF:{ unit:'mm', format:'a4', orientation:'portrait' },
-    pagebreak:{ mode:['css','legacy'] }
+    html2canvas:{scale:2},
+    jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},
+    pagebreak:{mode:['css','legacy']}
   };
 
   html2pdf().set(opt).from(element).save().then(()=>{
-    element.style.display="none";
+    element.style.visibility="hidden";
+    element.style.left="-9999px";
   });
 
 }
