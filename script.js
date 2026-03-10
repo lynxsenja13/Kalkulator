@@ -30,7 +30,14 @@ const STATE = {
 
 let autocompleteInitialized = false;
 let modeMenu = "OMPRENGAN";
-let kategoriLibur = {};
+let kategoriLibur = {
+  "Balita": false,
+  "Bumil & Busui": false,
+  "SD Awi Gombong": false,
+  "SD YAS": false,
+  "SMP YAS": false,
+  "SMA YAS": false
+};
 let kategoriData = {
   OMPRENGAN: {},
   SNACK: {}
@@ -69,6 +76,13 @@ const PENERIMA_DEFAULT = {
   "Guru & Tendik SMA YAS": 37,
 
   "PIC POSYANDU": 5
+};
+
+const KATEGORI_SEKOLAH = {
+  SD_AWI: "SD Awi Gombong",
+  SD_YAS: "SD YAS",
+  SMP: "SMP YAS",
+  SMA: "SMA YAS"
 };
 
 function setModeMenu(menu) {
@@ -1110,44 +1124,32 @@ function sdSemuaLibur() {
 
 function hitungPenerimaFinal() {
 
-  const data = { ...PENERIMA_DEFAULT };
+  let data = {
+    "BALITA": kategoriLibur["Balita"] ? 0 : 211,
+    "BUMIL & BUSUI": kategoriLibur["Bumil & Busui"] ? 0 : 125,
 
-  // BALITA
-  if (kategoriLibur["Balita"]) {
-    data["BALITA"] = 0;
-    data["PIC POSYANDU"] = 0;
+    "SD Awi Gombong": kategoriLibur["SD Awi Gombong"] ? 0 : 1015,
+    "SD YAS": kategoriLibur["SD YAS"] ? 0 : 186,
+
+    "SMP YAS": kategoriLibur["SMP YAS"] ? 0 : 630,
+    "SMA YAS": kategoriLibur["SMA YAS"] ? 0 : 534,
+
+    "Guru & Tendik SD Awi Gombong": kategoriLibur["SD Awi Gombong"] ? 0 : 62,
+    "Guru & Tendik SD YAS": kategoriLibur["SD YAS"] ? 0 : 17,
+
+    "Guru & Tendik SMP YAS": kategoriLibur["SMP YAS"] ? 0 : 35,
+    "Guru & Tendik SMA YAS": kategoriLibur["SMA YAS"] ? 0 : 37
+  };
+
+  let picPosyandu = 5;
+
+  if (kategoriLibur["Balita"] && kategoriLibur["Bumil & Busui"]) {
+    picPosyandu = 0;
   }
 
-  // BUMIL
-  if (kategoriLibur["Bumil & Busui"]) {
-    data["BUMIL & BUSUI"] = 0;
-  }
+  data["PIC POSYANDU"] = picPosyandu;
 
-  // SD Awi Gombong
-    if (kategoriLibur["SD Awi Gombong"]) {
-      data["SD Awi Gombong"] = 0;
-      data["Guru & Tendik SD Awi Gombong"] = 0;
-  }
-
-  // SD YAS
-    if (kategoriLibur["SD YAS"]) {
-      data["SD YAS"] = 0;
-      data["Guru & Tendik SD YAS"] = 0;
-  }
-
-  // SMP
-  if (kategoriLibur["SMP"]) {
-    data["SMP YAS"] = 0;
-    data["Guru & Tendik SMP YAS"] = 0;
-  }
-
-  // SMA
-  if (kategoriLibur["SMA"]) {
-    data["SMA YAS"] = 0;
-    data["Guru & Tendik SMA YAS"] = 0;
-  }
-
-  const total = Object.values(data).reduce((a,b)=>a+b,0);
+  let total = Object.values(data).reduce((a,b)=>a+b,0);
 
   return { data, total };
 }
@@ -1159,7 +1161,7 @@ const totalD =
   (data["SD YAS"] || 0) +
   (data["SMP YAS"] || 0) +
   (data["SMA YAS"] || 0) +
-  (data["SDN Awi Gombong"] || 0);
+  (data["SD Awi Gombong"] || 0);
 
 // 🔥 TOTAL MAKAN (SEMUA)
 const totalSemua = Object.values(data).reduce((a,b)=>a+b,0);
@@ -1623,8 +1625,8 @@ const libur = {
   balita: liburData["Balita"] || false,
   bumil: liburData["Bumil & Busui"] || false,
   sd: sdSemuaLibur(),
-  smp: liburData["SMP"] || false,
-  sma: liburData["SMA"] || false
+  smp: liburData["SMP YAS"] || false,
+  sma: liburData["SMA YAS"] || false
 };
 
 const now = new Date();
@@ -1678,6 +1680,17 @@ if (outputBox) outputBox.value = caption.trim();
 }
 
 function prosesGenerateLaporan() {
+
+kategoriLibur["Balita"] = document.getElementById("libur_balita").checked;
+  kategoriLibur["Bumil & Busui"] = document.getElementById("libur_bumil").checked;
+  kategoriLibur["SD Awi Gombong"] = document.getElementById("libur_awig").checked;
+  kategoriLibur["SD YAS"] = document.getElementById("libur_sdyas").checked;
+  kategoriLibur["SMP YAS"] = document.getElementById("libur_smpyas").checked;
+  kategoriLibur["SMA YAS"] = document.getElementById("libur_smayas").checked;
+
+  tutupModalLibur();
+
+  generateLaporan();
   if (mainTabAktif === "caption") {
     if (subTabCaptionAktif === "omprengan") {
       generateCaptionOmprengan();
