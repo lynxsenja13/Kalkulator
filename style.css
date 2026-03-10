@@ -1890,3 +1890,7 @@ table{
 tr{
   page-break-inside: avoid !important;
 }
+
+.kategori-card{
+  margin-bottom:20px;
+}
