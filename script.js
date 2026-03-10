@@ -1190,7 +1190,7 @@ D. Jumlah penerima sebanyak ${totalD} orang.
 3. SD YAS = ${data["SD YAS"]}
 4. SMP YAS = ${data["SMP YAS"]}
 5. SMA YAS = ${data["SMA YAS"]}
-6. SDN Awi Gombong = ${data["SDN Awi Gombong"]}
+6. SDN Awi Gombong = ${data["SD Awi Gombong"]}
 7. Guru & Tendik SD YAS = ${data["Guru & Tendik SD YAS"]}
 8. Guru & Tendik SMP YAS = ${data["Guru & Tendik SMP YAS"]}
 9. Guru & Tendik SMA YAS = ${data["Guru & Tendik SMA YAS"]}
@@ -1434,7 +1434,7 @@ function prosesLaporan() {
   let D3 = data["SD YAS"];
   let D4 = data["SMP YAS"];
   let D5 = data["SMA YAS"];
-  let D6 = data["SDN Awi Gombong"];
+  let D6 = data["SD Awi Gombong"];
   let D7 = data["Guru & Tendik SD YAS"];
   let D8 = data["Guru & Tendik SMP YAS"];
   let D9 = data["Guru & Tendik SMA YAS"];
