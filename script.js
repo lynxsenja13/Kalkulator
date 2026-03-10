@@ -1051,36 +1051,22 @@ function formatTanggalIndonesia() {
   return `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
 }
 
-function exportPDF() {
+function exportPDF(){
 
   const element = document.getElementById("laporanPDF");
 
-  // tampilkan dulu agar html2canvas bisa render
-  element.style.display = "block";
+  element.style.display="block";
 
   const opt = {
-    margin: [15, 10, 15, 10],
-    filename: `Laporan Gizi ${formatTanggalFile()}.pdf`,
-    
-    pagebreak: {
-      mode: ['css','legacy'],
-      avoid: ['.kategori-card','table','tr']
-    },
-
-    html2canvas: {
-      scale: 1.6,
-      useCORS: true
-    },
-
-    jsPDF: {
-      unit: "mm",
-      format: "a4",
-      orientation: "portrait"
-    }
+    margin:10,
+    filename:`Laporan Gizi ${formatTanggalFile()}.pdf`,
+    html2canvas:{ scale:2 },
+    jsPDF:{ unit:'mm', format:'a4', orientation:'portrait' },
+    pagebreak:{ mode:['css','legacy'] }
   };
 
-  html2pdf().set(opt).from(element).save().then(() => {
-    element.style.display = "none";
+  html2pdf().set(opt).from(element).save().then(()=>{
+    element.style.display="none";
   });
 
 }
