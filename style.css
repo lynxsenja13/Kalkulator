@@ -1894,3 +1894,7 @@ tr{
 .kategori-card{
   margin-bottom:20px;
 }
+
+#laporanPDF{
+  width:210mm;
+}
