@@ -1845,12 +1845,13 @@ background:#16a34a;
 }
 
 .kategori-card{
-  page-break-inside: avoid;
-  break-inside: avoid;
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
 }
 
 .table-wrapper{
-  page-break-inside: avoid;
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
 }
 
 .kategori-header{
@@ -1880,4 +1881,12 @@ background:#16a34a;
 .pdf-content > *{
   page-break-inside: avoid;
   break-inside: avoid;
+}
+
+table{
+  page-break-inside: avoid !important;
+}
+
+tr{
+  page-break-inside: avoid !important;
 }
