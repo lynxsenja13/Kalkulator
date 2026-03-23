@@ -2421,7 +2421,7 @@ function autoIsiBerat(nama) {
 
   if (!inputBerat || !inputSatuan) return;
 
-  // ❗ jangan override kalau user sudah isi
+  // ❗ jangan override kalau user sudah isi manual
   if (inputBerat.value) return;
 
   const key = nama.toLowerCase().trim();
@@ -2430,12 +2430,14 @@ function autoIsiBerat(nama) {
     key.includes(k)
   );
 
+  // 🔥 NAH KODE KAMU TARUH DI SINI
   if (found) {
     inputBerat.value = defaultBerat[found];
 
-    // 🔥 AUTO SATUAN
     if (defaultSatuan[found]) {
       inputSatuan.value = defaultSatuan[found];
+    } else {
+      inputSatuan.value = "GRAM"; // fallback
     }
   }
 }
