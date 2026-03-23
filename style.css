@@ -2036,3 +2036,53 @@ tr{
   0% {transform: scale(0.5); opacity: 0;}
   100% {transform: scale(1); opacity: 1;}
 }
+
+/* INTRO FULLSCREEN */
+#intro {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #0f172a, #1e3a8a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: all 1s ease;
+}
+
+/* KONTEN INTRO */
+.intro-content {
+  text-align: center;
+  color: white;
+  animation: fadeIn 1s ease;
+}
+
+/* LOGO BESAR */
+.logo-intro {
+  width: 140px;
+  margin-bottom: 20px;
+  animation: zoomIn 1s ease;
+}
+
+/* TITLE */
+.intro-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+/* SUB TEXT */
+.intro-sub {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+/* ANIMASI */
+@keyframes zoomIn {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
