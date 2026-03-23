@@ -15,14 +15,13 @@
 <body>
 
 <!-- Intro Logo -->
-<!-- Intro Logo -->
 <div id="intro">
-  <div class="intro-content">
-    <img src="logo.png" class="logo-intro">
+  <img src="logo.png" id="logoIntro">
 
+  <div class="intro-text">
     <h1>SPPG Cicadas 01</h1>
-    <p class="ahli">Ahli Gizi : Aliyah Khairunnisa Syafitri</p>
-    <p class="creator">Created By : Fikri Purwana Senja</p>
+    <p>Ahli Gizi : Aliyah Khairunnisa Syafitri</p>
+    <p>Created By : Fikri Purwana Senja</p>
   </div>
 </div>
 
@@ -30,7 +29,7 @@
 
   <!-- HEADER -->
   <div class="header">
-    <img src="logo.png" class="logo" alt="Logo SPPG Cicadas 01" />
+    <img src="logo.png" class="logo" id="logoHeader" alt="Logo SPPG Cicadas 01" />
     <h1>SPPG Cicadas 01</h1>
     <p class="ahli-gizi">Ahli Gizi : Aliyah Khairunnisa Syafitri</p>
     <p class="credit">Created by Fikri Purwana Senja</p>
@@ -327,17 +326,48 @@
 </div>
 
 <script>
+window.addEventListener("load", () => {
+  const intro = document.getElementById("intro");
+  const logoIntro = document.getElementById("logoIntro");
+  const logoHeader = document.getElementById("logoHeader");
+  const introText = document.querySelector(".intro-text");
+
+  // ambil posisi header
+  const headerRect = logoHeader.getBoundingClientRect();
+
   setTimeout(() => {
-    const intro = document.getElementById("intro");
 
-    intro.style.opacity = "0";
-    intro.style.transition = "0.8s ease";
+    // sembunyikan teks dulu
+    introText.style.opacity = "0";
 
+    // posisi awal logo
+    const startRect = logoIntro.getBoundingClientRect();
+
+    // hitung perpindahan
+    const deltaX = headerRect.left - startRect.left;
+    const deltaY = headerRect.top - startRect.top;
+
+    // aktifkan mode pindah
+    logoIntro.classList.add("logo-move");
+
+    // animasi transform
+    logoIntro.style.transform = `
+      translate(${deltaX}px, ${deltaY}px)
+      scale(0.25)
+    `;
+
+    // setelah animasi selesai
     setTimeout(() => {
-      intro.style.display = "none";
-    }, 800);
+      intro.style.opacity = "0";
 
-  }, 2500);
+      setTimeout(() => {
+        intro.style.display = "none";
+      }, 500);
+
+    }, 900);
+
+  }, 1500);
+});
 </script>
   
 <script src="config.js"></script>
