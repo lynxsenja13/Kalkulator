@@ -327,37 +327,17 @@
 </div>
 
 <script>
-window.addEventListener("load", () => {
-
-  const intro = document.getElementById("intro");
-  const logo = document.querySelector(".logo-intro");
-
   setTimeout(() => {
+    const intro = document.getElementById("intro");
 
-    // 🔥 efek mengecil + pindah
-    logo.style.transform = "scale(0.4) translateY(-150px)";
-    logo.style.transition = "all 1s ease";
-
-    // fade text
-    document.querySelectorAll(".intro-title, .intro-sub").forEach(el => {
-      el.style.opacity = "0";
-      el.style.transition = "all 0.5s ease";
-    });
-
-  }, 1500);
-
-  setTimeout(() => {
-
-    // 🔥 hilangkan intro
     intro.style.opacity = "0";
+    intro.style.transition = "0.8s ease";
 
-  }, 2300);
+    setTimeout(() => {
+      intro.style.display = "none";
+    }, 800);
 
-  setTimeout(() => {
-    intro.style.display = "none";
-  }, 3000);
-
-});
+  }, 2500);
 </script>
   
 <script src="config.js"></script>
