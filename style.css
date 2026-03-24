@@ -2162,7 +2162,7 @@ body {
 
 /* logo header awalnya disembunyikan */
 #logoHeader {
-  opacity: 0;
+  opacity: 1;
 }
 
 /* INTRO FULL */
