@@ -2206,3 +2206,20 @@ body {
     opacity: 1;
   }
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+/* 🔥 INI KUNCI UTAMA */
+body {
+  background: #ffffff; /* putih full */
+  min-height: 100vh;
+}
+
+/* CONTAINER APP */
+.app {
+  min-height: 100vh;
+}
