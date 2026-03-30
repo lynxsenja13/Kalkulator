@@ -66,7 +66,7 @@ const PENERIMA_DEFAULT = {
   "BALITA": 211,
   "BUMIL & BUSUI": 125,
 
-  "SD Awi Gombong": 1015,
+  "SD Awi Gombong": 1016,
   "SD YAS": 186,
 
   "SMP YAS": 630,
