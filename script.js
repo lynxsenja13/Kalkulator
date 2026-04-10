@@ -1052,7 +1052,7 @@
   const clone = hasilAsli.cloneNode(true);
 
     // 🔥 hapus kategori yang tidak punya bahan
-  clone.querySelectorAll(".card-kategori").forEach(card => {
+  clone.querySelectorAll(".kategori-card").forEach(card => {
   let adaIsi = false;
 
   card.querySelectorAll("tbody tr").forEach(row => {
@@ -1123,23 +1123,43 @@
   // tempel ke body (biar ke-render)
   document.body.appendChild(element);
 
-  element.querySelectorAll(".card-kategori").forEach(card => {
+    // 🔥 cegah card kepotong
+  element.querySelectorAll(".kategori-card").forEach(card => {
     card.style.pageBreakInside = "avoid";
-  });    
+    card.style.breakInside = "avoid";
+  });
+  
+  // 🔥 cegah tabel kepotong
+  element.querySelectorAll("table").forEach(table => {
+    table.style.pageBreakInside = "avoid";
+  });
+  
+  element.querySelectorAll("tr").forEach(tr => {
+    tr.style.pageBreakInside = "avoid";
+  });  
+
+  element.style.width = "210mm";
+  element.style.fontSize = "10px";
 
   const today = new Date();
   const tanggalFile = tanggal.replace(/,/g, "").replace(/\s+/g, "-");
       
   // 🔥 INI YANG KAMU TANYA → TARUH DI SINI
-  html2pdf()
-    .set({
-      margin: 10,
-      filename: `Laporan Gizi MBG ${tanggalFile}.pdf`,
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
-    })
-    .from(element)
-    .save()
+  setTimeout(() => {
+      html2pdf()
+        .set({
+          margin: 10,
+          filename: `Laporan Gizi MBG ${tanggalFile}.pdf`,
+          html2canvas: { scale: 2 },
+          jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+        })
+        .from(element)
+        .save()
+        .then(() => {
+          document.body.removeChild(element);
+        });
+    }, 300);
+        
     .then(() => {
       document.body.removeChild(element); // hapus setelah selesai
     });
