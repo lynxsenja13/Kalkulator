@@ -1043,62 +1043,57 @@
     return `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
   }
   
-  function exportPDF(){
-  
-    const laporan = document.getElementById("laporanPDF");
-  
-    // ===== tanggal =====
-    document.getElementById("tanggalLaporan").innerText =
-      formatTanggalIndonesia();
-  
-    const mode = modeMenu === "OMPRENGAN"
-      ? "Menu Omprengan"
-      : "Menu Snack";
-  
-    document.getElementById("jenisMenuLaporan").innerText = mode;
-  
-    // ===== clone hasil laporan =====
-    const hasilAsli = document.getElementById("hasil");
-    const clone = hasilAsli.cloneNode(true);
-  
-    // hapus elemen interaktif
-    clone.querySelectorAll("input,button,.libur-ios-wrapper,.btn-hapus").forEach(el=>{
-      el.remove();
-    });
-  
-    document.getElementById("hasilPDF").innerHTML = clone.innerHTML;
-  
-    // ===== catatan =====
-    document.getElementById("printNote").innerText =
-      document.getElementById("note").value || "-";
-  
-    // tampilkan container
-    laporan.style.display = "block";
-  
-    const opt = {
+    function exportPDF() {
+  // 🔥 pastikan data terbaru
+  generateLaporan();
+
+  // 🔥 ambil hasil tampilan
+  const hasilAsli = document.getElementById("hasil");
+  const clone = hasilAsli.cloneNode(true);
+
+  // 🔥 hapus elemen yang tidak perlu
+  clone.querySelectorAll("input,button,.btn-hapus")
+    .forEach(el => el.remove());
+
+  // 🔥 ambil tanggal & catatan
+  const tanggal = document.getElementById("tanggalText").innerText;
+  const note = document.getElementById("note").value;
+
+  // 🔥 buat container baru (INI KUNCI)
+  const element = document.createElement("div");
+
+  element.innerHTML = `
+    <h2 style="text-align:center;">LAPORAN HASIL PERHITUNGAN GIZI</h2>
+    <p style="text-align:center;">${tanggal}</p>
+    ${clone.innerHTML}
+    <br>
+    <h3>Catatan</h3>
+    <p>${note || "-"}</p>
+  `;
+
+  // styling biar kebaca
+  element.style.padding = "20px";
+  element.style.background = "#ffffff";
+  element.style.color = "#000000";
+
+  // tempel ke body (biar ke-render)
+  document.body.appendChild(element);
+
+  // 🔥 INI YANG KAMU TANYA → TARUH DI SINI
+  html2pdf()
+    .set({
       margin: 10,
-      filename: `Laporan Gizi ${formatTanggalFile()}.pdf`,
-      html2canvas: {
-        scale: 2,
-        useCORS: true
-      },
-      jsPDF: {
-        unit: "mm",
-        format: "a4",
-        orientation: "portrait"
-      },
-      pagebreak: {
-        mode: ["css", "legacy"]
-      }
-    };
-  
-    setTimeout(() => {
-      html2pdf().set(opt).from(laporan).save().then(()=>{
-        laporan.style.display = "none";
-      });
-    }, 500);
-  
-  }
+      filename: `Laporan Gizi.pdf`,
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+    })
+    .from(element)
+    .save()
+    .then(() => {
+      document.body.removeChild(element); // hapus setelah selesai
+    });
+}
+
   function getTanggalLengkap() {
     const now = new Date(getKeyTanggal()); // ✅ FIX
   
