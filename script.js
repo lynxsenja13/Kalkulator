@@ -1043,13 +1043,30 @@
     return `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
   }
   
-    function exportPDF() {
+   function exportPDF() {
   // 🔥 pastikan data terbaru
   generateLaporan();
 
   // 🔥 ambil hasil tampilan
   const hasilAsli = document.getElementById("hasil");
   const clone = hasilAsli.cloneNode(true);
+
+    // 🔥 hapus kategori yang tidak punya bahan
+  clone.querySelectorAll(".card-kategori").forEach(card => {
+  let adaIsi = false;
+
+  card.querySelectorAll("tbody tr").forEach(row => {
+  const text = row.innerText.trim();
+
+  if (text !== "") {
+    adaIsi = true;
+  }
+});
+
+  if (!adaIsi) {
+    card.remove();
+  }
+});
 
   // 🔥 hapus elemen yang tidak perlu
   clone.querySelectorAll("input,button,.btn-hapus")
@@ -1063,13 +1080,40 @@
   const element = document.createElement("div");
 
   element.innerHTML = `
-    <h2 style="text-align:center;">LAPORAN HASIL PERHITUNGAN GIZI</h2>
-    <p style="text-align:center;">${tanggal}</p>
-    ${clone.innerHTML}
-    <br>
-    <h3>Catatan</h3>
-    <p>${note || "-"}</p>
-  `;
+  <div style="text-align:center; margin-bottom:10px;">
+    <img src="logo.png" style="width:70px; display:block; margin:0 auto 8px auto;">
+
+    <h2 style="margin:0; font-size:16px; font-weight:bold;">
+      SPPG KOTA BANDUNG
+    </h2>
+    <h3 style="margin:0; font-size:14px; font-weight:bold;">
+      CIBEUNYING KIDUL - CICADAS
+    </h3>
+
+    <p style="margin:2px 0; font-size:12px;">
+      Jl. Brigjen Katamso, Cihaur Geulis, Kec. Cibeunying Kidul, Kota Bandung
+    </p>
+
+    <p style="margin:2px 0; font-size:12px;">
+      Ahli Gizi: <b>Aliyah Khairunnisa Syafitri</b>
+    </p>
+  </div>
+
+  <hr style="border:1px solid black; margin:10px 0;">
+
+  <h3 style="text-align:center; margin:5px 0;">
+    LAPORAN HASIL PERHITUNGAN GIZI
+  </h3>
+  <p style="text-align:center; margin:0 0 10px 0;">
+    ${tanggal}
+  </p>
+
+  ${clone.innerHTML}
+
+  <br>
+  <h3>Catatan</h3>
+  <p style="white-space: pre-line;">${note || "-"}</p>
+`;
 
   // styling biar kebaca
   element.style.padding = "20px";
@@ -1079,11 +1123,18 @@
   // tempel ke body (biar ke-render)
   document.body.appendChild(element);
 
+  element.querySelectorAll(".card-kategori").forEach(card => {
+    card.style.pageBreakInside = "avoid";
+  });    
+
+  const today = new Date();
+  const tanggalFile = tanggal.replace(/,/g, "").replace(/\s+/g, "-");
+      
   // 🔥 INI YANG KAMU TANYA → TARUH DI SINI
   html2pdf()
     .set({
       margin: 10,
-      filename: `Laporan Gizi.pdf`,
+      filename: `Laporan Gizi MBG ${tanggalFile}.pdf`,
       html2canvas: { scale: 2 },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
     })
