@@ -1022,7 +1022,7 @@
       "Juli","Agustus","September","Oktober","November","Desember"
     ];
   
-    const now = new Date(getKeyTanggal());
+    const now = new Date(getKeyTanggal() + "T00:00:00+07:00");
   
     const tgl = String(now.getDate()).padStart(2, "0");
     const namaBulan = bulan[now.getMonth()];
@@ -1038,7 +1038,7 @@
       "Juli","Agustus","September","Oktober","November","Desember"
     ];
   
-    const now = new Date(getKeyTanggal());
+    const now = new Date(getKeyTanggal() + "T00:00:00+07:00");
   
     return `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
   }
@@ -1141,7 +1141,12 @@
   });    
 
   const today = new Date();
-  const tanggalFile = tanggal.replace(/,/g, "").replace(/\s+/g, "-");
+  const tanggalFile = now.toLocaleDateString("id-ID", {
+  timeZone: "Asia/Jakarta",
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric"
+}).replace(/\//g, "-");
       
   // 🔥 INI YANG KAMU TANYA → TARUH DI SINI
   setTimeout(() => {
@@ -1172,7 +1177,7 @@
 }
 
   function getTanggalLengkap() {
-    const now = new Date(getKeyTanggal()); // ✅ FIX
+    const now = new Date(getKeyTanggal() + "T00:00:00+07:00"); // ✅ FIX
   
     const hari = now.toLocaleDateString("id-ID", { weekday: "long" });
     const tanggal = now.getDate();
@@ -1195,7 +1200,11 @@
 
   tanggalDipilih = null; // ✅
 
-  const today = new Date().toISOString().split("T")[0];
+  const now = new Date();
+
+  const today = now.toLocaleDateString("en-CA", {
+    timeZone: "Asia/Jakarta"
+  });
 
   handleTanggal(today); // set default hari ini
   initTanggal(today);
@@ -1980,7 +1989,13 @@ function kirimSpreadsheet() {
 
   const selectedDate = getKeyTanggal() 
     ? new Date(getKeyTanggal()) 
-    : new Date();
+      : new Date().toLocaleDateString("id-ID", {
+    timeZone: "Asia/Jakarta",
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  })
 
   const payload = {
 
@@ -2568,14 +2583,15 @@ function kirimSpreadsheet() {
     return;
   }
 
-  const date = new Date(val);
+  const date = new Date(val + "T00:00:00+07:00");
 
   const formatted = date.toLocaleDateString("id-ID", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  });
+  timeZone: "Asia/Jakarta",
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  year: "numeric"
+});
 
   display.innerText = formatted;
 
@@ -2649,6 +2665,16 @@ function getKeyTanggal() {
   if (input) return input;
 
   const today = new Date();
+
+  const parts = now.toLocaleDateString("en-CA", {
+  timeZone: "Asia/Jakarta"
+  }).split("-");
+  
+  const year = parts[0];
+  const month = parts[1];
+  const day = parts[2];
+
+  return `${year}-${month}-${day}`;
 
   const year = today.getFullYear();
   const month = String(today.getMonth() + 1).padStart(2, "0");
