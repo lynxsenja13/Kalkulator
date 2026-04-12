@@ -796,6 +796,14 @@
             b.nama.toLowerCase().trim() === item.nama.toLowerCase().trim()
           )
         );
+        
+        // 🔥 WAJIB DI SINI (DALAM LOOP KATEGORI)
+        dataAktif.forEach(item => {
+          if (item.nama && item.nama.toLowerCase().includes("nasi")) {
+            const beratBaru = getBeratNasiByKategori(kat, item.berat);
+            item.berat = beratBaru;
+          }
+        });
         const { detail: detailBahan, total } = hitungGiziDetail(dataAktif);
   
         // ================= SIMPAN GIZI UNTUK CAPTION =================
@@ -1022,7 +1030,7 @@
       "Juli","Agustus","September","Oktober","November","Desember"
     ];
   
-    const now = new Date(getKeyTanggal() + "T00:00:00+07:00");
+    const now = new Date(getKeyTanggal());
   
     const tgl = String(now.getDate()).padStart(2, "0");
     const namaBulan = bulan[now.getMonth()];
@@ -1038,7 +1046,7 @@
       "Juli","Agustus","September","Oktober","November","Desember"
     ];
   
-    const now = new Date(getKeyTanggal() + "T00:00:00+07:00");
+    const now = new Date(getKeyTanggal());
   
     return `${hari[now.getDay()]}, ${now.getDate()} ${bulan[now.getMonth()]} ${now.getFullYear()}`;
   }
@@ -1141,12 +1149,7 @@
   });    
 
   const today = new Date();
-  const tanggalFile = now.toLocaleDateString("id-ID", {
-  timeZone: "Asia/Jakarta",
-  day: "2-digit",
-  month: "2-digit",
-  year: "numeric"
-}).replace(/\//g, "-");
+  const tanggalFile = tanggal.replace(/,/g, "").replace(/\s+/g, "-");
       
   // 🔥 INI YANG KAMU TANYA → TARUH DI SINI
   setTimeout(() => {
@@ -1177,7 +1180,7 @@
 }
 
   function getTanggalLengkap() {
-    const now = new Date(getKeyTanggal() + "T00:00:00+07:00"); // ✅ FIX
+    const now = new Date(getKeyTanggal()); // ✅ FIX
   
     const hari = now.toLocaleDateString("id-ID", { weekday: "long" });
     const tanggal = now.getDate();
@@ -1200,11 +1203,7 @@
 
   tanggalDipilih = null; // ✅
 
-  const now = new Date();
-
-  const today = now.toLocaleDateString("en-CA", {
-    timeZone: "Asia/Jakarta"
-  });
+  const today = new Date().toISOString().split("T")[0];
 
   handleTanggal(today); // set default hari ini
   initTanggal(today);
@@ -1226,11 +1225,11 @@
       "BALITA": kategoriLibur["Balita"] ? 0 : 211,
       "BUMIL & BUSUI": kategoriLibur["Bumil & Busui"] ? 0 : 125,
   
-      "SD Awi Gombong": kategoriLibur["SD Awi Gombong"] ? 0 : 1015,
+      "SD Awi Gombong": kategoriLibur["SD Awi Gombong"] ? 0 : 1016,
       "SD YAS": kategoriLibur["SD YAS"] ? 0 : 186,
   
       "SMP YAS": kategoriLibur["SMP YAS"] ? 0 : 630,
-      "SMA YAS": kategoriLibur["SMA YAS"] ? 0 : 534,
+      "SMA YAS": kategoriLibur["SMA YAS"] ? 0 : 364,
   
       "Guru & Tendik SD Awi Gombong": kategoriLibur["SD Awi Gombong"] ? 0 : 62,
       "Guru & Tendik SD YAS": kategoriLibur["SD YAS"] ? 0 : 17,
@@ -1989,13 +1988,7 @@ function kirimSpreadsheet() {
 
   const selectedDate = getKeyTanggal() 
     ? new Date(getKeyTanggal()) 
-      : new Date().toLocaleDateString("id-ID", {
-    timeZone: "Asia/Jakarta",
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-  })
+    : new Date();
 
   const payload = {
 
@@ -2583,15 +2576,14 @@ function kirimSpreadsheet() {
     return;
   }
 
-  const date = new Date(val + "T00:00:00+07:00");
+  const date = new Date(val);
 
   const formatted = date.toLocaleDateString("id-ID", {
-  timeZone: "Asia/Jakarta",
-  weekday: "long",
-  day: "numeric",
-  month: "long",
-  year: "numeric"
-});
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
 
   display.innerText = formatted;
 
@@ -2666,16 +2658,6 @@ function getKeyTanggal() {
 
   const today = new Date();
 
-  const parts = now.toLocaleDateString("en-CA", {
-  timeZone: "Asia/Jakarta"
-  }).split("-");
-  
-  const year = parts[0];
-  const month = parts[1];
-  const day = parts[2];
-
-  return `${year}-${month}-${day}`;
-
   const year = today.getFullYear();
   const month = String(today.getMonth() + 1).padStart(2, "0");
   const day = String(today.getDate()).padStart(2, "0");
@@ -2698,4 +2680,19 @@ function ambilSemuaMenu() {
   return Array.from(inputs)
     .map(input => input.value.trim())
     .filter(val => val !== "");
+}
+
+function getBeratNasiByKategori(kategori, beratDefault) {
+  if (!kategori) return beratDefault;
+
+  const kat = kategori.toLowerCase();
+
+  if (kat.includes("balita")) return 80;
+  if (kat.includes("bumil")) return 200;
+  if (kat.includes("busui")) return 200;
+  if (kat.includes("sma")) return 200;
+  if (kat.includes("smp")) return 150;
+  if (kat.includes("sd")) return 100;
+
+  return beratDefault;
 }
